@@ -52,6 +52,12 @@
     <Compile Include="CreateProtocolForm.Designer.cs">
       <DependentUpon>CreateProtocolForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataWagonsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataWagonsForm.Designer.cs">
+      <DependentUpon>DataWagonsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +68,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CreateProtocolForm.resx">
       <DependentUpon>CreateProtocolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataWagonsForm.resx">
+      <DependentUpon>DataWagonsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

@@ -52,26 +52,27 @@
             this.AddingToolStripMenuItem});
             this.menuStripRequired.Location = new System.Drawing.Point(0, 0);
             this.menuStripRequired.Name = "menuStripRequired";
-            this.menuStripRequired.Size = new System.Drawing.Size(800, 28);
+            this.menuStripRequired.Size = new System.Drawing.Size(800, 30);
             this.menuStripRequired.TabIndex = 0;
             this.menuStripRequired.Text = "menuStrip";
             // 
             // DataWagonToolStripMenuItem
             // 
             this.DataWagonToolStripMenuItem.Name = "DataWagonToolStripMenuItem";
-            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
             this.DataWagonToolStripMenuItem.Text = "Данные о вагонах и проездах";
+            this.DataWagonToolStripMenuItem.Click += new System.EventHandler(this.DataWagonToolStripMenuItem_Click);
             // 
             // MetrologyToolStripMenuItem
             // 
             this.MetrologyToolStripMenuItem.Name = "MetrologyToolStripMenuItem";
-            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 24);
+            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 26);
             this.MetrologyToolStripMenuItem.Text = "Основные метрологические параметры";
             // 
             // AddingToolStripMenuItem
             // 
             this.AddingToolStripMenuItem.Name = "AddingToolStripMenuItem";
-            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
+            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
             this.AddingToolStripMenuItem.Text = "Приложения";
             // 
             // toolStrip1
@@ -85,10 +86,10 @@
             this.toolStripButtonPreview,
             this.toolStripSeparator2,
             this.toolStripProgressBar});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 423);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 419);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.toolStrip1.Size = new System.Drawing.Size(800, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 31);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStripConvertation";
             // 
@@ -97,13 +98,13 @@
             this.toolStripButtonConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonConvert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonConvert.Name = "toolStripButtonConvert";
-            this.toolStripButtonConvert.Size = new System.Drawing.Size(188, 24);
+            this.toolStripButtonConvert.Size = new System.Drawing.Size(188, 28);
             this.toolStripButtonConvert.Text = "Сформировать протокол";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
             // 
             // toolStripButtonPreview
             // 
@@ -111,18 +112,18 @@
             this.toolStripButtonPreview.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPreview.Image")));
             this.toolStripButtonPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonPreview.Name = "toolStripButtonPreview";
-            this.toolStripButtonPreview.Size = new System.Drawing.Size(196, 24);
+            this.toolStripButtonPreview.Size = new System.Drawing.Size(196, 28);
             this.toolStripButtonPreview.Text = "Предпросмотр протокола";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // toolStripProgressBar
             // 
             this.toolStripProgressBar.Name = "toolStripProgressBar";
-            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 24);
+            this.toolStripProgressBar.Size = new System.Drawing.Size(100, 28);
             // 
             // CreateProtocolForm
             // 
@@ -133,6 +134,7 @@
             this.Controls.Add(this.menuStripRequired);
             this.MainMenuStrip = this.menuStripRequired;
             this.Name = "CreateProtocolForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Создание протокола поверки весов";
             this.menuStripRequired.ResumeLayout(false);
             this.menuStripRequired.PerformLayout();

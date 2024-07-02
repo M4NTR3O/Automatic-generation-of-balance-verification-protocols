@@ -59,6 +59,7 @@
             this.Controls.Add(this.menuStripInformation);
             this.MainMenuStrip = this.menuStripInformation;
             this.Name = "FormMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Автоматическое формирование протокола для поверки весов";
             this.menuStripInformation.ResumeLayout(false);
             this.menuStripInformation.PerformLayout();
