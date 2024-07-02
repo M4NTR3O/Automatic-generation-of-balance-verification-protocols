@@ -16,7 +16,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new FormMain());
         }
     }
 }
