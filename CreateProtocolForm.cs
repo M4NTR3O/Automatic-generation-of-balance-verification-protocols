@@ -15,6 +15,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private DataGridView wagonsAndTransit = new DataGridView();
         private List<Double> resultWagonsAndTransit = new List<Double>();
         private List<Double> maxDeltaWagonsAndTransit = new List<Double>();
+        Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
         public CreateProtocolForm()
         {
             InitializeComponent();
@@ -33,6 +34,10 @@ namespace Automatic_generation_of_balance_verification_protocols
             {
                 if (dataWagonsForm.DialogResult == DialogResult.OK)
                 {
+                    if (DataWagonToolStripMenuItem.BackColor != Color.Green)
+                    {
+                        toolStripProgressBar.Value += 20;
+                    }
                     DataWagonToolStripMenuItem.BackColor = Color.Green;
                     wagonsAndTransit = dataWagonsForm.callData();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
@@ -43,7 +48,26 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void MetrologyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripProgressBar.Value += 2;
+            MetrologyParametrsForm met = new MetrologyParametrsForm();
+            this.Hide();
+            if (parametrsMetrology.Count > 0)
+            {
+                met = new MetrologyParametrsForm(parametrsMetrology);
+            }
+            met.ShowDialog();
+            if (met.DialogResult == DialogResult.OK || met.DialogResult == DialogResult.Cancel)
+            {
+                if (met.DialogResult == DialogResult.OK)
+                {
+                    if (MetrologyToolStripMenuItem.BackColor != Color.Green)
+                    {
+                        toolStripProgressBar.Value += 20;
+                    }
+                    MetrologyToolStripMenuItem.BackColor = Color.Green;
+                    parametrsMetrology = met.callDictionary();
+                }
+                this.Show();
+            }
         }
     }
 }
