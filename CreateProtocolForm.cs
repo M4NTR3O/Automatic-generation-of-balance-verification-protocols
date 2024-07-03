@@ -16,6 +16,8 @@ namespace Automatic_generation_of_balance_verification_protocols
         private List<Double> resultWagonsAndTransit = new List<Double>();
         private List<Double> maxDeltaWagonsAndTransit = new List<Double>();
         Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
+        Dictionary<string, string> importantPerson = new Dictionary<string, string>();
+
         public CreateProtocolForm()
         {
             InitializeComponent();
@@ -65,6 +67,39 @@ namespace Automatic_generation_of_balance_verification_protocols
                     }
                     MetrologyToolStripMenuItem.BackColor = Color.Green;
                     parametrsMetrology = met.callDictionary();
+                }
+                this.Show();
+            }
+        }
+
+        private void AddingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddingForm addingForm = new AddingForm();
+            this.Hide();
+            if (importantPerson.Count > 0)
+            {
+                addingForm = new AddingForm(importantPerson);
+            }
+            addingForm.ShowDialog();
+            if (addingForm.DialogResult == DialogResult.OK || addingForm.DialogResult == DialogResult.Cancel || addingForm.DialogResult == DialogResult.Yes)
+            {
+                if (addingForm.DialogResult == DialogResult.OK)
+                {
+                    if (AddingToolStripMenuItem.BackColor != Color.Green)
+                    {
+                        toolStripProgressBar.Value += 10;
+                    }
+                    AddingToolStripMenuItem.BackColor = Color.Green;
+                    importantPerson = addingForm.GetDictionary();
+                }
+                else if (addingForm.DialogResult == DialogResult.Yes)
+                {
+                    if (AddingToolStripMenuItem.BackColor != Color.NavajoWhite)
+                    {
+                        toolStripProgressBar.Value -= 10;
+                    }
+                    AddingToolStripMenuItem.BackColor = Color.NavajoWhite;
+                    importantPerson = addingForm.GetDictionary();
                 }
                 this.Show();
             }

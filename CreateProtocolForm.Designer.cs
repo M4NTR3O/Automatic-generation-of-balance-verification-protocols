@@ -78,6 +78,7 @@
             this.AddingToolStripMenuItem.Name = "AddingToolStripMenuItem";
             this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
             this.AddingToolStripMenuItem.Text = "Приложения";
+            this.AddingToolStripMenuItem.Click += new System.EventHandler(this.AddingToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 

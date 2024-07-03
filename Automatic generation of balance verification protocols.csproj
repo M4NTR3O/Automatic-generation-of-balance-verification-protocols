@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddingForm.Designer.cs">
+      <DependentUpon>AddingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CreateProtocolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddingForm.resx">
+      <DependentUpon>AddingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreateProtocolForm.resx">
       <DependentUpon>CreateProtocolForm.cs</DependentUpon>
     </EmbeddedResource>

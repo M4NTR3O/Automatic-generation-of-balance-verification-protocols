@@ -65,9 +65,11 @@ namespace Automatic_generation_of_balance_verification_protocols
                 tableWagonsAndTransit.Columns[2 + i * 3].SortMode = DataGridViewColumnSortMode.NotSortable;
                 tableWagonsAndTransit.Columns[3 + i * 3].HeaderText = "Погрешность абсолютная";
                 tableWagonsAndTransit.Columns[3 + i * 3].ReadOnly = true;
+                tableWagonsAndTransit.Columns[3 + i * 3].DefaultCellStyle.BackColor = Color.Gray;
                 tableWagonsAndTransit.Columns[3 + i * 3].SortMode = DataGridViewColumnSortMode.NotSortable;
                 tableWagonsAndTransit.Columns[4 + i * 3].HeaderText = "Погрешность относительная";
                 tableWagonsAndTransit.Columns[4 + i * 3].ReadOnly = true;
+                tableWagonsAndTransit.Columns[4 + i * 3].DefaultCellStyle.BackColor = Color.Gray;
                 tableWagonsAndTransit.Columns[4 + i * 3].SortMode = DataGridViewColumnSortMode.NotSortable;
                 for (int j = 0; j < tableWagonsAndTransit.Rows.Count; j++)
                 {
