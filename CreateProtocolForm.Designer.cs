@@ -52,27 +52,31 @@
             this.AddingToolStripMenuItem});
             this.menuStripRequired.Location = new System.Drawing.Point(0, 0);
             this.menuStripRequired.Name = "menuStripRequired";
-            this.menuStripRequired.Size = new System.Drawing.Size(800, 30);
+            this.menuStripRequired.Size = new System.Drawing.Size(800, 28);
             this.menuStripRequired.TabIndex = 0;
             this.menuStripRequired.Text = "menuStrip";
             // 
             // DataWagonToolStripMenuItem
             // 
+            this.DataWagonToolStripMenuItem.BackColor = System.Drawing.Color.Coral;
             this.DataWagonToolStripMenuItem.Name = "DataWagonToolStripMenuItem";
-            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
             this.DataWagonToolStripMenuItem.Text = "Данные о вагонах и проездах";
             this.DataWagonToolStripMenuItem.Click += new System.EventHandler(this.DataWagonToolStripMenuItem_Click);
             // 
             // MetrologyToolStripMenuItem
             // 
+            this.MetrologyToolStripMenuItem.BackColor = System.Drawing.Color.Coral;
             this.MetrologyToolStripMenuItem.Name = "MetrologyToolStripMenuItem";
-            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 26);
+            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 24);
             this.MetrologyToolStripMenuItem.Text = "Основные метрологические параметры";
+            this.MetrologyToolStripMenuItem.Click += new System.EventHandler(this.MetrologyToolStripMenuItem_Click);
             // 
             // AddingToolStripMenuItem
             // 
+            this.AddingToolStripMenuItem.BackColor = System.Drawing.Color.NavajoWhite;
             this.AddingToolStripMenuItem.Name = "AddingToolStripMenuItem";
-            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
+            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
             this.AddingToolStripMenuItem.Text = "Приложения";
             // 
             // toolStrip1

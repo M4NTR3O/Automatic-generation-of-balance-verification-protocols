@@ -23,17 +23,27 @@ namespace Automatic_generation_of_balance_verification_protocols
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataWagonsForm dataWagonsForm = new DataWagonsForm();
+            if (wagonsAndTransit != null && wagonsAndTransit.Columns.Count > 2)
+            {
+                dataWagonsForm = new DataWagonsForm(wagonsAndTransit);
+            }
             this.Hide();
             dataWagonsForm.ShowDialog();
             if (dataWagonsForm.DialogResult == DialogResult.OK || dataWagonsForm.DialogResult == DialogResult.Cancel)
             {
                 if (dataWagonsForm.DialogResult == DialogResult.OK)
                 {
+                    DataWagonToolStripMenuItem.BackColor = Color.Green;
                     wagonsAndTransit = dataWagonsForm.callData();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
                 }
                 this.Show();
             }
+        }
+
+        private void MetrologyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripProgressBar.Value += 2;
         }
     }
 }

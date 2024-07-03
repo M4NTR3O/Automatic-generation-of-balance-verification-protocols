@@ -18,6 +18,36 @@ namespace Automatic_generation_of_balance_verification_protocols
             updateTable();
         }
 
+        public DataWagonsForm(DataGridView table)
+        {
+            InitializeComponent();
+            inputTable(table);
+        }
+
+        private void inputTable(DataGridView table)
+        {
+            tableWagonsAndTransit.ColumnCount = table.Columns.Count;
+            tableWagonsAndTransit.RowCount = table.Rows.Count;
+            for (int i = 0; i < tableWagonsAndTransit.Columns.Count; i++)
+            {
+                tableWagonsAndTransit.Columns[i].HeaderText = table.Columns[i].HeaderText;
+                tableWagonsAndTransit.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                if (i == 0)
+                {
+                    tableWagonsAndTransit.Columns[i].Frozen = true;
+                }
+            }
+            tableWagonsAndTransit.RowHeadersVisible = true;
+            tableWagonsAndTransit.ColumnHeadersVisible = true;
+            for (int i = 0; i < tableWagonsAndTransit.Rows.Count; i++)
+            {
+                for (int j = 0; j < tableWagonsAndTransit.Columns.Count; j++)
+                {
+                    tableWagonsAndTransit.Rows[i].Cells[j].Value = table.Rows[i].Cells[j].Value;
+                }
+            }
+        }
+
         private void updateTable()
         {
             tableWagonsAndTransit.ColumnCount = 2 + 3 * Convert.ToInt32(numericUpDownTransit.Value);
@@ -26,7 +56,9 @@ namespace Automatic_generation_of_balance_verification_protocols
             tableWagonsAndTransit.ColumnHeadersVisible = true;
             tableWagonsAndTransit.Columns[0].HeaderText = "№ Вагона";
             tableWagonsAndTransit.Columns[0].Frozen = true;
+            tableWagonsAndTransit.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
             tableWagonsAndTransit.Columns[1].HeaderText = "Вес в статике";
+            tableWagonsAndTransit.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
             for (int i = 0; i < (tableWagonsAndTransit.Columns.Count - 2) / 3; i++)
             {
                 tableWagonsAndTransit.Columns[2 + i * 3].HeaderText = $"Проезд №{i + 1}";
@@ -71,7 +103,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                         A = (Convert.ToDouble(tableWagonsAndTransit.Rows[j].Cells[2 + i * 3].Value) * 100) / Convert.ToInt32(tableWagonsAndTransit.Rows[j].Cells[1].Value);
                         tableWagonsAndTransit.Rows[j].Cells[4 + i * 3].Value = string.Format("{0:f3}", A - 100);
                     }
-                    catch(Exception ex)
+                    catch
                     {
                         tableWagonsAndTransit.Rows[j].Cells[3 + i * 3].Value = 0;
                         tableWagonsAndTransit.Rows[j].Cells[4 + i * 3].Value = "0.000";
