@@ -122,11 +122,11 @@
             // toolStripButtonConvert
             // 
             this.toolStripButtonConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonConvert.Enabled = false;
             this.toolStripButtonConvert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonConvert.Name = "toolStripButtonConvert";
             this.toolStripButtonConvert.Size = new System.Drawing.Size(188, 28);
             this.toolStripButtonConvert.Text = "Сформировать протокол";
+            this.toolStripButtonConvert.Click += new System.EventHandler(this.toolStripButtonConvert_Click);
             // 
             // toolStripSeparator1
             // 

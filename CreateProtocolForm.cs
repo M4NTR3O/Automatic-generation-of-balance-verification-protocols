@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Automatic_generation_of_balance_verification_protocols
 {
@@ -17,7 +21,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private List<Double> maxDeltaWagonsAndTransit = new List<Double>();
         Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
         Dictionary<string, string> importantPerson = new Dictionary<string, string>();
-        List<string> flags = new List<string>();
+        Dictionary<string, string> infoAbout = new Dictionary<string, string>();
 
         public CreateProtocolForm()
         {
@@ -113,15 +117,15 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void textBox_Leave(object sender, EventArgs e)
         {
-            if ((sender as TextBox).Text == "" && flags.Contains($"{(sender as TextBox).Name}"))
+            if ((sender as TextBox).Text == "" && infoAbout.Keys.Contains($"{(sender as TextBox).Name}"))
             {
                 toolStripProgressBar.Value -= 10;
-                flags.Remove($"{(sender as TextBox).Name}");
+                infoAbout.Remove($"{(sender as TextBox).Name}");
             }
-            else if ((sender as TextBox).Text.Length > 0 && !flags.Contains($"{(sender as TextBox).Name}"))
+            else if ((sender as TextBox).Text.Length > 0 && !infoAbout.Keys.Contains($"{(sender as TextBox).Name}"))
             {
                 toolStripProgressBar.Value += 10;
-                flags.Add($"{(sender as TextBox).Name}");
+                infoAbout.Add($"{(sender as TextBox).Name}", (sender as TextBox).Text);
             }
             checkProgressBar();
         }
@@ -145,6 +149,46 @@ namespace Automatic_generation_of_balance_verification_protocols
                     toolStripButtonConvert.Enabled = true;
                 }
             }
+        }
+
+        private void toolStripButtonConvert_Click(object sender, EventArgs e)
+        {
+            XDocument xDoc = new XDocument();
+            XElement container = new XElement("container");
+            XElement xwagonsAndTransit = new XElement("wagonsAndTransit");
+            XAttribute xAttribute = new XAttribute("DataSource", wagonsAndTransit);
+            xwagonsAndTransit.Add(xAttribute);
+            XElement xresultWagonsAndTransit = new XElement("resultWagonsAndTransit", resultWagonsAndTransit);
+            xAttribute = new XAttribute("dictionary", resultWagonsAndTransit);
+            xresultWagonsAndTransit.Add(xAttribute);
+            XElement xmaxDeltaWagonsAndTransit = new XElement("maxDeltaWagonsAndTransit", maxDeltaWagonsAndTransit);
+            xAttribute = new XAttribute("dictionary", maxDeltaWagonsAndTransit);
+            xmaxDeltaWagonsAndTransit.Add(xAttribute);
+            XElement xparametrsMetrology = new XElement("parametrsMetrology", parametrsMetrology);
+            xAttribute = new XAttribute("dictionary", parametrsMetrology);
+            xparametrsMetrology.Add(xAttribute);
+            XElement ximportantPerson = new XElement("importantPerson", importantPerson);
+            xAttribute = new XAttribute("dictionary", importantPerson);
+            ximportantPerson.Add(xAttribute);
+            XElement xinfoAbout = new XElement("infoAbout", infoAbout);
+            xAttribute = new XAttribute("dictionary", infoAbout);
+            xinfoAbout.Add(xAttribute);
+            container.Add(xwagonsAndTransit);
+            container.Add(xresultWagonsAndTransit);
+            container.Add(xmaxDeltaWagonsAndTransit);
+            container.Add(xparametrsMetrology);
+            container.Add(ximportantPerson);
+            container.Add(xinfoAbout);
+            xDoc.Add(container);
+            xDoc.Save($"Protocol_{printTime(DateTime.Now)}.xml");
+            MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DialogResult = DialogResult.OK;
+        }
+
+        string printTime(DateTime dateTime)
+        {
+            string result =  $"{dateTime.Day.ToString("D2")}-{dateTime.Month.ToString("D2")}-{dateTime.Year.ToString("D4")}_{dateTime.Hour.ToString("D2")}-{dateTime.Minute.ToString("D2")}-{dateTime.Second.ToString("D2")}";
+            return result;
         }
     }
 }
