@@ -17,6 +17,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private List<Double> maxDeltaWagonsAndTransit = new List<Double>();
         Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
         Dictionary<string, string> importantPerson = new Dictionary<string, string>();
+        List<string> flags = new List<string>();
 
         public CreateProtocolForm()
         {
@@ -38,12 +39,15 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     if (DataWagonToolStripMenuItem.BackColor != Color.Green)
                     {
-                        toolStripProgressBar.Value += 20;
+                        toolStripProgressBar.Value += 15;
                     }
                     DataWagonToolStripMenuItem.BackColor = Color.Green;
                     wagonsAndTransit = dataWagonsForm.callData();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
+                    textBoxCountWagons.Text = wagonsAndTransit.Rows.Count.ToString();
+                    textBoxWeightWagons.Text = resultWagonsAndTransit[0].ToString();
                 }
+                checkProgressBar();
                 this.Show();
             }
         }
@@ -63,11 +67,12 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     if (MetrologyToolStripMenuItem.BackColor != Color.Green)
                     {
-                        toolStripProgressBar.Value += 20;
+                        toolStripProgressBar.Value += 10;
                     }
                     MetrologyToolStripMenuItem.BackColor = Color.Green;
                     parametrsMetrology = met.callDictionary();
                 }
+                checkProgressBar();
                 this.Show();
             }
         }
@@ -87,7 +92,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     if (AddingToolStripMenuItem.BackColor != Color.Green)
                     {
-                        toolStripProgressBar.Value += 10;
+                        toolStripProgressBar.Value += 5;
                     }
                     AddingToolStripMenuItem.BackColor = Color.Green;
                     importantPerson = addingForm.GetDictionary();
@@ -96,12 +101,49 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     if (AddingToolStripMenuItem.BackColor != Color.NavajoWhite)
                     {
-                        toolStripProgressBar.Value -= 10;
+                        toolStripProgressBar.Value -= 5;
                     }
                     AddingToolStripMenuItem.BackColor = Color.NavajoWhite;
                     importantPerson = addingForm.GetDictionary();
                 }
+                checkProgressBar();
                 this.Show();
+            }
+        }
+
+        private void textBox_Leave(object sender, EventArgs e)
+        {
+            if ((sender as TextBox).Text == "" && flags.Contains($"{(sender as TextBox).Name}"))
+            {
+                toolStripProgressBar.Value -= 10;
+                flags.Remove($"{(sender as TextBox).Name}");
+            }
+            else if ((sender as TextBox).Text.Length > 0 && !flags.Contains($"{(sender as TextBox).Name}"))
+            {
+                toolStripProgressBar.Value += 10;
+                flags.Add($"{(sender as TextBox).Name}");
+            }
+            checkProgressBar();
+        }
+
+        private void checkProgressBar()
+        {
+            if (toolStripProgressBar.Value <= 30)
+            {
+                toolStripProgressBar.ForeColor = Color.Red;
+            }
+            else if (toolStripProgressBar.Value >= 30 && toolStripProgressBar.Value <= 60)
+            {
+                toolStripProgressBar.ForeColor = Color.Yellow;
+            }
+            else
+            {
+                toolStripProgressBar.ForeColor = Color.Green;
+                if (toolStripProgressBar.Value >= 95)
+                {
+                    toolStripButtonPreview.Enabled = true;
+                    toolStripButtonConvert.Enabled = true;
+                }
             }
         }
     }
