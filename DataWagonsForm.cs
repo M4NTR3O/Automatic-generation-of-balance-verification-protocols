@@ -12,10 +12,12 @@ namespace Automatic_generation_of_balance_verification_protocols
 {
     public partial class DataWagonsForm : Form
     {
+        private DataSet WagonsAndTransinDataSet;
         public DataWagonsForm()
         {
             InitializeComponent();
-            updateTable();
+            WagonsAndTransinDataSet = new DataSet();
+            CreateDGV();
         }
 
         public DataWagonsForm(DataGridView table)
@@ -46,6 +48,52 @@ namespace Automatic_generation_of_balance_verification_protocols
                     tableWagonsAndTransit.Rows[i].Cells[j].Value = table.Rows[i].Cells[j].Value;
                 }
             }
+        }
+
+        private void CreateDGV()
+        {
+            int transitCount = Convert.ToInt16(numericUpDownTransit.Value);
+            int wagonsCount = Convert.ToInt16(numericUpDownWagons.Value);
+            for (int i = 0; i < transitCount; i++)
+            {
+                DataTable db = CreateTable(i);
+                if (i == 0)
+                {
+                    menuStripTransitButton.Items[i].BackColor = Color.WhiteSmoke;
+                    tableWagonsAndTransit.DataSource = db;
+                }
+                for (int j = 0; j < wagonsCount; j++)
+                {
+                    db.Rows.Add();
+                    db.Rows[j].ItemArray[2] = 0;
+                    db.Rows[j].ItemArray[3] = "0.000";
+                }
+            }
+            tableWagonsAndTransit.RowHeadersVisible = true;
+            tableWagonsAndTransit.ColumnHeadersVisible = true;
+            tableWagonsAndTransit.Columns[0].Frozen = true;
+            tableWagonsAndTransit.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[3].ReadOnly = true;
+            tableWagonsAndTransit.Columns[3].DefaultCellStyle.BackColor = Color.Gray;
+            tableWagonsAndTransit.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[4].ReadOnly = true;
+            tableWagonsAndTransit.Columns[4].DefaultCellStyle.BackColor = Color.Gray;
+            tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+        }
+
+        private DataTable CreateTable(int i)
+        {
+            DataTable db = new DataTable($"{i + 1}");
+            db.Columns.Add("№ вагона");
+            db.Columns.Add("Вес в статике");
+            db.Columns.Add($"Проезд №{i + 1}");
+            menuStripTransitButton.Items.Add($"Проезд №{i + 1}");
+            db.Columns.Add("Погрешность абсолютная");
+            db.Columns.Add("Погрешность относительная");
+            WagonsAndTransinDataSet.Tables.Add(db);
+            return db;
         }
 
         private void updateTable()
@@ -116,12 +164,50 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void numericUpDownWagons_ValueChanged(object sender, EventArgs e)
         {
-            updateTable();
+            if (numericUpDownWagons.Value > WagonsAndTransinDataSet.Tables[0].Rows.Count)
+            {
+                int count = WagonsAndTransinDataSet.Tables[0].Rows.Count;
+                foreach (DataTable tables in WagonsAndTransinDataSet.Tables)
+                {
+                    for (int i = count; i < numericUpDownWagons.Value; i++)
+                    {
+                        tables.Rows.Add();
+                    }
+                }
+            }
+            else if (numericUpDownWagons.Value < WagonsAndTransinDataSet.Tables[0].Rows.Count)
+            {
+                int count = WagonsAndTransinDataSet.Tables[0].Rows.Count;
+                foreach (DataTable tables in WagonsAndTransinDataSet.Tables)
+                {
+                    for (int i = count; i > numericUpDownWagons.Value; i--)
+                    {
+                        tables.Rows.Remove(tables.Rows[i - 1]);
+                    }
+                }
+            }
+
         }
 
         private void numericUpDownTransit_ValueChanged(object sender, EventArgs e)
         {
-            updateTable();
+            if (numericUpDownTransit.Value > WagonsAndTransinDataSet.Tables.Count)
+            {
+                int count = WagonsAndTransinDataSet.Tables.Count;
+                for (int i = count; i < numericUpDownTransit.Value; i++)
+                {
+                    CreateTable(i);
+                }
+            }
+            else
+            {
+                int count = WagonsAndTransinDataSet.Tables.Count;
+                for (int i = count; i > numericUpDownTransit.Value; i--)
+                {
+                    WagonsAndTransinDataSet.Tables.Remove($"{i}");
+                    menuStripTransitButton.Items.Remove(menuStripTransitButton.Items[i - 1]);
+                }
+            }
         }
 
         private void buttonCalculate_Click(object sender, EventArgs e)

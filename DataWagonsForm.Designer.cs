@@ -30,12 +30,13 @@
         {
             this.tableWagonsAndTransit = new System.Windows.Forms.DataGridView();
             this.panelData = new System.Windows.Forms.Panel();
+            this.buttonSaveData = new System.Windows.Forms.Button();
+            this.buttonCalculate = new System.Windows.Forms.Button();
             this.numericUpDownTransit = new System.Windows.Forms.NumericUpDown();
             this.labelTransit = new System.Windows.Forms.Label();
             this.numericUpDownWagons = new System.Windows.Forms.NumericUpDown();
             this.labelWagons = new System.Windows.Forms.Label();
-            this.buttonCalculate = new System.Windows.Forms.Button();
-            this.buttonSaveData = new System.Windows.Forms.Button();
+            this.menuStripTransitButton = new System.Windows.Forms.MenuStrip();
             ((System.ComponentModel.ISupportInitialize)(this.tableWagonsAndTransit)).BeginInit();
             this.panelData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransit)).BeginInit();
@@ -52,7 +53,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 400);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 372);
             this.tableWagonsAndTransit.TabIndex = 1;
             // 
             // panelData
@@ -68,6 +69,28 @@
             this.panelData.Name = "panelData";
             this.panelData.Size = new System.Drawing.Size(1071, 50);
             this.panelData.TabIndex = 0;
+            // 
+            // buttonSaveData
+            // 
+            this.buttonSaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.buttonSaveData.Location = new System.Drawing.Point(817, 19);
+            this.buttonSaveData.Name = "buttonSaveData";
+            this.buttonSaveData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.buttonSaveData.Size = new System.Drawing.Size(180, 23);
+            this.buttonSaveData.TabIndex = 5;
+            this.buttonSaveData.Text = "Сохранить показатели";
+            this.buttonSaveData.UseVisualStyleBackColor = false;
+            this.buttonSaveData.Click += new System.EventHandler(this.buttonSaveData_Click);
+            // 
+            // buttonCalculate
+            // 
+            this.buttonCalculate.Location = new System.Drawing.Point(631, 20);
+            this.buttonCalculate.Name = "buttonCalculate";
+            this.buttonCalculate.Size = new System.Drawing.Size(180, 23);
+            this.buttonCalculate.TabIndex = 4;
+            this.buttonCalculate.Text = "Рассчитать показатели";
+            this.buttonCalculate.UseVisualStyleBackColor = true;
+            this.buttonCalculate.Click += new System.EventHandler(this.buttonCalculate_Click);
             // 
             // numericUpDownTransit
             // 
@@ -133,27 +156,15 @@
             this.labelWagons.TabIndex = 0;
             this.labelWagons.Text = "Количество вагонов";
             // 
-            // buttonCalculate
+            // menuStripTransitButton
             // 
-            this.buttonCalculate.Location = new System.Drawing.Point(631, 20);
-            this.buttonCalculate.Name = "buttonCalculate";
-            this.buttonCalculate.Size = new System.Drawing.Size(180, 23);
-            this.buttonCalculate.TabIndex = 4;
-            this.buttonCalculate.Text = "Рассчитать показатели";
-            this.buttonCalculate.UseVisualStyleBackColor = true;
-            this.buttonCalculate.Click += new System.EventHandler(this.buttonCalculate_Click);
-            // 
-            // buttonSaveData
-            // 
-            this.buttonSaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.buttonSaveData.Location = new System.Drawing.Point(817, 19);
-            this.buttonSaveData.Name = "buttonSaveData";
-            this.buttonSaveData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.buttonSaveData.Size = new System.Drawing.Size(180, 23);
-            this.buttonSaveData.TabIndex = 5;
-            this.buttonSaveData.Text = "Сохранить показатели";
-            this.buttonSaveData.UseVisualStyleBackColor = false;
-            this.buttonSaveData.Click += new System.EventHandler(this.buttonSaveData_Click);
+            this.menuStripTransitButton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 422);
+            this.menuStripTransitButton.Name = "menuStripTransitButton";
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 28);
+            this.menuStripTransitButton.TabIndex = 2;
+            this.menuStripTransitButton.Text = "menuStrip1";
             // 
             // DataWagonsForm
             // 
@@ -162,6 +173,8 @@
             this.ClientSize = new System.Drawing.Size(1071, 450);
             this.Controls.Add(this.tableWagonsAndTransit);
             this.Controls.Add(this.panelData);
+            this.Controls.Add(this.menuStripTransitButton);
+            this.MainMenuStrip = this.menuStripTransitButton;
             this.Name = "DataWagonsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Данные о вагонах и проездах";
@@ -172,6 +185,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWagons)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -184,5 +198,6 @@
         private System.Windows.Forms.Button buttonCalculate;
         private System.Windows.Forms.Button buttonSaveData;
         protected System.Windows.Forms.DataGridView tableWagonsAndTransit;
+        private System.Windows.Forms.MenuStrip menuStripTransitButton;
     }
 }
