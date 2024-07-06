@@ -258,37 +258,33 @@ namespace Automatic_generation_of_balance_verification_protocols
             List<Double> result = new List<Double>();
             List<Double> maxDelta = new List<Double>();
 
-            for (int i = 0; i < WagonsAndTransinDataSet.Tables.Count * 3 + 1; i++)
+            for (int i = 0; i < WagonsAndTransinDataSet.Tables.Count; i++)
             {
-                result.Add(0);
-                if ((i-1) % 3 == 0 || (i - 1) % 3 == 1)
+                if (i == 0)
                 {
-                    maxDelta.Add(0);
+                    result.Add(0);
                 }
-            }
-
-            for (int i = 0; i < tableWagonsAndTransit.Rows.Count; i++)
-            {
-                for (int j = 1; j < tableWagonsAndTransit.Columns.Count; j++)
+                result.Add(0);
+                result.Add(0);
+                result.Add(0);
+                maxDelta.Add(0);
+                maxDelta.Add(0);
+                for (int j = 0; j < WagonsAndTransinDataSet.Tables[0].Rows.Count; j++)
                 {
-                    if (j == 1 || (j + 1) % 3 == 0)
+                    if (i == 0)
                     {
-                        result[j - 1] += Convert.ToDouble(tableWagonsAndTransit.Rows[i].Cells[j].Value);
+                        result[0] += Convert.ToInt32(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[1]);
                     }
-                    else if (j % 3 == 0)
+                    result[1 + i * 3] = Convert.ToInt32(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[2]);
+                    if (Math.Abs(maxDelta[i * 2]) < Math.Abs(Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[3])))
                     {
-                        if (Math.Abs(maxDelta[(j / 3 - 1) * 2]) < Math.Abs(Convert.ToDouble(tableWagonsAndTransit.Rows[i].Cells[j].Value))){
-                            maxDelta[(j / 3 - 1) * 2] = Convert.ToDouble(tableWagonsAndTransit.Rows[i].Cells[j].Value);
-                        }
+                        maxDelta[i * 2] = Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[3]);
                     }
-                    else
+                    if (Math.Abs(maxDelta[i * 2 + 1]) < Math.Abs(Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[4])))
                     {
-                        if (Math.Abs(maxDelta[(j / 3 - 1) * 2 + 1]) < Math.Abs(Convert.ToDouble(tableWagonsAndTransit.Rows[i].Cells[j].Value)))
-                        {
-                            maxDelta[(j / 3 - 1) * 2 + 1] = Convert.ToDouble(tableWagonsAndTransit.Rows[i].Cells[j].Value);
-                        }
+                        maxDelta[i * 2 + 1] = Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[4]);
                     }
-                }    
+                }
             }
 
             for (int i = 2; i < tableWagonsAndTransit.Columns.Count; i++)
