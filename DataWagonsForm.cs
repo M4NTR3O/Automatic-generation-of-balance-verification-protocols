@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,13 @@ namespace Automatic_generation_of_balance_verification_protocols
             CreateDGV();
         }
 
-        public DataWagonsForm(DataGridView table)
+        public DataWagonsForm(DataSet table)
         {
             InitializeComponent();
-            inputTable(table);
+            //inputTable(table);
+            WagonsAndTransinDataSet = table;
+            numericUpDownWagons.Value = (int)WagonsAndTransinDataSet.Tables[0].Rows.Count;
+            numericUpDownTransit.Value = (int)WagonsAndTransinDataSet.Tables.Count;
         }
 
         private void inputTable(DataGridView table)
@@ -59,7 +63,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 DataTable db = CreateTable(i);
                 if (i == 0)
                 {
-                    menuStripTransitButton.Items[i].BackColor = Color.WhiteSmoke;
+                    menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
                     tableWagonsAndTransit.DataSource = db;
                 }
                 for (int j = 0; j < wagonsCount; j++)
@@ -83,6 +87,27 @@ namespace Automatic_generation_of_balance_verification_protocols
             tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
+        private void OnClick_menuStripTransitButtons(object sender, EventArgs e)
+        {
+            for (int i = 0; i < menuStripTransitButton.Items.Count; i++)
+            {
+                for (int j = 0; j < tableWagonsAndTransit.Rows.Count; j++)
+                {
+                    WagonsAndTransinDataSet.Tables[i].Rows[j].SetField(0, tableWagonsAndTransit.Rows[j].Cells[0].Value);
+                    WagonsAndTransinDataSet.Tables[i].Rows[j].SetField(1,tableWagonsAndTransit.Rows[j].Cells[1].Value);
+                }
+                if (menuStripTransitButton.Items[i] == (sender as ToolStripItem))
+                {
+                    menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                    tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[i];
+                }
+                else if (menuStripTransitButton.Items[i].BackColor == Color.DarkGray)
+                {
+                    menuStripTransitButton.Items[i].BackColor = SystemColors.Control;
+                }
+            }
+        }
+
         private DataTable CreateTable(int i)
         {
             DataTable db = new DataTable($"{i + 1}");
@@ -90,9 +115,14 @@ namespace Automatic_generation_of_balance_verification_protocols
             db.Columns.Add("Вес в статике");
             db.Columns.Add($"Проезд №{i + 1}");
             menuStripTransitButton.Items.Add($"Проезд №{i + 1}");
+            menuStripTransitButton.Items[i].Click += OnClick_menuStripTransitButtons;
             db.Columns.Add("Погрешность абсолютная");
             db.Columns.Add("Погрешность относительная");
             WagonsAndTransinDataSet.Tables.Add(db);
+            foreach (var wagons in WagonsAndTransinDataSet.Tables[0].Rows)
+            {
+                db.Rows.Add();
+            }
             return db;
         }
 
@@ -219,16 +249,16 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             DialogResult = DialogResult.OK;
         }
-        public DataGridView callData()
+        public DataSet callData()
         {
-            return tableWagonsAndTransit;
+            return WagonsAndTransinDataSet;
         }
         public (List<Double>, List<Double>) calculateResult()
         {
             List<Double> result = new List<Double>();
             List<Double> maxDelta = new List<Double>();
 
-            for (int i = 0; i < tableWagonsAndTransit.Columns.Count - 1; i++)
+            for (int i = 0; i < WagonsAndTransinDataSet.Tables.Count * 3 + 1; i++)
             {
                 result.Add(0);
                 if ((i-1) % 3 == 0 || (i - 1) % 3 == 1)

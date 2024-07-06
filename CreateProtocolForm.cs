@@ -16,7 +16,7 @@ namespace Automatic_generation_of_balance_verification_protocols
 {
     public partial class CreateProtocolForm : Form
     {
-        private DataGridView wagonsAndTransit = new DataGridView();
+        private DataSet wagonsAndTransit = new DataSet();
         private List<Double> resultWagonsAndTransit = new List<Double>();
         private List<Double> maxDeltaWagonsAndTransit = new List<Double>();
         Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
@@ -31,7 +31,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataWagonsForm dataWagonsForm = new DataWagonsForm();
-            if (wagonsAndTransit != null && wagonsAndTransit.Columns.Count > 2)
+            if (wagonsAndTransit != null && wagonsAndTransit.Tables.Count > 2)
             {
                 dataWagonsForm = new DataWagonsForm(wagonsAndTransit);
             }
@@ -48,7 +48,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                     DataWagonToolStripMenuItem.BackColor = Color.Green;
                     wagonsAndTransit = dataWagonsForm.callData();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
-                    textBoxCountWagons.Text = wagonsAndTransit.Rows.Count.ToString();
+                    textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
                     textBoxWeightWagons.Text = resultWagonsAndTransit[0].ToString();
                 }
                 checkProgressBar();
