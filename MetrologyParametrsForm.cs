@@ -32,11 +32,11 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             try
             {
-                dictionary.Add(labelMax.Text, Convert.ToInt32(textBoxMax.Text));
-                dictionary.Add(labelMaxn.Text, Convert.ToInt32(textBoxMaxn.Text));
-                dictionary.Add(labelMin.Text, Convert.ToInt32(textBoxMin.Text));
-                dictionary.Add(labelMinn.Text, Convert.ToInt32(textBoxMinn.Text));
-                dictionary.Add(labelDe.Text, Convert.ToInt32(textBoxDe.Text));
+                dictionary.Add(labelMax.Name, Convert.ToInt32(textBoxMax.Text));
+                dictionary.Add(labelMaxn.Name, Convert.ToInt32(textBoxMaxn.Text));
+                dictionary.Add(labelMin.Name, Convert.ToInt32(textBoxMin.Text));
+                dictionary.Add(labelMinn.Name, Convert.ToInt32(textBoxMinn.Text));
+                dictionary.Add(labelDe.Name, Convert.ToInt32(textBoxDe.Text));
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex) 

@@ -53,7 +53,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 372);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 370);
             this.tableWagonsAndTransit.TabIndex = 1;
             // 
             // panelData
@@ -160,9 +160,9 @@
             // 
             this.menuStripTransitButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 422);
+            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 420);
             this.menuStripTransitButton.Name = "menuStripTransitButton";
-            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 28);
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 30);
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
             // 

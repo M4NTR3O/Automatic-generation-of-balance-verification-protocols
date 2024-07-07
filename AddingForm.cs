@@ -30,9 +30,9 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void buttonSaveData_Click(object sender, EventArgs e)
         {
-            importantPerson.Add(labelStateTrustee.Text, textBoxStateTrustee.Text);
-            importantPerson.Add(labelRepresentativeOfTensib.Text, textBoxRepresentativeOfTensib.Text);
-            importantPerson.Add(labelCustomerRepresentative.Text, textBoxCustomerRepresentative.Text);
+            importantPerson.Add(labelStateTrustee.Name, textBoxStateTrustee.Text);
+            importantPerson.Add(labelRepresentativeOfTensib.Name, textBoxRepresentativeOfTensib.Text);
+            importantPerson.Add(labelCustomerRepresentative.Name, textBoxCustomerRepresentative.Text);
             if (textBoxStateTrustee.Text != "" && textBoxRepresentativeOfTensib.Text != "" && textBoxCustomerRepresentative.Text != "")
                 DialogResult = DialogResult.OK;
             else

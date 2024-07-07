@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iText.StyledXmlParser.Jsoup.Helper;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,16 +17,50 @@ namespace Automatic_generation_of_balance_verification_protocols
 {
     public partial class CreateProtocolForm : Form
     {
+        private DateTime dateTime;
         private DataSet wagonsAndTransit = new DataSet();
-        private Dictionary<int, double> resultWagonsAndTransit = new Dictionary<int, double>();
-        private Dictionary<int, double> maxDeltaWagonsAndTransit = new Dictionary<int, double>();
-        Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
-        Dictionary<string, string> importantPerson = new Dictionary<string, string>();
-        Dictionary<string, string> infoAbout = new Dictionary<string, string>();
+        private Dictionary<string, double> resultWagonsAndTransit = new Dictionary<string, double>();
+        private Dictionary<string, double> maxDeltaWagonsAndTransit = new Dictionary<string, double>();
+        private Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
+        private Dictionary<string, string> importantPerson = new Dictionary<string, string>();
+        private Dictionary<string, string> infoAbout = new Dictionary<string, string>();
 
         public CreateProtocolForm()
         {
             InitializeComponent();
+        }
+
+        public CreateProtocolForm(string filename)
+        {
+            InitializeComponent();
+            XDocument xDoc = XDocument.Load(filename);
+            dateTime = Convert.ToDateTime(xDoc.Root.Element("Date").Attribute("Date").Value);
+            resultWagonsAndTransit.Clear();
+            foreach(XElement el in xDoc.Root.Element("resultWagonsAndTransit").Elements())
+            {
+                resultWagonsAndTransit.Add(el.Name.LocalName, Convert.ToDouble(el.Value.Replace(".", ",")));
+            }
+            foreach (XElement el in xDoc.Root.Element("maxDeltaWagonsAndTransit").Elements())
+            {
+                maxDeltaWagonsAndTransit.Add(el.Name.LocalName, Convert.ToDouble(el.Value.Replace(".", ",")));
+            }
+            foreach (XElement el in xDoc.Root.Element("parametrsMetrology").Elements())
+            {
+                parametrsMetrology.Add(el.Name.LocalName, Convert.ToInt32(el.Value));
+            }
+            foreach (XElement el in xDoc.Root.Element("importantPerson").Elements())
+            {
+                importantPerson.Add(el.Name.LocalName, el.Value);
+            }
+            foreach (XElement el in xDoc.Root.Element("infoAbout").Elements())
+            {
+                infoAbout.Add(el.Name.LocalName, el.Value);
+            }
+            XDocument tempDoc = new XDocument();
+            tempDoc.Add(xDoc.Root.Element("NewDataSet"));
+            tempDoc.Save($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
+            wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
+            File.Delete($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
         }
 
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,7 +84,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                     wagonsAndTransit = dataWagonsForm.callData();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
                     textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
-                    textBoxWeightWagons.Text = resultWagonsAndTransit[0].ToString();
+                    textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
                 }
                 checkProgressBar();
                 this.Show();
@@ -153,32 +188,41 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void toolStripButtonConvert_Click(object sender, EventArgs e)
         {
-            DateTime dateTime = DateTime.Now;
+            if (dateTime.Year == 0001)
+            {
+                dateTime = DateTime.Now;
+            }
             checkDirectory();
             XDocument xDoc = new XDocument();
             XElement container = new XElement("container");
             XElement xDate = new XElement("Date");
-            XAttribute xAttribute = new XAttribute("Date", dateTime);
+            XAttribute xAttribute = new XAttribute("Date", dateTime.ToString());
             xDate.Add(xAttribute);
-            XElement xwagonsAndTransit = new XElement("wagonsAndTransit");
-            xAttribute = new XAttribute("DataSet", wagonsAndTransit.GetXml());
-            xwagonsAndTransit.Add(xAttribute);
-            XElement xresultWagonsAndTransit = new XElement("resultWagonsAndTransit", resultWagonsAndTransit);
-            xAttribute = new XAttribute("dictionary", resultWagonsAndTransit);
-            xresultWagonsAndTransit.Add(xAttribute);
-            XElement xmaxDeltaWagonsAndTransit = new XElement("maxDeltaWagonsAndTransit", maxDeltaWagonsAndTransit);
-            xAttribute = new XAttribute("dictionary", maxDeltaWagonsAndTransit);
-            xmaxDeltaWagonsAndTransit.Add(xAttribute);
-            XElement xparametrsMetrology = new XElement("parametrsMetrology", parametrsMetrology);
-            xAttribute = new XAttribute("dictionary", parametrsMetrology);
-            xparametrsMetrology.Add(xAttribute);
-            XElement ximportantPerson = new XElement("importantPerson", importantPerson);
-            xAttribute = new XAttribute("dictionary", importantPerson);
-            ximportantPerson.Add(xAttribute);
-            XElement xinfoAbout = new XElement("infoAbout", infoAbout);
-            xAttribute = new XAttribute("dictionary", infoAbout);
-            xinfoAbout.Add(xAttribute);
-            container.Add(xwagonsAndTransit);
+            wagonsAndTransit.WriteXml($"Протоколы/Протокол_{printTime(dateTime)}.xml");
+            xDoc = XDocument.Load($"Протоколы/Протокол_{printTime(dateTime)}.xml");
+            XElement newDataSet = new XElement("NewDataSet");
+            foreach(XElement el in xDoc.Root.Elements())
+            {
+                newDataSet.Add(el);
+            }
+            container.Add(newDataSet);
+            xDoc.Root.Remove();
+            XElement xresultWagonsAndTransit = new XElement("resultWagonsAndTransit", 
+                from keyValue in resultWagonsAndTransit
+                select new XElement(keyValue.Key, keyValue.Value));
+            XElement xmaxDeltaWagonsAndTransit = new XElement("maxDeltaWagonsAndTransit", 
+                from keyValue in maxDeltaWagonsAndTransit
+                select new XElement(keyValue.Key, keyValue.Value));
+            XElement xparametrsMetrology = new XElement("parametrsMetrology",
+                from keyValue in parametrsMetrology
+                select new XElement(keyValue.Key, keyValue.Value));
+            XElement ximportantPerson = new XElement("importantPerson", 
+                from keyValue in importantPerson 
+                select new XElement(keyValue.Key, keyValue.Value));
+            XElement xinfoAbout = new XElement("infoAbout", 
+                from keyValue in infoAbout 
+                select new XElement(keyValue.Key, keyValue.Value));
+            container.Add(xDate);
             container.Add(xresultWagonsAndTransit);
             container.Add(xmaxDeltaWagonsAndTransit);
             container.Add(xparametrsMetrology);
