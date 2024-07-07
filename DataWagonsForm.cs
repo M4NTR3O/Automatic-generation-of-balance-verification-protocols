@@ -255,36 +255,36 @@ namespace Automatic_generation_of_balance_verification_protocols
             return WagonsAndTransinDataSet;
         }
 
-        public (Dictionary<int, double>, Dictionary<int, double>) calculateResult()
+        public (Dictionary<string, double>, Dictionary<string, double>) calculateResult()
         {
-            Dictionary<int, double> result = new Dictionary<int, double>();
-            Dictionary<int, double> maxDelta = new Dictionary<int, double>();
+            Dictionary<string, double> result = new Dictionary<string, double>();
+            Dictionary<string, double> maxDelta = new Dictionary<string, double>();
 
             for (int i = 0; i < WagonsAndTransinDataSet.Tables.Count; i++)
             {
                 if (i == 0)
                 {
-                    result.Add(i, 0);
+                    result.Add("i" + i.ToString(), 0);
                 }
-                result.Add(i * 3 + 1, 0);
-                result.Add(i * 3 + 2, 0);
-                result.Add(i * 3 + 3, 0);
-                maxDelta.Add(i * 2, 0);
-                maxDelta.Add(i * 2 + 1, 0);
+                result.Add("i" + (i * 3 + 1).ToString(), 0);
+                result.Add("i" + (i * 3 + 2).ToString(), 0);
+                result.Add("i" + (i * 3 + 3).ToString(), 0);
+                maxDelta.Add("i" + (i * 2).ToString(), 0);
+                maxDelta.Add("i" + (i * 2 + 1).ToString(), 0);
                 for (int j = 0; j < WagonsAndTransinDataSet.Tables[0].Rows.Count; j++)
                 {
                     if (i == 0)
                     {
-                        result[0] += Convert.ToInt32(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[1]);
+                        result["i" + 0.ToString()] += Convert.ToInt32(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[1]);
                     }
-                    result[1 + i * 3] += Convert.ToInt32(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[2]);
-                    if (Math.Abs(maxDelta[i * 2]) < Math.Abs(Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[3])))
+                    result["i" + (1 + i * 3).ToString()] += Convert.ToInt32(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[2]);
+                    if (Math.Abs(maxDelta["i" + (i * 2).ToString()]) < Math.Abs(Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[3])))
                     {
-                        maxDelta[i * 2] = Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[3]);
+                        maxDelta["i" + (i * 2).ToString()] = Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[3]);
                     }
-                    if (Math.Abs(maxDelta[i * 2 + 1]) < Math.Abs(Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[4])))
+                    if (Math.Abs(maxDelta["i" + (i * 2 + 1).ToString()]) < Math.Abs(Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[4])))
                     {
-                        maxDelta[i * 2 + 1] = Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[4]);
+                        maxDelta["i" + (i * 2 + 1).ToString()] = Convert.ToDouble(WagonsAndTransinDataSet.Tables[i].Rows[j].ItemArray[4]);
                     }
                 }
             }
@@ -293,11 +293,11 @@ namespace Automatic_generation_of_balance_verification_protocols
             {
                 if (i % 3 == 2)
                 {
-                    result[i] = Math.Round(result[i - 1] - result[0], 3);
+                    result["i" + i.ToString()] = Math.Round(result["i" + (i - 1).ToString()] - result["i0"], 3);
                 }
                 else if (i % 3 == 0)
                 {
-                    result[i] = Math.Round((result[i - 2] * 100) / (double)result[0] - 100, 3);
+                    result["i" + i.ToString()] = Math.Round((result["i" + (i - 2).ToString()] * 100) / (double)result["i0"] - 100, 3);
                     i++;
                 }
             }
