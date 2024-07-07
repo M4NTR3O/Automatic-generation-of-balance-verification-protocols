@@ -30,6 +30,7 @@
         {
             this.menuStripInformation = new System.Windows.Forms.MenuStrip();
             this.createProtocolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьПротоколToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripInformation.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -37,7 +38,8 @@
             // 
             this.menuStripInformation.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createProtocolToolStripMenuItem});
+            this.createProtocolToolStripMenuItem,
+            this.открытьПротоколToolStripMenuItem});
             this.menuStripInformation.Location = new System.Drawing.Point(0, 0);
             this.menuStripInformation.Name = "menuStripInformation";
             this.menuStripInformation.Size = new System.Drawing.Size(800, 28);
@@ -50,6 +52,13 @@
             this.createProtocolToolStripMenuItem.Size = new System.Drawing.Size(198, 24);
             this.createProtocolToolStripMenuItem.Text = "Создать новый протокол";
             this.createProtocolToolStripMenuItem.Click += new System.EventHandler(this.createProtocolToolStripMenuItem_Click);
+            // 
+            // открытьПротоколToolStripMenuItem
+            // 
+            this.открытьПротоколToolStripMenuItem.Name = "открытьПротоколToolStripMenuItem";
+            this.открытьПротоколToolStripMenuItem.Size = new System.Drawing.Size(151, 24);
+            this.открытьПротоколToolStripMenuItem.Text = "Открыть протокол";
+            this.открытьПротоколToolStripMenuItem.Click += new System.EventHandler(this.открытьПротоколToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -72,6 +81,7 @@
 
         private System.Windows.Forms.MenuStrip menuStripInformation;
         private System.Windows.Forms.ToolStripMenuItem createProtocolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem открытьПротоколToolStripMenuItem;
     }
 }
 

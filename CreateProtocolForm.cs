@@ -28,6 +28,11 @@ namespace Automatic_generation_of_balance_verification_protocols
             InitializeComponent();
         }
 
+        public CreateProtocolForm(string filename)
+        {
+            InitializeComponent();
+        }
+
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataWagonsForm dataWagonsForm = new DataWagonsForm();
@@ -158,7 +163,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             XDocument xDoc = new XDocument();
             XElement container = new XElement("container");
             XElement xDate = new XElement("Date");
-            XAttribute xAttribute = new XAttribute("Date", dateTime);
+            XAttribute xAttribute = new XAttribute("Date", dateTime.ToString("dd/MM/yyyy"));
             xDate.Add(xAttribute);
             XElement xwagonsAndTransit = new XElement("wagonsAndTransit");
             xAttribute = new XAttribute("DataSet", wagonsAndTransit.GetXml());
@@ -178,6 +183,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             XElement xinfoAbout = new XElement("infoAbout", infoAbout);
             xAttribute = new XAttribute("dictionary", infoAbout);
             xinfoAbout.Add(xAttribute);
+            container.Add(xDate);
             container.Add(xwagonsAndTransit);
             container.Add(xresultWagonsAndTransit);
             container.Add(xmaxDeltaWagonsAndTransit);
