@@ -17,8 +17,8 @@ namespace Automatic_generation_of_balance_verification_protocols
     public partial class CreateProtocolForm : Form
     {
         private DataSet wagonsAndTransit = new DataSet();
-        private List<Double> resultWagonsAndTransit = new List<Double>();
-        private List<Double> maxDeltaWagonsAndTransit = new List<Double>();
+        private Dictionary<int, double> resultWagonsAndTransit = new Dictionary<int, double>();
+        private Dictionary<int, double> maxDeltaWagonsAndTransit = new Dictionary<int, double>();
         Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
         Dictionary<string, string> importantPerson = new Dictionary<string, string>();
         Dictionary<string, string> infoAbout = new Dictionary<string, string>();
@@ -153,10 +153,15 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void toolStripButtonConvert_Click(object sender, EventArgs e)
         {
+            DateTime dateTime = DateTime.Now;
+            checkDirectory();
             XDocument xDoc = new XDocument();
             XElement container = new XElement("container");
+            XElement xDate = new XElement("Date");
+            XAttribute xAttribute = new XAttribute("Date", dateTime);
+            xDate.Add(xAttribute);
             XElement xwagonsAndTransit = new XElement("wagonsAndTransit");
-            XAttribute xAttribute = new XAttribute("DataSource", wagonsAndTransit);
+            xAttribute = new XAttribute("DataSet", wagonsAndTransit.GetXml());
             xwagonsAndTransit.Add(xAttribute);
             XElement xresultWagonsAndTransit = new XElement("resultWagonsAndTransit", resultWagonsAndTransit);
             xAttribute = new XAttribute("dictionary", resultWagonsAndTransit);
@@ -180,7 +185,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             container.Add(ximportantPerson);
             container.Add(xinfoAbout);
             xDoc.Add(container);
-            xDoc.Save($"Protocol_{printTime(DateTime.Now)}.xml");
+            xDoc.Save($"Протоколы/Протокол_{printTime(dateTime)}.xml");
             MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
             DialogResult = DialogResult.OK;
         }
@@ -189,6 +194,13 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             string result =  $"{dateTime.Day.ToString("D2")}-{dateTime.Month.ToString("D2")}-{dateTime.Year.ToString("D4")}_{dateTime.Hour.ToString("D2")}-{dateTime.Minute.ToString("D2")}-{dateTime.Second.ToString("D2")}";
             return result;
+        }
+        private void checkDirectory()
+        {
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "Протоколы")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Протоколы"));
+            }
         }
     }
 }
