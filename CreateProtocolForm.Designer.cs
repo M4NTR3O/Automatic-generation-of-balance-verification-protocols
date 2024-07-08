@@ -122,6 +122,7 @@
             // toolStripButtonConvert
             // 
             this.toolStripButtonConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButtonConvert.Enabled = false;
             this.toolStripButtonConvert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonConvert.Name = "toolStripButtonConvert";
             this.toolStripButtonConvert.Size = new System.Drawing.Size(188, 28);
@@ -142,6 +143,7 @@
             this.toolStripButtonPreview.Name = "toolStripButtonPreview";
             this.toolStripButtonPreview.Size = new System.Drawing.Size(196, 28);
             this.toolStripButtonPreview.Text = "Предпросмотр протокола";
+            this.toolStripButtonPreview.Click += new System.EventHandler(this.toolStripButtonPreview_Click);
             // 
             // toolStripSeparator2
             // 

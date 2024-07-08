@@ -7,11 +7,18 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using iText.Html2pdf;
+using iText.Kernel.Pdf;
+using iText.Kernel.Utils;
+using Westwind.WebView.HtmlToPdf;
+using System.Web.UI.HtmlControls;
+using Westwind.Utilities;
 
 namespace Automatic_generation_of_balance_verification_protocols
 {
@@ -58,11 +65,12 @@ namespace Automatic_generation_of_balance_verification_protocols
             }
             XDocument tempDoc = new XDocument();
             tempDoc.Add(xDoc.Root.Element("NewDataSet"));
-            tempDoc.Save($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
-            wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
-            File.Delete($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
+            tempDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
+            wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
+            File.Delete($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             toolStripProgressBar.Value = 95;
             FillForm();
+            checkProgressBar();
         }
 
         private void FillForm()
@@ -220,8 +228,8 @@ namespace Automatic_generation_of_balance_verification_protocols
             XElement xDate = new XElement("Date");
             XAttribute xAttribute = new XAttribute("Date", dateTime.ToString());
             xDate.Add(xAttribute);
-            wagonsAndTransit.WriteXml($"Протоколы/Протокол_{printTime(dateTime)}.xml");
-            xDoc = XDocument.Load($"Протоколы/Протокол_{printTime(dateTime)}.xml");
+            wagonsAndTransit.WriteXml($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
+            xDoc = XDocument.Load($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
             XElement newDataSet = new XElement("NewDataSet");
             foreach(XElement el in xDoc.Root.Elements())
             {
@@ -251,22 +259,57 @@ namespace Automatic_generation_of_balance_verification_protocols
             container.Add(ximportantPerson);
             container.Add(xinfoAbout);
             xDoc.Add(container);
-            xDoc.Save($"Протоколы/Протокол_{printTime(dateTime)}.xml");
+            xDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
             MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
             DialogResult = DialogResult.OK;
         }
 
-        string printTime(DateTime dateTime)
+        string printFullTime(DateTime dateTime)
         {
             string result =  $"{dateTime.Day.ToString("D2")}-{dateTime.Month.ToString("D2")}-{dateTime.Year.ToString("D4")}_{dateTime.Hour.ToString("D2")}-{dateTime.Minute.ToString("D2")}-{dateTime.Second.ToString("D2")}";
             return result;
         }
+
+        string printShortTime(DateTime dateTime)
+        {
+            string result = $"{dateTime.ToString("d")}";
+            return result;
+        }
+
         private void checkDirectory()
         {
             if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "Протоколы")))
             {
                 Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Протоколы"));
             }
+        }
+
+        private async void HTML2PDF()
+        {
+            var file = Path.GetFullPath("./Протоколы/HTMLPage.html");
+            string directory = Directory.GetCurrentDirectory();
+            string filepath = directory + "/Протоколы/HTMLPage.pdf";
+
+            File.Delete(filepath);
+
+            var host = new HtmlToPdfHost();
+
+            var result = await host.PrintToPdfStreamAsync(file);
+
+            
+
+            using (var fstream = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                result.ResultStream.CopyTo(fstream);
+                result.ResultStream.Close(); // Close returned stream!
+            }
+
+            ShellUtils.OpenUrl(filepath);
+        }
+
+        private void toolStripButtonPreview_Click(object sender, EventArgs e)
+        {
+            HTML2PDF();
         }
     }
 }
