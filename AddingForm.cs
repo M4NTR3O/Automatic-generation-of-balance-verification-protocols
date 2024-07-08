@@ -23,9 +23,9 @@ namespace Automatic_generation_of_balance_verification_protocols
         public AddingForm(Dictionary<string, string> dictionary)
         {
             InitializeComponent();
-            textBoxStateTrustee.Text = dictionary[labelStateTrustee.Text];
-            textBoxRepresentativeOfTensib.Text = dictionary[labelRepresentativeOfTensib.Text];
-            textBoxCustomerRepresentative.Text = dictionary[labelCustomerRepresentative.Text];
+            textBoxStateTrustee.Text = dictionary[labelStateTrustee.Name];
+            textBoxRepresentativeOfTensib.Text = dictionary[labelRepresentativeOfTensib.Name];
+            textBoxCustomerRepresentative.Text = dictionary[labelCustomerRepresentative.Name];
         }
 
         private void buttonSaveData_Click(object sender, EventArgs e)

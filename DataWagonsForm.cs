@@ -24,34 +24,12 @@ namespace Automatic_generation_of_balance_verification_protocols
         public DataWagonsForm(DataSet table)
         {
             InitializeComponent();
-            //inputTable(table);
+            if (WagonsAndTransinDataSet != null)
+            {
+                WagonsAndTransinDataSet.Tables.Clear();
+            }
             WagonsAndTransinDataSet = table;
-            numericUpDownWagons.Value = (int)WagonsAndTransinDataSet.Tables[0].Rows.Count;
-            numericUpDownTransit.Value = (int)WagonsAndTransinDataSet.Tables.Count;
-        }
-
-        private void inputTable(DataGridView table)
-        {
-            tableWagonsAndTransit.ColumnCount = table.Columns.Count;
-            tableWagonsAndTransit.RowCount = table.Rows.Count;
-            for (int i = 0; i < tableWagonsAndTransit.Columns.Count; i++)
-            {
-                tableWagonsAndTransit.Columns[i].HeaderText = table.Columns[i].HeaderText;
-                tableWagonsAndTransit.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-                if (i == 0)
-                {
-                    tableWagonsAndTransit.Columns[i].Frozen = true;
-                }
-            }
-            tableWagonsAndTransit.RowHeadersVisible = true;
-            tableWagonsAndTransit.ColumnHeadersVisible = true;
-            for (int i = 0; i < tableWagonsAndTransit.Rows.Count; i++)
-            {
-                for (int j = 0; j < tableWagonsAndTransit.Columns.Count; j++)
-                {
-                    tableWagonsAndTransit.Rows[i].Cells[j].Value = table.Rows[i].Cells[j].Value;
-                }
-            }
+            UpdateDGV();
         }
 
         private void CreateDGV()
@@ -87,6 +65,34 @@ namespace Automatic_generation_of_balance_verification_protocols
             tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
+        private void UpdateDGV()
+        {
+            numericUpDownTransit.Value = WagonsAndTransinDataSet.Tables.Count;
+            numericUpDownWagons.Value = WagonsAndTransinDataSet.Tables[0].Rows.Count;
+            tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[0];
+            tableWagonsAndTransit.RowHeadersVisible = true;
+            tableWagonsAndTransit.ColumnHeadersVisible = true;
+            tableWagonsAndTransit.Columns[0].Frozen = true;
+            tableWagonsAndTransit.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[3].ReadOnly = true;
+            tableWagonsAndTransit.Columns[3].DefaultCellStyle.BackColor = Color.Gray;
+            tableWagonsAndTransit.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+            tableWagonsAndTransit.Columns[4].ReadOnly = true;
+            tableWagonsAndTransit.Columns[4].DefaultCellStyle.BackColor = Color.Gray;
+            tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+            for (int i = 0; i < WagonsAndTransinDataSet.Tables.Count; i++)
+            {
+                menuStripTransitButton.Items.Add($"Проезд №{i + 1}");
+                menuStripTransitButton.Items[i].Click += OnClick_menuStripTransitButtons;
+                if (i == 0)
+                {
+                    menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                }
+            }
+        }
+
         private void OnClick_menuStripTransitButtons(object sender, EventArgs e)
         {
             for (int i = 0; i < menuStripTransitButton.Items.Count; i++)
@@ -100,6 +106,9 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
                     tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[i];
+                    tableWagonsAndTransit.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+                    tableWagonsAndTransit.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+                    tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
                 }
                 else if (menuStripTransitButton.Items[i].BackColor == Color.DarkGray)
                 {

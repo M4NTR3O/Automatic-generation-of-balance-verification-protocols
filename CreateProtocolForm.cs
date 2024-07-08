@@ -61,6 +61,28 @@ namespace Automatic_generation_of_balance_verification_protocols
             tempDoc.Save($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
             wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
             File.Delete($"Протоколы/Протокол_{printTime(dateTime)}-temp.xml");
+            toolStripProgressBar.Value = 95;
+            FillForm();
+        }
+
+        private void FillForm()
+        {
+            DataWagonToolStripMenuItem.BackColor = Color.Green;
+            MetrologyToolStripMenuItem.BackColor = Color.Green;
+            if (importantPerson.Values.All(s => s.Length > 0))
+            {
+                toolStripProgressBar.Value += 5;
+                AddingToolStripMenuItem.BackColor = Color.Green;
+            }
+            textBoxNameProtocol.Text = infoAbout[textBoxNameProtocol.Name];
+            textBoxTypeMeasuringTool.Text = infoAbout[textBoxTypeMeasuringTool.Name];
+            textBoxWagonGOST.Text = infoAbout[textBoxWagonGOST.Name];
+            textBoxStructureGOST.Text = infoAbout[textBoxStructureGOST.Name];
+            textBoxVerificationTools.Text = infoAbout[textBoxVerificationTools.Name];
+            textBoxOwnerSI.Text = infoAbout[textBoxOwnerSI.Name];
+            textBoxCountWagonsTranslit.Text = infoAbout[textBoxCountWagonsTranslit.Name];
+            textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
+            textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
         }
 
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)

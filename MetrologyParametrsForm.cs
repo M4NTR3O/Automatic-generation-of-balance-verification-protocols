@@ -21,11 +21,11 @@ namespace Automatic_generation_of_balance_verification_protocols
         public MetrologyParametrsForm(Dictionary<string, int> parametrs)
         {
             InitializeComponent();
-            textBoxMax.Text = parametrs[labelMax.Text].ToString();
-            textBoxMaxn.Text = parametrs[labelMaxn.Text].ToString();
-            textBoxMin.Text = parametrs[labelMin.Text].ToString();
-            textBoxMinn.Text = parametrs[labelMinn.Text].ToString();
-            textBoxDe.Text = parametrs[labelDe.Text].ToString();
+            textBoxMax.Text = parametrs[labelMax.Name].ToString();
+            textBoxMaxn.Text = parametrs[labelMaxn.Name].ToString();
+            textBoxMin.Text = parametrs[labelMin.Name].ToString();
+            textBoxMinn.Text = parametrs[labelMinn.Name].ToString();
+            textBoxDe.Text = parametrs[labelDe.Name].ToString();
         }
 
         private void buttonSaveData_Click(object sender, EventArgs e)
