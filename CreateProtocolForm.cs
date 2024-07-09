@@ -7,18 +7,15 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using iText.Html2pdf;
-using iText.Kernel.Pdf;
-using iText.Kernel.Utils;
 using Westwind.WebView.HtmlToPdf;
 using System.Web.UI.HtmlControls;
 using Westwind.Utilities;
+using iText.Signatures;
+using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
+using Aspose.Html;
+using System.Threading.Tasks;
 
 namespace Automatic_generation_of_balance_verification_protocols
 {
@@ -286,17 +283,13 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private async void HTML2PDF()
         {
-            var file = Path.GetFullPath("./Протоколы/HTMLPage.html");
+            var file = Path.GetFullPath("Pattern.html");
             string directory = Directory.GetCurrentDirectory();
             string filepath = directory + "/Протоколы/HTMLPage.pdf";
-
             File.Delete(filepath);
-
             var host = new HtmlToPdfHost();
 
             var result = await host.PrintToPdfStreamAsync(file);
-
-            
 
             using (var fstream = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Write))
             {
@@ -307,9 +300,17 @@ namespace Automatic_generation_of_balance_verification_protocols
             ShellUtils.OpenUrl(filepath);
         }
 
+        private void dataToHTML()
+        {
+            string documentPath = Path.GetFullPath("Pattern.html");
+
+            
+        }
+
         private void toolStripButtonPreview_Click(object sender, EventArgs e)
         {
-            HTML2PDF();
+            dataToHTML();
+            //HTML2PDF();
         }
     }
 }
