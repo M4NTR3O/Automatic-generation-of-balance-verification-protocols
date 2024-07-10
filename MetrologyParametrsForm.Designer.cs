@@ -158,17 +158,16 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label labelMax;
-        private System.Windows.Forms.Label labelMaxn;
-        private System.Windows.Forms.Label labelMin;
-        private System.Windows.Forms.Label labelMinn;
-        private System.Windows.Forms.Label labelDe;
         private System.Windows.Forms.TextBox textBoxMax;
         private System.Windows.Forms.TextBox textBoxMaxn;
         private System.Windows.Forms.TextBox textBoxMin;
         private System.Windows.Forms.TextBox textBoxMinn;
         private System.Windows.Forms.TextBox textBoxDe;
         private System.Windows.Forms.Button buttonSaveData;
+        internal System.Windows.Forms.Label labelMax;
+        internal System.Windows.Forms.Label labelMaxn;
+        internal System.Windows.Forms.Label labelMin;
+        internal System.Windows.Forms.Label labelMinn;
+        internal System.Windows.Forms.Label labelDe;
     }
 }

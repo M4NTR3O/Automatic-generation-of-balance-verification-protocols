@@ -16,6 +16,7 @@ using iText.Signatures;
 using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
 using Aspose.Html;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace Automatic_generation_of_balance_verification_protocols
 {
@@ -302,9 +303,43 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void dataToHTML()
         {
-            string documentPath = Path.GetFullPath("Pattern.html");
+            string documentPath = @"D:\Проекты\Automatic generation of balance verification protocols\bin\Debug\Pattern.html";
 
-            
+            // Создать экземпляр HTML-документа
+            var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc.Load(documentPath);
+            //Название протокола поверки
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'nameProtocol')]").InnerHtml = labelNameProtocol.Text + textBoxNameProtocol.Text;
+            //Дата протокола поверки
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'date')]").InnerHtml = printShortTime(dateTime);
+
+
+
+
+            //Наименование и тип средств измерений
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'typeMeasuringTool')]").InnerHtml = "<strong>" + labelTypeMeasuringTool.Text + "</strong> " + textBoxTypeMeasuringTool.Text;
+            //Метрологические параметры
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = "<strong>" + MetrologyToolStripMenuItem.Text +"</strong> ";
+            foreach (var item in parametrsMetrology)
+            {
+                MetrologyParametrsForm metrology = new MetrologyParametrsForm();
+                
+                htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml += metrology.Controls.Find(item.Key, true)[0].Text + " " + item.Value + ", ";
+            }
+            //Класс вагона
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classWagon')]").InnerHtml = infoAbout[textBoxWagonGOST.Name];
+            //Класс состава
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classСomposition')]").InnerHtml = infoAbout[textBoxStructureGOST.Name];
+            //Средства поверки Проверить!!!
+            //htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} {infoAbout[textBoxCountWagons.Name]}({infoAbout[textBoxCountWagonsTranslit.Name]}) <strong>{textBoxWeightWagons.Text}</strong> {labelKg.Text}";
+            //Наименование собственника
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'ownerSi')]").InnerHtml = $"<strong>{labelOwnerSi.Text}</strong> {textBoxOwnerSI.Text}";
+            //Приложения
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'stateTrustee')]").InnerHtml = (importantPerson["labelStateTrustee"].Length > 0 ? importantPerson["labelStateTrustee"] : "____________________") + @" \_____________\";
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'representativeOfTensib')]").InnerHtml = (importantPerson["labelRepresentativeOfTensib"].Length > 0 ? importantPerson["labelRepresentativeOfTensib"] : "____________________") + @" \_____________\";
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'customerRepresentative')]").InnerHtml = (importantPerson["labelCustomerRepresentative"].Length > 0 ? importantPerson["labelCustomerRepresentative"] : "____________________") + @" \_____________\";
+            //Сохранение шаблона
+            htmlDoc.Save(documentPath);
         }
 
         private void toolStripButtonPreview_Click(object sender, EventArgs e)

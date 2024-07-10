@@ -41,26 +41,25 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.labelNameProtocol = new System.Windows.Forms.Label();
             this.textBoxNameProtocol = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelTypeMeasuringTool = new System.Windows.Forms.Label();
             this.textBoxTypeMeasuringTool = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelClassAccuracy = new System.Windows.Forms.Label();
+            this.labelTransit = new System.Windows.Forms.Label();
             this.textBoxWagonGOST = new System.Windows.Forms.TextBox();
             this.textBoxStructureGOST = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelWagon = new System.Windows.Forms.Label();
+            this.labelVerificationTools = new System.Windows.Forms.Label();
             this.textBoxVerificationTools = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelOwnerSi = new System.Windows.Forms.Label();
             this.textBoxOwnerSI = new System.Windows.Forms.TextBox();
             this.textBoxWeightWagons = new System.Windows.Forms.TextBox();
             this.textBoxCountWagons = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.labelWeightSummary = new System.Windows.Forms.Label();
+            this.labelCountWagons = new System.Windows.Forms.Label();
             this.textBoxCountWagonsTranslit = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.label = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelKg = new System.Windows.Forms.Label();
             this.menuStripRequired.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -74,7 +73,7 @@
             this.AddingToolStripMenuItem});
             this.menuStripRequired.Location = new System.Drawing.Point(0, 0);
             this.menuStripRequired.Name = "menuStripRequired";
-            this.menuStripRequired.Size = new System.Drawing.Size(1009, 28);
+            this.menuStripRequired.Size = new System.Drawing.Size(1009, 30);
             this.menuStripRequired.TabIndex = 0;
             this.menuStripRequired.Text = "menuStrip";
             // 
@@ -82,7 +81,7 @@
             // 
             this.DataWagonToolStripMenuItem.BackColor = System.Drawing.Color.Coral;
             this.DataWagonToolStripMenuItem.Name = "DataWagonToolStripMenuItem";
-            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
             this.DataWagonToolStripMenuItem.Text = "Данные о вагонах и проездах";
             this.DataWagonToolStripMenuItem.Click += new System.EventHandler(this.DataWagonToolStripMenuItem_Click);
             // 
@@ -90,7 +89,7 @@
             // 
             this.MetrologyToolStripMenuItem.BackColor = System.Drawing.Color.Coral;
             this.MetrologyToolStripMenuItem.Name = "MetrologyToolStripMenuItem";
-            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 24);
+            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 26);
             this.MetrologyToolStripMenuItem.Text = "Основные метрологические параметры";
             this.MetrologyToolStripMenuItem.Click += new System.EventHandler(this.MetrologyToolStripMenuItem_Click);
             // 
@@ -98,7 +97,7 @@
             // 
             this.AddingToolStripMenuItem.BackColor = System.Drawing.Color.NavajoWhite;
             this.AddingToolStripMenuItem.Name = "AddingToolStripMenuItem";
-            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
+            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
             this.AddingToolStripMenuItem.Text = "Приложения";
             this.AddingToolStripMenuItem.Click += new System.EventHandler(this.AddingToolStripMenuItem_Click);
             // 
@@ -176,15 +175,15 @@
             this.textBoxNameProtocol.TabIndex = 3;
             this.textBoxNameProtocol.Leave += new System.EventHandler(this.textBox_Leave);
             // 
-            // label1
+            // labelTypeMeasuringTool
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(12, 144);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(324, 16);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Наименование и тип средства измерений:";
+            this.labelTypeMeasuringTool.AutoSize = true;
+            this.labelTypeMeasuringTool.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelTypeMeasuringTool.Location = new System.Drawing.Point(12, 144);
+            this.labelTypeMeasuringTool.Name = "labelTypeMeasuringTool";
+            this.labelTypeMeasuringTool.Size = new System.Drawing.Size(324, 16);
+            this.labelTypeMeasuringTool.TabIndex = 4;
+            this.labelTypeMeasuringTool.Text = "Наименование и тип средства измерений:";
             // 
             // textBoxTypeMeasuringTool
             // 
@@ -196,25 +195,25 @@
             this.textBoxTypeMeasuringTool.TabIndex = 5;
             this.textBoxTypeMeasuringTool.Leave += new System.EventHandler(this.textBox_Leave);
             // 
-            // label2
+            // labelClassAccuracy
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(63, 228);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(273, 16);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Класс точности по ГОСТ 8.647-2015: ";
+            this.labelClassAccuracy.AutoSize = true;
+            this.labelClassAccuracy.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelClassAccuracy.Location = new System.Drawing.Point(63, 228);
+            this.labelClassAccuracy.Name = "labelClassAccuracy";
+            this.labelClassAccuracy.Size = new System.Drawing.Size(273, 16);
+            this.labelClassAccuracy.TabIndex = 6;
+            this.labelClassAccuracy.Text = "Класс точности по ГОСТ 8.647-2015: ";
             // 
-            // label3
+            // labelTransit
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(491, 228);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 16);
-            this.label3.TabIndex = 7;
-            this.label3.Text = ", состав ";
+            this.labelTransit.AutoSize = true;
+            this.labelTransit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelTransit.Location = new System.Drawing.Point(491, 228);
+            this.labelTransit.Name = "labelTransit";
+            this.labelTransit.Size = new System.Drawing.Size(61, 16);
+            this.labelTransit.TabIndex = 7;
+            this.labelTransit.Text = ", состав ";
             // 
             // textBoxWagonGOST
             // 
@@ -234,25 +233,25 @@
             this.textBoxStructureGOST.TabIndex = 9;
             this.textBoxStructureGOST.Leave += new System.EventHandler(this.textBox_Leave);
             // 
-            // label4
+            // labelWagon
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(391, 228);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 16);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "вагон ";
+            this.labelWagon.AutoSize = true;
+            this.labelWagon.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelWagon.Location = new System.Drawing.Point(391, 228);
+            this.labelWagon.Name = "labelWagon";
+            this.labelWagon.Size = new System.Drawing.Size(48, 16);
+            this.labelWagon.TabIndex = 10;
+            this.labelWagon.Text = "вагон ";
             // 
-            // label5
+            // labelVerificationTools
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(188, 278);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(148, 16);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Средства поверки:";
+            this.labelVerificationTools.AutoSize = true;
+            this.labelVerificationTools.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelVerificationTools.Location = new System.Drawing.Point(188, 278);
+            this.labelVerificationTools.Name = "labelVerificationTools";
+            this.labelVerificationTools.Size = new System.Drawing.Size(148, 16);
+            this.labelVerificationTools.TabIndex = 11;
+            this.labelVerificationTools.Text = "Средства поверки:";
             // 
             // textBoxVerificationTools
             // 
@@ -264,15 +263,15 @@
             this.textBoxVerificationTools.TabIndex = 12;
             this.textBoxVerificationTools.Leave += new System.EventHandler(this.textBox_Leave);
             // 
-            // label6
+            // labelOwnerSi
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(81, 427);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(255, 16);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Наименование собственника СИ:";
+            this.labelOwnerSi.AutoSize = true;
+            this.labelOwnerSi.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelOwnerSi.Location = new System.Drawing.Point(81, 427);
+            this.labelOwnerSi.Name = "labelOwnerSi";
+            this.labelOwnerSi.Size = new System.Drawing.Size(255, 16);
+            this.labelOwnerSi.TabIndex = 13;
+            this.labelOwnerSi.Text = "Наименование собственника СИ:";
             // 
             // textBoxOwnerSI
             // 
@@ -304,25 +303,25 @@
             this.textBoxCountWagons.TabIndex = 17;
             this.textBoxCountWagons.TabStop = false;
             // 
-            // label7
+            // labelWeightSummary
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label7.Location = new System.Drawing.Point(397, 368);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(155, 16);
-            this.label7.TabIndex = 16;
-            this.label7.Text = "вагонов общей массой";
+            this.labelWeightSummary.AutoSize = true;
+            this.labelWeightSummary.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelWeightSummary.Location = new System.Drawing.Point(397, 368);
+            this.labelWeightSummary.Name = "labelWeightSummary";
+            this.labelWeightSummary.Size = new System.Drawing.Size(155, 16);
+            this.labelWeightSummary.TabIndex = 16;
+            this.labelWeightSummary.Text = "вагонов общей массой";
             // 
-            // label8
+            // labelCountWagons
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(74, 368);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(73, 16);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Состав из";
+            this.labelCountWagons.AutoSize = true;
+            this.labelCountWagons.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelCountWagons.Location = new System.Drawing.Point(74, 368);
+            this.labelCountWagons.Name = "labelCountWagons";
+            this.labelCountWagons.Size = new System.Drawing.Size(73, 16);
+            this.labelCountWagons.TabIndex = 15;
+            this.labelCountWagons.Text = "Состав из";
             // 
             // textBoxCountWagonsTranslit
             // 
@@ -333,70 +332,60 @@
             this.textBoxCountWagonsTranslit.TabIndex = 13;
             this.textBoxCountWagonsTranslit.Leave += new System.EventHandler(this.textBox_Leave);
             // 
-            // label9
+            // label
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(206, 368);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(11, 16);
-            this.label9.TabIndex = 20;
-            this.label9.Text = "(";
+            this.label.AutoSize = true;
+            this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label.Location = new System.Drawing.Point(206, 368);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(11, 16);
+            this.label.TabIndex = 20;
+            this.label.Text = "(";
             // 
-            // label10
+            // label1
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(380, 368);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(11, 16);
-            this.label10.TabIndex = 21;
-            this.label10.Text = ")";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(380, 368);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(11, 16);
+            this.label1.TabIndex = 21;
+            this.label1.Text = ")";
             // 
-            // label11
+            // labelKg
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(669, 368);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(81, 16);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "килограмм.";
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Location = new System.Drawing.Point(30, 88);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(528, 421);
-            this.webBrowser1.TabIndex = 23;
-            this.webBrowser1.Visible = false;
+            this.labelKg.AutoSize = true;
+            this.labelKg.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelKg.Location = new System.Drawing.Point(669, 368);
+            this.labelKg.Name = "labelKg";
+            this.labelKg.Size = new System.Drawing.Size(81, 16);
+            this.labelKg.TabIndex = 22;
+            this.labelKg.Text = "килограмм.";
             // 
             // CreateProtocolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1009, 564);
-            this.Controls.Add(this.webBrowser1);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
+            this.Controls.Add(this.labelKg);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label);
             this.Controls.Add(this.textBoxCountWagonsTranslit);
             this.Controls.Add(this.textBoxWeightWagons);
             this.Controls.Add(this.textBoxCountWagons);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.labelWeightSummary);
+            this.Controls.Add(this.labelCountWagons);
             this.Controls.Add(this.textBoxOwnerSI);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.labelOwnerSi);
             this.Controls.Add(this.textBoxVerificationTools);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.labelVerificationTools);
+            this.Controls.Add(this.labelWagon);
             this.Controls.Add(this.textBoxStructureGOST);
             this.Controls.Add(this.textBoxWagonGOST);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelTransit);
+            this.Controls.Add(this.labelClassAccuracy);
             this.Controls.Add(this.textBoxTypeMeasuringTool);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelTypeMeasuringTool);
             this.Controls.Add(this.textBoxNameProtocol);
             this.Controls.Add(this.labelNameProtocol);
             this.Controls.Add(this.toolStrip1);
@@ -428,25 +417,24 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.Windows.Forms.Label labelNameProtocol;
         private System.Windows.Forms.TextBox textBoxNameProtocol;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelTypeMeasuringTool;
         private System.Windows.Forms.TextBox textBoxTypeMeasuringTool;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelClassAccuracy;
+        private System.Windows.Forms.Label labelTransit;
         private System.Windows.Forms.TextBox textBoxWagonGOST;
         private System.Windows.Forms.TextBox textBoxStructureGOST;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelWagon;
+        private System.Windows.Forms.Label labelVerificationTools;
         private System.Windows.Forms.TextBox textBoxVerificationTools;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelOwnerSi;
         private System.Windows.Forms.TextBox textBoxOwnerSI;
         private System.Windows.Forms.TextBox textBoxWeightWagons;
         private System.Windows.Forms.TextBox textBoxCountWagons;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelWeightSummary;
+        private System.Windows.Forms.Label labelCountWagons;
         private System.Windows.Forms.TextBox textBoxCountWagonsTranslit;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelKg;
     }
 }
