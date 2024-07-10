@@ -331,7 +331,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             //Класс состава
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classСomposition')]").InnerHtml = infoAbout[textBoxStructureGOST.Name];
             //Средства поверки Проверить!!!
-            //htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} {infoAbout[textBoxCountWagons.Name]}({infoAbout[textBoxCountWagonsTranslit.Name]}) <strong>{textBoxWeightWagons.Text}</strong> {labelKg.Text}";
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong>({infoAbout[textBoxCountWagonsTranslit.Name]}) <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
             //Наименование собственника
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'ownerSi')]").InnerHtml = $"<strong>{labelOwnerSi.Text}</strong> {textBoxOwnerSI.Text}";
             //Приложения
