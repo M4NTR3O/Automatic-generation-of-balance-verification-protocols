@@ -258,6 +258,9 @@ namespace Automatic_generation_of_balance_verification_protocols
             container.Add(xinfoAbout);
             xDoc.Add(container);
             xDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
+            dataToHTML();
+            HTML2PDF();
+
             MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
             DialogResult = DialogResult.OK;
         }
@@ -284,9 +287,9 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private async void HTML2PDF()
         {
-            var file = Path.GetFullPath("Pattern.html");
+            var file = Path.GetFullPath($"Протоколы/Протокол_{printFullTime(dateTime)}.html");
             string directory = Directory.GetCurrentDirectory();
-            string filepath = directory + "/Протоколы/HTMLPage.pdf";
+            string filepath = directory + $"/Протоколы/Протокол_{printFullTime(dateTime)}.pdf";
             File.Delete(filepath);
             var host = new HtmlToPdfHost();
 
@@ -298,12 +301,14 @@ namespace Automatic_generation_of_balance_verification_protocols
                 result.ResultStream.Close(); // Close returned stream!
             }
 
+            
+
             ShellUtils.OpenUrl(filepath);
         }
 
         private void dataToHTML()
         {
-            string documentPath = @"D:\Проекты\Automatic generation of balance verification protocols\bin\Debug\Pattern.html";
+            string documentPath = Path.GetFullPath("Pattern.html");
 
             // Создать экземпляр HTML-документа
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
@@ -358,7 +363,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 var page = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
                 var tables = page.SelectSingleNode($"//div[contains(@id, 'tables')]");
 
-                for (int i = 0; i < wagonsAndTransit.Tables.Count; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     HtmlNode table;
                     if (i % wagonsAndTransit.Tables.Count < 3)
@@ -370,60 +375,86 @@ namespace Automatic_generation_of_balance_verification_protocols
                         table = tables.SelectSingleNode($"//div/div/table[contains(@id, 'tableCells2')]");
                     }
 
-                    table.SelectSingleNode($"//th[contains(@id, 'transit{(i % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}";
-
-                    for(int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
+                    if (i < wagonsAndTransit.Tables.Count)
                     {
-                        HtmlNode row;
-                        if (j != 0 && (i % 3) == 0)
+                        table.SelectSingleNode($"//th[contains(@id, 'transit{(i % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}";
+
+                        for (int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
                         {
-                            var newRowHtml = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon1')]").InnerHtml;
-                            var newRow = HtmlNode.CreateNode($"<tr class=\"table_cells10\" id=\"rowWagon{j + 1}\">" + newRowHtml + "</tr>");
-                            table.AppendChild(newRow);
+                            HtmlNode row;
+                            if (j != 0 && (i % 3) == 0)
+                            {
+                                var newRowHtml = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon1')]").InnerHtml;
+                                var newRow = HtmlNode.CreateNode($"<tr class=\"table_cells10\" id=\"rowWagon{j + 1}\">" + newRowHtml + "</tr>");
+                                table.AppendChild(newRow);
+                            }
+                            row = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon{j + 1}')]");
+                            if (i % 3 == 0)
+                            {
+                                row.SelectSingleNode("//th[contains(@id, 'numberWagon')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[0].ToString();
+                                row.SelectSingleNode("//th[contains(@id, 'WeightStatic')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[1].ToString();
+                            }
+                            row.SelectSingleNode($"//th[contains(@id, 'rowWeightTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[2].ToString();
+                            row.SelectSingleNode($"//th[contains(@id, 'rowDeltAabsTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[3].ToString();
+                            row.SelectSingleNode($"//th[contains(@id, 'rowDeltaRelativeTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[4].ToString();
                         }
-                        row = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon{j + 1}')]");
+                        HtmlNode emptyRow = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon1')]").Clone();
+                        emptyRow.Attributes["id"].Value = $"";
+                        emptyRow.InnerHtml = "<tr><th></th></tr>";
+                        table.AppendChild(emptyRow);
+                        HtmlNode score;
+                        HtmlNode delta;
                         if (i % 3 == 0)
                         {
-                            row.SelectSingleNode("//th[contains(@id, 'numberWagon')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[0].ToString();
-                            row.SelectSingleNode("//th[contains(@id, 'WeightStatic')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[1].ToString();
+                            score = table.SelectSingleNode("//tr[contains(@id, 'Score')]").Clone();
+                            table.RemoveChild(table.SelectSingleNode("//tr[contains(@id, 'Score')]"));
+                            delta = table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]").Clone();
+                            table.RemoveChild(table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]"));
+                            table.AppendChild(score);
+                            table.AppendChild(delta);
                         }
-                        var cell1 = row.SelectSingleNode($"//th[contains(@id, 'rowWeightTransit{(i % 3) + 1}')]");
-                        var cell2 = row.SelectSingleNode($"//th[contains(@id, 'rowDeltAabsTransit{(i % 3) + 1}')]");
-                        var cell3 = row.SelectSingleNode($"//th[contains(@id, 'rowDeltaRelativeTransit{(i % 3) + 1}')]");
-                        row.SelectSingleNode($"//th[contains(@id, 'rowWeightTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[2].ToString();
-                        row.SelectSingleNode($"//th[contains(@id, 'rowDeltAabsTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[3].ToString();
-                        row.SelectSingleNode($"//th[contains(@id, 'rowDeltaRelativeTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[4].ToString();
-                    }
-                    HtmlNode emptyRow = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon1')]").Clone();
-                    emptyRow.Attributes["id"].Value = $"";
-                    emptyRow.InnerHtml = "<tr><th></th></tr>";
-                    table.AppendChild( emptyRow );
-                    HtmlNode score;
-                    HtmlNode delta;
-                    if (i % 3 == 0)
-                    {
-                        score = table.SelectSingleNode("//tr[contains(@id, 'Score')]").Clone();
-                        table.RemoveChild(table.SelectSingleNode("//tr[contains(@id, 'Score')]"));
-                        delta = table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]").Clone();
-                        table.RemoveChild(table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]"));
-                        table.AppendChild(score);
-                        table.AppendChild(delta);
+                        else
+                        {
+                            score = table.SelectSingleNode("//tr[contains(@id, 'Score')]");
+                            delta = table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]");
+                        }
+                        if (i % 3 == 0)
+                        {
+                            score.SelectSingleNode("//th[contains(@id, 'ScoreWeightStatic')]").InnerHtml = resultWagonsAndTransit["i0"].ToString();
+                        }
+                        score.SelectSingleNode($"//th[contains(@id, 'ScoreWeightTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 1}"].ToString();
+                        score.SelectSingleNode($"//th[contains(@id, 'ScoreDeltaAbsTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 2}"].ToString();
+                        score.SelectSingleNode($"//th[contains(@id, 'ScoreDeltaRelativeTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 3}"].ToString();
+                        delta.SelectSingleNode($"//th[contains(@id, 'MaxDeltAabsTransit{i + 1}')]").InnerHtml = maxDeltaWagonsAndTransit[$"i{i * 2}"].ToString();
+                        delta.SelectSingleNode($"//th[contains(@id, 'MaxDeltaRelativeTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 2 + 1}"].ToString();
                     }
                     else
                     {
-                        score = table.SelectSingleNode("//tr[contains(@id, 'Score')]");
-                        delta = table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]");
+                        if (wagonsAndTransit.Tables.Count <= 3)
+                        {
+                            if (wagonsAndTransit.Tables.Count == 3)
+                            {
+                                tables.SelectSingleNode($"//div/div/table[contains(@id, 'tableCells2')]").InnerHtml = "";
+                                htmlDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.html");
+                                return;
+                            }
+                            HtmlNode headerRow = table.SelectSingleNode($"//div/div/table/thead[contains(@id, 'headerTable')]");
+                            headerRow.SelectSingleNode($"//th[contains(@id, 'transit{i + 1}')]").InnerHtml = "";
+                            headerRow.SelectSingleNode($"//th[contains(@id, 'DeltAabsTransit{i + 1}')]").InnerHtml = "";
+                            headerRow.SelectSingleNode($"//th[contains(@id, 'DeltaRelativeTransit{i + 1}')]").InnerHtml = "";
+                            
+                        }
+                        else
+                        {
+                            HtmlNode headerRow = table.SelectSingleNode($"//div/div/table/thead[contains(@id, 'headerTable')]");
+                            headerRow.SelectSingleNode($"//th[contains(@id, 'transit{i + 1}')]").InnerHtml = "";
+                            headerRow.SelectSingleNode($"//th[contains(@id, 'DeltAabsTransit{i + 1}')]").InnerHtml = "";
+                            headerRow.SelectSingleNode($"//th[contains(@id, 'DeltaRelativeTransit{i + 1}')]").InnerHtml = "";
+                        }
                     }
-                    if (i % 3 == 0)
-                    {
-                        score.SelectSingleNode("//th[contains(@id, 'ScoreWeightStatic')]").InnerHtml = resultWagonsAndTransit["i0"].ToString();
-                    }
-                    score.SelectSingleNode($"//th[contains(@id, 'ScoreWeightTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 1}"].ToString();
-                    score.SelectSingleNode($"//th[contains(@id, 'ScoreDeltaAbsTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 2}"].ToString();
-                    score.SelectSingleNode($"//th[contains(@id, 'ScoreDeltaRelativeTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 3}"].ToString();
-                    delta.SelectSingleNode($"//th[contains(@id, 'MaxDeltAabsTransit{i + 1}')]").InnerHtml = maxDeltaWagonsAndTransit[$"i{i * 2}"].ToString();
-                    delta.SelectSingleNode($"//th[contains(@id, 'MaxDeltaRelativeTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 2 + 1}"].ToString();
                 }
+
+                    
             }
 
             //Сохранение шаблона
@@ -432,8 +463,7 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void toolStripButtonPreview_Click(object sender, EventArgs e)
         {
-            dataToHTML();
-            //HTML2PDF();
+            
         }
     }
 }
