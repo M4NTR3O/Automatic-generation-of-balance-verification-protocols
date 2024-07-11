@@ -309,17 +309,13 @@ namespace Automatic_generation_of_balance_verification_protocols
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.Load(documentPath);
             //Название протокола поверки
-            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'nameProtocol')]").InnerHtml = labelNameProtocol.Text + textBoxNameProtocol.Text;
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'nameProtocol')]").InnerHtml = labelNameProtocol.Text + " " + textBoxNameProtocol.Text;
             //Дата протокола поверки
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'date')]").InnerHtml = printShortTime(dateTime);
-
-
-
-
             //Наименование и тип средств измерений
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'typeMeasuringTool')]").InnerHtml = "<strong>" + labelTypeMeasuringTool.Text + "</strong> " + textBoxTypeMeasuringTool.Text;
             //Метрологические параметры
-            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = "<strong>" + MetrologyToolStripMenuItem.Text +"</strong> ";
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = "<strong>" + MetrologyToolStripMenuItem.Text +":</strong> ";
             foreach (var item in parametrsMetrology)
             {
                 MetrologyParametrsForm metrology = new MetrologyParametrsForm();
@@ -330,16 +326,108 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classWagon')]").InnerHtml = infoAbout[textBoxWagonGOST.Name];
             //Класс состава
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classСomposition')]").InnerHtml = infoAbout[textBoxStructureGOST.Name];
-            //Средства поверки Проверить!!!
-            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong>({infoAbout[textBoxCountWagonsTranslit.Name]}) <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
+            //Средства поверки
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong> ({infoAbout[textBoxCountWagonsTranslit.Name]}) <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
             //Наименование собственника
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'ownerSi')]").InnerHtml = $"<strong>{labelOwnerSi.Text}</strong> {textBoxOwnerSI.Text}";
             //Приложения
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'stateTrustee')]").InnerHtml = (importantPerson["labelStateTrustee"].Length > 0 ? importantPerson["labelStateTrustee"] : "____________________") + @" \_____________\";
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'representativeOfTensib')]").InnerHtml = (importantPerson["labelRepresentativeOfTensib"].Length > 0 ? importantPerson["labelRepresentativeOfTensib"] : "____________________") + @" \_____________\";
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'customerRepresentative')]").InnerHtml = (importantPerson["labelCustomerRepresentative"].Length > 0 ? importantPerson["labelCustomerRepresentative"] : "____________________") + @" \_____________\";
+            //Заполнение таблиц
+            if (wagonsAndTransit.Tables.Count > 6)
+            {
+                for (int i = 0; i < wagonsAndTransit.Tables.Count / 6; i++)
+                {
+                    if (i != 0)
+                    {
+                        var pageFirst = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
+                        //var newPage = pageFirst.Attributes["id"].Value = $"page{i}";
+                        //htmlDoc.DocumentNode.AppendChild(newPage);
+                    }
+                    var currentPage = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page{i}')]");
+                    
+                    if (wagonsAndTransit.Tables.Count < 3)
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                var page = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
+                var tables = page.SelectSingleNode($"//div[contains(@id, 'tables')]");
+
+                for (int i = 0; i < wagonsAndTransit.Tables.Count; i++)
+                {
+                    HtmlNode table;
+                    if (i % wagonsAndTransit.Tables.Count < 3)
+                    {
+                        table = tables.SelectSingleNode("//div/div/div/table[contains(@id, 'tableCells1')]");
+                    }
+                    else
+                    {
+                        table = tables.SelectSingleNode($"//div/div/table[contains(@id, 'tableCells2')]");
+                    }
+
+                    table.SelectSingleNode($"//th[contains(@id, 'transit{(i % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}";
+
+                    for(int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
+                    {
+                        HtmlNode row;
+                        if (j != 0 && (i % 3) == 0)
+                        {
+                            var newRowHtml = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon1')]").InnerHtml;
+                            var newRow = HtmlNode.CreateNode($"<tr class=\"table_cells10\" id=\"rowWagon{j + 1}\">" + newRowHtml + "</tr>");
+                            table.AppendChild(newRow);
+                        }
+                        row = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon{j + 1}')]");
+                        if (i % 3 == 0)
+                        {
+                            row.SelectSingleNode("//th[contains(@id, 'numberWagon')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[0].ToString();
+                            row.SelectSingleNode("//th[contains(@id, 'WeightStatic')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[1].ToString();
+                        }
+                        var cell1 = row.SelectSingleNode($"//th[contains(@id, 'rowWeightTransit{(i % 3) + 1}')]");
+                        var cell2 = row.SelectSingleNode($"//th[contains(@id, 'rowDeltAabsTransit{(i % 3) + 1}')]");
+                        var cell3 = row.SelectSingleNode($"//th[contains(@id, 'rowDeltaRelativeTransit{(i % 3) + 1}')]");
+                        row.SelectSingleNode($"//th[contains(@id, 'rowWeightTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[2].ToString();
+                        row.SelectSingleNode($"//th[contains(@id, 'rowDeltAabsTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[3].ToString();
+                        row.SelectSingleNode($"//th[contains(@id, 'rowDeltaRelativeTransit{(i % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[4].ToString();
+                    }
+                    HtmlNode emptyRow = table.SelectSingleNode($"//tr[contains(@id, 'rowWagon1')]").Clone();
+                    emptyRow.Attributes["id"].Value = $"";
+                    emptyRow.InnerHtml = "<tr><th></th></tr>";
+                    table.AppendChild( emptyRow );
+                    HtmlNode score;
+                    HtmlNode delta;
+                    if (i % 3 == 0)
+                    {
+                        score = table.SelectSingleNode("//tr[contains(@id, 'Score')]").Clone();
+                        table.RemoveChild(table.SelectSingleNode("//tr[contains(@id, 'Score')]"));
+                        delta = table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]").Clone();
+                        table.RemoveChild(table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]"));
+                        table.AppendChild(score);
+                        table.AppendChild(delta);
+                    }
+                    else
+                    {
+                        score = table.SelectSingleNode("//tr[contains(@id, 'Score')]");
+                        delta = table.SelectSingleNode("//tr[contains(@id, 'MaxDeltaOnStructure')]");
+                    }
+                    if (i % 3 == 0)
+                    {
+                        score.SelectSingleNode("//th[contains(@id, 'ScoreWeightStatic')]").InnerHtml = resultWagonsAndTransit["i0"].ToString();
+                    }
+                    score.SelectSingleNode($"//th[contains(@id, 'ScoreWeightTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 1}"].ToString();
+                    score.SelectSingleNode($"//th[contains(@id, 'ScoreDeltaAbsTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 2}"].ToString();
+                    score.SelectSingleNode($"//th[contains(@id, 'ScoreDeltaRelativeTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 3}"].ToString();
+                    delta.SelectSingleNode($"//th[contains(@id, 'MaxDeltAabsTransit{i + 1}')]").InnerHtml = maxDeltaWagonsAndTransit[$"i{i * 2}"].ToString();
+                    delta.SelectSingleNode($"//th[contains(@id, 'MaxDeltaRelativeTransit{i + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 2 + 1}"].ToString();
+                }
+            }
+
             //Сохранение шаблона
-            htmlDoc.Save(documentPath);
+            htmlDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.html");
         }
 
         private void toolStripButtonPreview_Click(object sender, EventArgs e)
