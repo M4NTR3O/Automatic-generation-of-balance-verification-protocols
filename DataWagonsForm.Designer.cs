@@ -53,7 +53,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 370);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 376);
             this.tableWagonsAndTransit.TabIndex = 1;
             // 
             // panelData
@@ -96,7 +96,7 @@
             // 
             this.numericUpDownTransit.Location = new System.Drawing.Point(491, 20);
             this.numericUpDownTransit.Maximum = new decimal(new int[] {
-            10,
+            18,
             0,
             0,
             0});
@@ -128,7 +128,7 @@
             // 
             this.numericUpDownWagons.Location = new System.Drawing.Point(160, 20);
             this.numericUpDownWagons.Maximum = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});
@@ -160,9 +160,9 @@
             // 
             this.menuStripTransitButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 420);
+            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 426);
             this.menuStripTransitButton.Name = "menuStripTransitButton";
-            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 30);
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 24);
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
             // 
