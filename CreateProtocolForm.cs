@@ -198,11 +198,11 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             if (toolStripProgressBar.Value <= 30)
             {
-                toolStripProgressBar.ForeColor = Color.Red;
+                toolStripProgressBar.BackColor = Color.Red;
             }
             else if (toolStripProgressBar.Value >= 30 && toolStripProgressBar.Value <= 60)
             {
-                toolStripProgressBar.ForeColor = Color.Yellow;
+                toolStripProgressBar.BackColor = Color.Yellow;
             }
             else
             {
@@ -210,60 +210,17 @@ namespace Automatic_generation_of_balance_verification_protocols
                 if (toolStripProgressBar.Value >= 95)
                 {
                     toolStripButtonPreview.Enabled = true;
-                    toolStripButtonConvert.Enabled = true;
+                }
+                else
+                {
+                    toolStripButtonPreview.Enabled = false;
                 }
             }
         }
 
         private void toolStripButtonConvert_Click(object sender, EventArgs e)
         {
-            if (dateTime.Year == 0001)
-            {
-                dateTime = DateTime.Now;
-            }
-            checkDirectory();
-            XDocument xDoc = new XDocument();
-            XElement container = new XElement("container");
-            XElement xDate = new XElement("Date");
-            XAttribute xAttribute = new XAttribute("Date", dateTime.ToString());
-            xDate.Add(xAttribute);
-            wagonsAndTransit.WriteXml($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
-            xDoc = XDocument.Load($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
-            XElement newDataSet = new XElement("NewDataSet");
-            foreach(XElement el in xDoc.Root.Elements())
-            {
-                newDataSet.Add(el);
-            }
-            container.Add(newDataSet);
-            xDoc.Root.Remove();
-            XElement xresultWagonsAndTransit = new XElement("resultWagonsAndTransit", 
-                from keyValue in resultWagonsAndTransit
-                select new XElement(keyValue.Key, keyValue.Value));
-            XElement xmaxDeltaWagonsAndTransit = new XElement("maxDeltaWagonsAndTransit", 
-                from keyValue in maxDeltaWagonsAndTransit
-                select new XElement(keyValue.Key, keyValue.Value));
-            XElement xparametrsMetrology = new XElement("parametrsMetrology",
-                from keyValue in parametrsMetrology
-                select new XElement(keyValue.Key, keyValue.Value));
-            XElement ximportantPerson = new XElement("importantPerson", 
-                from keyValue in importantPerson 
-                select new XElement(keyValue.Key, keyValue.Value));
-            XElement xinfoAbout = new XElement("infoAbout", 
-                from keyValue in infoAbout 
-                select new XElement(keyValue.Key, keyValue.Value));
-            container.Add(xDate);
-            container.Add(xresultWagonsAndTransit);
-            container.Add(xmaxDeltaWagonsAndTransit);
-            container.Add(xparametrsMetrology);
-            container.Add(ximportantPerson);
-            container.Add(xinfoAbout);
-            xDoc.Add(container);
-            xDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
-            dataToHTML();
-            HTML2PDF();
-
-            MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            DialogResult = DialogResult.OK;
+            
         }
 
         string printFullTime(DateTime dateTime)
@@ -286,7 +243,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             }
         }
 
-        private async void HTML2PDF()
+        private void HTML2PDF()
         {
             var file = Path.GetFullPath($"Протоколы/Протокол_{printFullTime(dateTime)}.html");
             string directory = Directory.GetCurrentDirectory();
@@ -294,7 +251,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             File.Delete(filepath);
             var host = new HtmlToPdfHost();
 
-            var result = await host.PrintToPdfStreamAsync(file);
+            var result = host.PrintToPdfStreamAsync(file).GetAwaiter().GetResult();
 
             using (var fstream = new FileStream(filepath, FileMode.OpenOrCreate, FileAccess.Write))
             {
@@ -302,9 +259,6 @@ namespace Automatic_generation_of_balance_verification_protocols
                 result.ResultStream.Close(); // Close returned stream!
             }
 
-            File.Delete(file);
-
-            ShellUtils.OpenUrl(filepath);
         }
 
         private void dataToHTML()
@@ -333,7 +287,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             //Класс состава
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classСomposition')]").InnerHtml = infoAbout[textBoxStructureGOST.Name];
             //Средства поверки
-            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong> ({infoAbout[textBoxCountWagonsTranslit.Name]}) <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong> ({infoAbout[textBoxCountWagonsTranslit.Name]}) {labelWeightSummary.Text} <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
             //Наименование собственника
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'ownerSi')]").InnerHtml = $"<strong>{labelOwnerSi.Text}</strong> {textBoxOwnerSI.Text}";
             //Приложения
@@ -347,16 +301,13 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     if (i != 0)
                     {
-                        var pageFirst = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
-                        //var newPage = pageFirst.Attributes["id"].Value = $"page{i}";
-                        //htmlDoc.DocumentNode.AppendChild(newPage);
+                        var pageFirstHtml = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]").InnerHtml;
+                        var newPage = HtmlNode.CreateNode($"<div class=\"page\" id=\"page{i}\">" + pageFirstHtml + "</div>");
+                        htmlDoc.DocumentNode.AppendChild(newPage);
                     }
                     var currentPage = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page{i}')]");
+                    //Придумать функции для печати многостранички
                     
-                    if (wagonsAndTransit.Tables.Count < 3)
-                    {
-
-                    }
                 }
             }
             else
@@ -373,7 +324,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                     }
                     else
                     {
-                        FillTable(allTables[i / 3], i, htmlDoc);
+                        FillTable1Page(allTables[i / 3], i, htmlDoc);
                     }
                     
                 }
@@ -386,10 +337,67 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void toolStripButtonPreview_Click(object sender, EventArgs e)
         {
-            
+            dataToHTML();
+            HTML2PDF();
+            PreviewPdfForm previewPdfForm = new PreviewPdfForm(printFullTime(dateTime));
+            this.Hide();
+            previewPdfForm.ShowDialog();
+            if (previewPdfForm.DialogResult == DialogResult.OK)
+            {
+                if (dateTime.Year == 0001)
+                {
+                    dateTime = DateTime.Now;
+                }
+                checkDirectory();
+                XDocument xDoc = new XDocument();
+                XElement container = new XElement("container");
+                XElement xDate = new XElement("Date");
+                XAttribute xAttribute = new XAttribute("Date", dateTime.ToString());
+                xDate.Add(xAttribute);
+                wagonsAndTransit.WriteXml($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
+                xDoc = XDocument.Load($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
+                XElement newDataSet = new XElement("NewDataSet");
+                foreach (XElement el in xDoc.Root.Elements())
+                {
+                    newDataSet.Add(el);
+                }
+                container.Add(newDataSet);
+                xDoc.Root.Remove();
+                XElement xresultWagonsAndTransit = new XElement("resultWagonsAndTransit",
+                    from keyValue in resultWagonsAndTransit
+                    select new XElement(keyValue.Key, keyValue.Value));
+                XElement xmaxDeltaWagonsAndTransit = new XElement("maxDeltaWagonsAndTransit",
+                    from keyValue in maxDeltaWagonsAndTransit
+                    select new XElement(keyValue.Key, keyValue.Value));
+                XElement xparametrsMetrology = new XElement("parametrsMetrology",
+                    from keyValue in parametrsMetrology
+                    select new XElement(keyValue.Key, keyValue.Value));
+                XElement ximportantPerson = new XElement("importantPerson",
+                    from keyValue in importantPerson
+                    select new XElement(keyValue.Key, keyValue.Value));
+                XElement xinfoAbout = new XElement("infoAbout",
+                    from keyValue in infoAbout
+                    select new XElement(keyValue.Key, keyValue.Value));
+                container.Add(xDate);
+                container.Add(xresultWagonsAndTransit);
+                container.Add(xmaxDeltaWagonsAndTransit);
+                container.Add(xparametrsMetrology);
+                container.Add(ximportantPerson);
+                container.Add(xinfoAbout);
+                xDoc.Add(container);
+                xDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
+                this.Show();
+                MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                File.Delete($"Протоколы/Протокол_{printFullTime(dateTime)}.pdf");
+                this.Show();
+            }
         }
 
-        private void FillTable(HtmlNode table, int i, HtmlAgilityPack.HtmlDocument htmlDoc)
+        private void FillTable1Page(HtmlNode table, int i, HtmlAgilityPack.HtmlDocument htmlDoc)
         {
             if (i < wagonsAndTransit.Tables.Count)
             {
