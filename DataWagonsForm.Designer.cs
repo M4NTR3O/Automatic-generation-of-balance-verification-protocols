@@ -31,12 +31,12 @@
             this.tableWagonsAndTransit = new System.Windows.Forms.DataGridView();
             this.panelData = new System.Windows.Forms.Panel();
             this.buttonSaveData = new System.Windows.Forms.Button();
-            this.buttonCalculate = new System.Windows.Forms.Button();
             this.numericUpDownTransit = new System.Windows.Forms.NumericUpDown();
             this.labelTransit = new System.Windows.Forms.Label();
             this.numericUpDownWagons = new System.Windows.Forms.NumericUpDown();
             this.labelWagons = new System.Windows.Forms.Label();
             this.menuStripTransitButton = new System.Windows.Forms.MenuStrip();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.tableWagonsAndTransit)).BeginInit();
             this.panelData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransit)).BeginInit();
@@ -55,11 +55,12 @@
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
             this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 376);
             this.tableWagonsAndTransit.TabIndex = 1;
+            this.tableWagonsAndTransit.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableWagonsAndTransit_CellEndEdit);
             // 
             // panelData
             // 
+            this.panelData.Controls.Add(this.progressBar);
             this.panelData.Controls.Add(this.buttonSaveData);
-            this.panelData.Controls.Add(this.buttonCalculate);
             this.panelData.Controls.Add(this.numericUpDownTransit);
             this.panelData.Controls.Add(this.labelTransit);
             this.panelData.Controls.Add(this.numericUpDownWagons);
@@ -72,31 +73,23 @@
             // 
             // buttonSaveData
             // 
+            this.buttonSaveData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.buttonSaveData.Location = new System.Drawing.Point(817, 19);
+            this.buttonSaveData.Enabled = false;
+            this.buttonSaveData.Location = new System.Drawing.Point(879, 12);
             this.buttonSaveData.Name = "buttonSaveData";
             this.buttonSaveData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.buttonSaveData.Size = new System.Drawing.Size(180, 23);
+            this.buttonSaveData.Size = new System.Drawing.Size(180, 30);
             this.buttonSaveData.TabIndex = 5;
             this.buttonSaveData.Text = "Сохранить показатели";
             this.buttonSaveData.UseVisualStyleBackColor = false;
             this.buttonSaveData.Click += new System.EventHandler(this.buttonSaveData_Click);
             // 
-            // buttonCalculate
-            // 
-            this.buttonCalculate.Location = new System.Drawing.Point(631, 20);
-            this.buttonCalculate.Name = "buttonCalculate";
-            this.buttonCalculate.Size = new System.Drawing.Size(180, 23);
-            this.buttonCalculate.TabIndex = 4;
-            this.buttonCalculate.Text = "Рассчитать показатели";
-            this.buttonCalculate.UseVisualStyleBackColor = true;
-            this.buttonCalculate.Click += new System.EventHandler(this.buttonCalculate_Click);
-            // 
             // numericUpDownTransit
             // 
             this.numericUpDownTransit.Location = new System.Drawing.Point(491, 20);
             this.numericUpDownTransit.Maximum = new decimal(new int[] {
-            18,
+            20,
             0,
             0,
             0});
@@ -166,6 +159,15 @@
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
             // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(773, 15);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(100, 23);
+            this.progressBar.TabIndex = 3;
+            this.progressBar.Visible = false;
+            // 
             // DataWagonsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -195,9 +197,9 @@
         private System.Windows.Forms.NumericUpDown numericUpDownTransit;
         private System.Windows.Forms.Label labelTransit;
         private System.Windows.Forms.NumericUpDown numericUpDownWagons;
-        private System.Windows.Forms.Button buttonCalculate;
         private System.Windows.Forms.Button buttonSaveData;
         protected System.Windows.Forms.DataGridView tableWagonsAndTransit;
         private System.Windows.Forms.MenuStrip menuStripTransitButton;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
