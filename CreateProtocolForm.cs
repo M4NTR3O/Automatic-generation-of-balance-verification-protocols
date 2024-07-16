@@ -1,5 +1,4 @@
-﻿using iText.StyledXmlParser.Jsoup.Helper;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,13 +11,10 @@ using System.Xml.Linq;
 using Westwind.WebView.HtmlToPdf;
 using System.Web.UI.HtmlControls;
 using Westwind.Utilities;
-using iText.Signatures;
-using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
 using Aspose.Html;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Org.BouncyCastle.Utilities.Collections;
-using UglyToad.PdfPig.Content;
 using CefSharp.DevTools.Debugger;
 
 namespace Automatic_generation_of_balance_verification_protocols
@@ -262,7 +258,7 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void dataToHTML()
         {
-            string documentPath = Path.GetFullPath("Pattern.html");
+            string documentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pattern\\Pattern.html");
 
             // Создать экземпляр HTML-документа
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
