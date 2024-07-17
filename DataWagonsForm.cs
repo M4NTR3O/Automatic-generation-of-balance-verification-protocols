@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Automatic_generation_of_balance_verification_protocols
 {
@@ -18,6 +19,8 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             InitializeComponent();
             WagonsAndTransinDataSet = new DataSet();
+            progressBar.Maximum = 1;
+            progressBar.Value = 0;
             CreateDGV();
         }
 
@@ -67,6 +70,7 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void UpdateDGV()
         {
+            progressBar.Maximum = WagonsAndTransinDataSet.Tables.Count;
             numericUpDownTransit.Value = WagonsAndTransinDataSet.Tables.Count;
             numericUpDownWagons.Value = WagonsAndTransinDataSet.Tables[0].Rows.Count;
             tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[0];
@@ -177,7 +181,6 @@ namespace Automatic_generation_of_balance_verification_protocols
             db.Columns.Add("Погрешность абсолютная");
             db.Columns.Add("Погрешность относительная");
             db.Columns[3].DataType = typeof(int);
-            db.Columns[4].DataType = typeof(double);
             WagonsAndTransinDataSet.Tables.Add(db);
             foreach (var wagons in WagonsAndTransinDataSet.Tables[0].Rows)
             {
@@ -197,9 +200,9 @@ namespace Automatic_generation_of_balance_verification_protocols
                     }
                     catch
                     {
-                        tableWagonsAndTransit.Rows[j].Cells[i].Value = null;
-                        tableWagonsAndTransit.Rows[j].Cells[3].Value = null;
-                        tableWagonsAndTransit.Rows[j].Cells[4].Value = null;
+                        tableWagonsAndTransit.Rows[j].Cells[i].Value = DBNull.Value;
+                        tableWagonsAndTransit.Rows[j].Cells[3].Value = DBNull.Value;
+                        tableWagonsAndTransit.Rows[j].Cells[4].Value = DBNull.Value;
                     }
                 }
             }
@@ -274,7 +277,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 int count = WagonsAndTransinDataSet.Tables.Count;
                 for (int i = count; i > numericUpDownTransit.Value; i--)
                 {
-                    if (checkTableValue(WagonsAndTransinDataSet.Tables[i]))
+                    if (checkTableValue(WagonsAndTransinDataSet.Tables[i-1]))
                     {
                         progressBar.Value -= 1;
                     }
@@ -283,6 +286,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 }
             }
             progressBar.Maximum = (int)numericUpDownTransit.Value;
+            CheckProgressBar();
         }
 
         private void buttonSaveData_Click(object sender, EventArgs e)
@@ -393,6 +397,32 @@ namespace Automatic_generation_of_balance_verification_protocols
             if (check3ColsTable(tableWagonsAndTransit.DataSource as DataTable))
             {
                 calculationTable();
+                if (checkTableValue(tableWagonsAndTransit.DataSource as DataTable))
+                {
+                    foreach(ToolStripItem item in menuStripTransitButton.Items)
+                    {
+                        if (item.BackColor == Color.DarkGray)
+                        {
+                            item.BackColor = Color.DarkGreen;
+                            progressBar.Value++;
+                            CheckProgressBar();
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (ToolStripItem item in menuStripTransitButton.Items)
+                {
+                    if (item.BackColor == Color.DarkGreen)
+                    {
+                        item.BackColor = Color.DarkGray;
+                        progressBar.Value--;
+                        CheckProgressBar();
+                        break;
+                    }
+                }
             }
         }
     }

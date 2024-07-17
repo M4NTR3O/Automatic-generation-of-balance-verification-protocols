@@ -21,6 +21,7 @@ namespace Automatic_generation_of_balance_verification_protocols
 {
     public partial class CreateProtocolForm : Form
     {
+        private Dictionary<int, string> numbers2Translit = new Dictionary<int, string> { { 1, "одного" }, { 2, "двух" }, { 3, "трех" }, { 4, "четырех" }, { 5, "пяти" } };
         private DateTime dateTime;
         private DataSet wagonsAndTransit = new DataSet();
         private Dictionary<string, double> resultWagonsAndTransit = new Dictionary<string, double>();
@@ -32,6 +33,9 @@ namespace Automatic_generation_of_balance_verification_protocols
         public CreateProtocolForm()
         {
             InitializeComponent();
+            importantPerson.Add("labelStateTrustee", "");
+            importantPerson.Add("labelRepresentativeOfTensib", "");
+            importantPerson.Add("labelCustomerRepresentative", "");
         }
 
         public CreateProtocolForm(string filename)
@@ -105,12 +109,14 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     if (DataWagonToolStripMenuItem.BackColor != Color.Green)
                     {
-                        toolStripProgressBar.Value += 15;
+                        toolStripProgressBar.Value += 25;
                     }
                     DataWagonToolStripMenuItem.BackColor = Color.Green;
                     wagonsAndTransit = dataWagonsForm.callData();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
                     textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
+                    textBoxCountWagonsTranslit.Text = numbers2Translit[Convert.ToInt32(textBoxCountWagons.Text)];
+                    infoAbout.Add($"{textBoxCountWagonsTranslit.Name}", textBoxCountWagonsTranslit.Text);
                     textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
                 }
                 checkProgressBar();
@@ -352,15 +358,15 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             dataToHTML();
             HTML2PDF();
+            if (dateTime.Year == 0001)
+            {
+                dateTime = DateTime.Now;
+            }
             PreviewPdfForm previewPdfForm = new PreviewPdfForm(printFullTime(dateTime));
             this.Hide();
             previewPdfForm.ShowDialog();
             if (previewPdfForm.DialogResult == DialogResult.OK)
-            {
-                if (dateTime.Year == 0001)
-                {
-                    dateTime = DateTime.Now;
-                }
+            { 
                 checkDirectory();
                 XDocument xDoc = new XDocument();
                 XElement container = new XElement("container");

@@ -309,9 +309,9 @@
             this.textBoxCountWagonsTranslit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxCountWagonsTranslit.Location = new System.Drawing.Point(223, 365);
             this.textBoxCountWagonsTranslit.Name = "textBoxCountWagonsTranslit";
+            this.textBoxCountWagonsTranslit.ReadOnly = true;
             this.textBoxCountWagonsTranslit.Size = new System.Drawing.Size(151, 22);
             this.textBoxCountWagonsTranslit.TabIndex = 13;
-            this.textBoxCountWagonsTranslit.Leave += new System.EventHandler(this.textBox_Leave);
             // 
             // label
             // 
