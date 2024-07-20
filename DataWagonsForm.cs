@@ -22,6 +22,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             progressBar.Maximum = 1;
             progressBar.Value = 0;
             CreateDGV();
+            
         }
 
         public DataWagonsForm(DataSet table)
@@ -245,6 +246,19 @@ namespace Automatic_generation_of_balance_verification_protocols
                     for (int i = count; i < numericUpDownWagons.Value; i++)
                     {
                         tables.Rows.Add();
+                    }
+                }
+                progressBar.Value = 0;
+                CheckProgressBar();
+                foreach (ToolStripItem item in menuStripTransitButton.Items)
+                {
+                    if (item.BackColor == Color.DarkGreen || item.BackColor == Color.DarkGray)
+                    {
+                        item.BackColor = Color.DarkGray;
+                    }
+                    else
+                    {
+                        item.BackColor = SystemColors.Control;
                     }
                 }
             }

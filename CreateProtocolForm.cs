@@ -14,14 +14,15 @@ using Westwind.Utilities;
 using Aspose.Html;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
-using Org.BouncyCastle.Utilities.Collections;
-using CefSharp.DevTools.Debugger;
 
 namespace Automatic_generation_of_balance_verification_protocols
 {
     public partial class CreateProtocolForm : Form
     {
-        private Dictionary<int, string> numbers2Translit = new Dictionary<int, string> { { 1, "одного" }, { 2, "двух" }, { 3, "трех" }, { 4, "четырех" }, { 5, "пяти" } };
+        private Dictionary<int, string> numbers2Translit = new Dictionary<int, string> { { 1, "одного" }, { 2, "двух" }, { 3, "трех" }, { 4, "четырех" }, { 5, "пяти" },
+            {6, "шести" }, {7, "семи" }, { 8, "восьми" }, { 9, "девяти"}, { 10, "десяти"},
+            { 11, "одинадцати" }, { 12, "двенадцати" }, { 13, "тринадцати" }, { 14, "четырнадцати" }, { 15, "пятнадцати" },
+            {16, "шестнадцати" },{17, "семнадцати" }, { 18, "восемнадцати" }, { 19, "девятнадцати"}, { 20, "двадцати"}};
         private DateTime dateTime;
         private DataSet wagonsAndTransit = new DataSet();
         private Dictionary<string, double> resultWagonsAndTransit = new Dictionary<string, double>();
@@ -116,7 +117,14 @@ namespace Automatic_generation_of_balance_verification_protocols
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
                     textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
                     textBoxCountWagonsTranslit.Text = numbers2Translit[Convert.ToInt32(textBoxCountWagons.Text)];
-                    infoAbout.Add($"{textBoxCountWagonsTranslit.Name}", textBoxCountWagonsTranslit.Text);
+                    if (infoAbout.ContainsKey(textBoxCountWagonsTranslit.Name))
+                    {
+                        infoAbout[textBoxCountWagonsTranslit.Name] = textBoxCountWagonsTranslit.Text;
+                    }
+                    else
+                    {
+                        infoAbout.Add($"{textBoxCountWagonsTranslit.Name}", textBoxCountWagonsTranslit.Text);
+                    }
                     textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
                 }
                 checkProgressBar();

@@ -53,7 +53,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 372);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 376);
             this.tableWagonsAndTransit.TabIndex = 1;
             this.tableWagonsAndTransit.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableWagonsAndTransit_CellEndEdit);
             // 
@@ -98,7 +98,7 @@
             // 
             this.numericUpDownTransit.Location = new System.Drawing.Point(491, 20);
             this.numericUpDownTransit.Maximum = new decimal(new int[] {
-            20,
+            50,
             0,
             0,
             0});
@@ -130,7 +130,7 @@
             // 
             this.numericUpDownWagons.Location = new System.Drawing.Point(160, 20);
             this.numericUpDownWagons.Maximum = new decimal(new int[] {
-            5,
+            20,
             0,
             0,
             0});
@@ -162,9 +162,9 @@
             // 
             this.menuStripTransitButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 422);
+            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 426);
             this.menuStripTransitButton.Name = "menuStripTransitButton";
-            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 28);
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 24);
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
             // 
