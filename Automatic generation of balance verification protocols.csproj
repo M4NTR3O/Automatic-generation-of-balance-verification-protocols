@@ -310,6 +310,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Pattern\PatternMore8.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Pattern\Pattern.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

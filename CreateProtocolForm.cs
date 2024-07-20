@@ -272,8 +272,15 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void dataToHTML()
         {
-            string documentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pattern\\Pattern.html");
-
+            string documentPath;
+            if (wagonsAndTransit.Tables[0].Rows.Count < 9)
+            {
+                documentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pattern\\Pattern.html");
+            }
+            else
+            {
+                documentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pattern\\PatternMore8.html");
+            }
             // Создать экземпляр HTML-документа
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.Load(documentPath);
@@ -297,6 +304,9 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classСomposition')]").InnerHtml = infoAbout[textBoxStructureGOST.Name];
             //Средства поверки
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong> ({infoAbout[textBoxCountWagonsTranslit.Name]}) {labelWeightSummary.Text} <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
+
+            var pop = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]");
+
             //Наименование собственника
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'ownerSi')]").InnerHtml = $"<strong>{labelOwnerSi.Text}</strong> {textBoxOwnerSI.Text}";
             //Приложения
@@ -304,60 +314,102 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'representativeOfTensib')]").InnerHtml = (importantPerson["labelRepresentativeOfTensib"].Length > 0 ? importantPerson["labelRepresentativeOfTensib"] : "____________________") + @" \_____________\";
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'customerRepresentative')]").InnerHtml = (importantPerson["labelCustomerRepresentative"].Length > 0 ? importantPerson["labelCustomerRepresentative"] : "____________________") + @" \_____________\";
             //Заполнение таблиц
-            if (wagonsAndTransit.Tables.Count > 6)
+            if (wagonsAndTransit.Tables[0].Rows.Count < 9)
             {
-                for (int i = 0; i < ((wagonsAndTransit.Tables.Count - 1) / 6) + 1; i++)
+                if (wagonsAndTransit.Tables.Count > 6)
                 {
-                    if (i != 0)
+                    for (int i = 0; i < ((wagonsAndTransit.Tables.Count - 1) / 6) + 1; i++)
                     {
-                        var pageFirstHtml = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]").InnerHtml;
-                        var body = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'container-page')]");
-                        var newPage = HtmlNode.CreateNode($"<div class=\"page\" id=\"page{i}\">" + pageFirstHtml + "</div>");
-                        body.AppendChild(newPage);
+                        if (i != 0)
+                        {
+                            var pageFirstHtml = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]").InnerHtml;
+                            var body = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'container-page')]");
+                            var newPage = HtmlNode.CreateNode($"<div class=\"page\" id=\"page{i}\">" + pageFirstHtml + "</div>");
+                            body.AppendChild(newPage);
+                        }
+                    }
+                    for (int i = 0; i < ((wagonsAndTransit.Tables.Count - 1) / 6) + 1; i++)
+                    {
+                        var currentPage = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page{i}')]");
+                        //функция для печати многостранички
+                        var tables = currentPage.SelectSingleNode($"//div[contains(@id, 'tables')]");
+                        var allTables = tables.SelectNodes("//table");
+                        allTables[0].Attributes["id"].Value = $"P{i}tableCells1";
+                        allTables[1].Attributes["id"].Value = $"P{i}tableCells2";
+                        for (int j = i * 6; j < (i + 1) * 6; j++)
+                        {
+                            if (wagonsAndTransit.Tables.Count - (i * 6) < 3 && j % 6 > 2)
+                            {
+
+                            }
+                            else
+                            {
+                                FillTable1Page(allTables[(j % 6) / 3], j, htmlDoc);
+                            }
+                        }
                     }
                 }
-                for (int i = 0; i < ((wagonsAndTransit.Tables.Count - 1) / 6) + 1; i++)
+                else
                 {
-                    var currentPage = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page{i}')]");
-                    //функция для печати многостранички
-                    var tables = currentPage.SelectSingleNode($"//div[contains(@id, 'tables')]");
-                    var allTables = tables.SelectNodes("//table");
-                    allTables[0].Attributes["id"].Value = $"P{i}tableCells1";
-                    allTables[1].Attributes["id"].Value = $"P{i}tableCells2";
-                    for (int j = i * 6; j < (i + 1) * 6; j++)
+                    var page = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
+                    var tables = page.SelectSingleNode($"//div[contains(@id, 'tables')]");
+                    var allTables = tables.SelectNodes("//div/div/div//div/div/table");
+
+                    for (int i = 0; i < 6; i++)
                     {
-                        if (wagonsAndTransit.Tables.Count - (i * 6) < 3 && j % 6 > 2)
+                        if (wagonsAndTransit.Tables.Count < 3 && i > 2)
                         {
 
                         }
                         else
                         {
-                            FillTable1Page(allTables[(j % 6) / 3], j, htmlDoc);
+                            FillTable1Page(allTables[i / 3], i, htmlDoc);
                         }
+
                     }
+
                 }
             }
             else
             {
-                var page = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
-                var tables = page.SelectSingleNode($"//div[contains(@id, 'tables')]");
-                var allTables = tables.SelectNodes("//div/div/div//div/div/table");
-
-                for (int i = 0; i < 6; i++)
+                if (wagonsAndTransit.Tables.Count > 3)
                 {
-                    if (wagonsAndTransit.Tables.Count < 3 && i > 2)
+                    for (int i = 0; i < ((wagonsAndTransit.Tables.Count - 1) / 3) + 1; i++)
                     {
-
+                        if (i != 0)
+                        {
+                            var pageFirstHtml = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]").InnerHtml;
+                            var body = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'container-page')]");
+                            var newPage = HtmlNode.CreateNode($"<div class=\"page\" id=\"page{i}\">" + pageFirstHtml + "</div>");
+                            body.AppendChild(newPage);
+                        }
                     }
-                    else
+                    for (int i = 0; i < ((wagonsAndTransit.Tables.Count - 1) / 3) + 1; i++)
                     {
-                        FillTable1Page(allTables[i / 3], i, htmlDoc);
+                        var currentPage = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page{i}')]");
+                        //функция для печати многостранички
+                        var tables = currentPage.SelectSingleNode($"//div[contains(@id, 'tables')]");
+                        var allTables = tables.SelectNodes("//table");
+                        allTables[0].Attributes["id"].Value = $"P{i}tableCells1";
+                        for (int j = i * 3; j < (i + 1) * 3; j++)
+                        {
+                            FillTable1PageMore8Wagon(allTables[0], j, htmlDoc);
+                        }
                     }
-                    
                 }
-                    
-            }
+                else
+                {
+                    var page = htmlDoc.DocumentNode.SelectSingleNode($"//div[contains(@id, 'page0')]");
+                    var tables = page.SelectSingleNode($"//div[contains(@id, 'tables')]");
+                    var allTables = tables.SelectNodes("//div/div/div//div/div/table");
 
+                    for (int i = 0; i < 3; i++)
+                    {
+                        FillTable1PageMore8Wagon(allTables[0], i, htmlDoc);
+                    }
+
+                }
+            }
             //Сохранение шаблона
             htmlDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.html");
         }
@@ -605,6 +657,147 @@ namespace Automatic_generation_of_balance_verification_protocols
                     delta.RemoveChild(delta.SelectSingleNode($"//th[contains(@id, 'P{i / 6}MaxDeltaAbsTransit{(workI % 3) + 1}')]"));
                     delta.RemoveChild(delta.SelectSingleNode($"//th[contains(@id, 'P{i / 6}MaxDeltaRelativeTransit{(workI % 3) + 1}')]"));
                 }
+            }
+        }
+
+        private void RenameIdMore8Wagon(HtmlNode table, int i, HtmlAgilityPack.HtmlDocument htmlDoc)
+        {
+            int workI = i % 3;
+            HtmlNode score, delta, headerRow;
+            table.SelectSingleNode($"//thead/th[contains(@id, 'P0T1transit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1transit{(workI % 3) + 1}";
+            if (i % 3 == 0)
+            {
+                table.SelectSingleNode($"//tr[contains(@id, 'P0T1rowWagon{1}')]").Attributes["id"].Value = $"P{i / 3}T1rowWagon{1}";
+                table.SelectSingleNode($"//tr[contains(@id, 'P0ScoreEx1')]").Attributes["id"].Value = $"P{i / 3}ScoreEx1";
+                table.SelectSingleNode($"//tr[contains(@id, 'P0MaxDeltaOnStructureEx1')]").Attributes["id"].Value = $"P{i / 3}MaxDeltaOnStructureEx1";
+                table.SelectSingleNode($"//thead[contains(@id, 'P0T1headerTable')]").Attributes["id"].Value = $"P{i / 3}T1headerTable";
+                table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1numberWagon')]").Attributes["id"].Value = $"P{i / 3}T1numberWagon";
+                table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1WeightStatic')]").Attributes["id"].Value = $"P{i / 3}T1WeightStatic";
+                table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1rowWeightTransit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowWeightTransit{(workI % 3) + 1}";
+                table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1rowDeltaAbsTransit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowDeltaAbsTransit{(workI % 3) + 1}";
+                table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1rowDeltaRelativeTransit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowDeltaRelativeTransit{(workI % 3) + 1}";
+            }
+            else
+            {
+                for (int wagon = 0; wagon < wagonsAndTransit.Tables[0].Rows.Count; wagon++)
+                {
+                    if (i % 3 == 1)
+                    {
+                        table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{wagon + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowWagon{wagon + 1}";
+                    }
+                    table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{wagon + 1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1rowWeightTransit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowWeightTransit{(workI % 3) + 1}";
+                    table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{wagon + 1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1rowDeltaAbsTransit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowDeltaAbsTransit{(workI % 3) + 1}";
+                    table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{wagon + 1}')]").SelectSingleNode($"//th[contains(@id, 'P0T1rowDeltaRelativeTransit{(workI % 3) + 1}')]").Attributes["id"].Value = $"P{i / 3}T1rowDeltaRelativeTransit{(workI % 3) + 1}";
+                }
+            }
+            headerRow = table.SelectSingleNode($"//thead[contains(@id, 'P{i / 3}T1headerTable')]");
+            headerRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1transit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}T1transit{workI % 3 + 1}";
+            headerRow.SelectSingleNode($"//th[contains(@id, 'P0T1DeltaAbsTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}T1DeltaAbsTransit{workI % 3 + 1}";
+            headerRow.SelectSingleNode($"//th[contains(@id, 'P0T1DeltaRelativeTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}T1DeltaRelativeTransit{workI % 3 + 1}";
+
+            if (i % 3 > 0)
+            {
+                score = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}Score1')]");
+                delta = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}MaxDeltaOnStructure1')]");
+            }
+            else
+            {
+                score = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}ScoreEx1')]");
+                delta = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}MaxDeltaOnStructureEx1')]");
+            }
+            score.SelectSingleNode($"//th[contains(@id, 'P0ScoreWeightTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}ScoreWeightTransit{workI % 3 + 1}";
+            score.SelectSingleNode($"//th[contains(@id, 'P0ScoreDeltaAbsTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}ScoreDeltaAbsTransit{workI % 3 + 1}";
+            score.SelectSingleNode($"//th[contains(@id, 'P0ScoreDeltaRelativeTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}ScoreDeltaRelativeTransit{workI % 3 + 1}";
+            delta.SelectSingleNode($"//th[contains(@id, 'P0MaxDeltaAbsTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}MaxDeltaAbsTransit{workI % 3 + 1}";
+            delta.SelectSingleNode($"//th[contains(@id, 'P0MaxDeltaRelativeTransit{workI % 3 + 1}')]").Attributes["id"].Value = $"P{i / 3}MaxDeltaRelativeTransit{workI % 3 + 1}";
+        }
+        private void FillTable1PageMore8Wagon(HtmlNode table, int i, HtmlAgilityPack.HtmlDocument htmlDoc)
+        {
+            int workI = i % 3;
+            if (i < wagonsAndTransit.Tables.Count)
+            {
+                if (i >= 3)
+                {
+                    RenameIdMore8Wagon(table, i, htmlDoc);
+                }
+                table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 3}T1transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}";
+
+                for (int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
+                {
+                    HtmlNode row;
+                    if (j != 0 && (i % 3) == 0)
+                    {
+                        var newRowHtml = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon1')]").InnerHtml;
+                        var newRow = HtmlNode.CreateNode($"<tr class=\"table_cells10\" id=\"P{i / 3}T1rowWagon{j + 1}\">" + newRowHtml + "</tr>");
+                        table.AppendChild(newRow);
+                    }
+                    row = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{j + 1}')]");
+                    if (i % 3 == 0)
+                    {
+                        row.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1numberWagon')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[0].ToString();
+                        row.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1WeightStatic')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[1].ToString();
+                    }
+                    row.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1rowWeightTransit{(workI % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[2].ToString();
+                    row.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1rowDeltaAbsTransit{(workI % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[3].ToString();
+                    row.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1rowDeltaRelativeTransit{(workI % 3) + 1}')]").InnerHtml = wagonsAndTransit.Tables[i].Rows[j].ItemArray[4].ToString();
+                }
+                if (i % 3 == 0)
+                {
+                    HtmlNode emptyRow = HtmlNode.CreateNode("<tr><th></th></tr>");
+                    table.AppendChild(emptyRow);
+                }
+                HtmlNode score;
+                HtmlNode delta;
+                if (i % 3 == 0)
+                {
+                    var scoreHtml = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}ScoreEx1')]").InnerHtml;
+                    table.RemoveChild(table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}ScoreEx1')]"));
+                    score = HtmlNode.CreateNode($"<tr class=\"table_cells10\" id=\"P{i / 3}Score1\">" + scoreHtml + "</tr>");
+                    var deltaHtml = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}MaxDeltaOnStructureEx1')]").InnerHtml;
+                    delta = HtmlNode.CreateNode($"<tr class=\"table_cells10\" id=\"P{i / 3}MaxDeltaOnStructure1\">" + deltaHtml + "</tr>");
+                    table.RemoveChild(table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}MaxDeltaOnStructureEx1')]"));
+                    table.AppendChild(score);
+                    table.AppendChild(delta);
+                }
+                else
+                {
+                    score = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}Score1')]");
+                    delta = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}MaxDeltaOnStructure1')]");
+                }
+                if (i % 3 == 0)
+                {
+                    score.SelectSingleNode("//th[contains(@id, 'ScoreWeightStatic')]").InnerHtml = resultWagonsAndTransit["i0"].ToString();
+                }
+                score.SelectSingleNode($"//th[contains(@id, 'P{i / 3}ScoreWeightTransit{workI % 3 + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 1}"].ToString();
+                score.SelectSingleNode($"//th[contains(@id, 'P{i / 3}ScoreDeltaAbsTransit{workI % 3 + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 2}"].ToString();
+                score.SelectSingleNode($"//th[contains(@id, 'P{i / 3}ScoreDeltaRelativeTransit{workI % 3 + 1}')]").InnerHtml = resultWagonsAndTransit[$"i{i * 3 + 3}"].ToString();
+                delta.SelectSingleNode($"//th[contains(@id, 'P{i / 3}MaxDeltaAbsTransit{workI % 3 + 1}')]").InnerHtml = maxDeltaWagonsAndTransit[$"i{i * 2}"].ToString();
+                delta.SelectSingleNode($"//th[contains(@id, 'P{i / 3}MaxDeltaRelativeTransit{workI % 3 + 1}')]").InnerHtml = maxDeltaWagonsAndTransit[$"i{i * 2 + 1}"].ToString();
+            }
+            else
+            {
+                if (i >= 3)
+                {
+                    RenameIdMore8Wagon(table, i, htmlDoc);
+                }
+                HtmlNode headerRow = table.SelectSingleNode($"//thead[contains(@id, 'P{i / 3}T1headerTable')]");
+                headerRow.RemoveChild(headerRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1transit{(workI % 3) + 1}')]"));
+                headerRow.RemoveChild(headerRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1DeltaAbsTransit{(workI % 3) + 1}')]"));
+                headerRow.RemoveChild(headerRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1DeltaRelativeTransit{(workI % 3) + 1}')]"));
+                for (int row = 0; row < wagonsAndTransit.Tables[0].Rows.Count; row++)
+                {
+                    var currentRow = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}T1rowWagon{row + 1}')]");
+                    currentRow.RemoveChild(currentRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1rowWeightTransit{(workI % 3) + 1}')]"));
+                    currentRow.RemoveChild(currentRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1rowDeltaAbsTransit{(workI % 3) + 1}')]"));
+                    currentRow.RemoveChild(currentRow.SelectSingleNode($"//th[contains(@id, 'P{i / 3}T1rowDeltaRelativeTransit{(workI % 3) + 1}')]"));
+                }
+                var score = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}Score1')]");
+                var delta = table.SelectSingleNode($"//tr[contains(@id, 'P{i / 3}MaxDeltaOnStructure1')]");
+                score.RemoveChild(score.SelectSingleNode($"//th[contains(@id, 'P{i / 3}ScoreWeightTransit{(workI % 3) + 1}')]"));
+                score.RemoveChild(score.SelectSingleNode($"//th[contains(@id, 'P{i / 3}ScoreDeltaAbsTransit{(workI % 3) + 1}')]"));
+                score.RemoveChild(score.SelectSingleNode($"//th[contains(@id, 'P{i / 3}ScoreDeltaRelativeTransit{(workI % 3) + 1}')]"));
+                delta.RemoveChild(delta.SelectSingleNode($"//th[contains(@id, 'P{i / 3}MaxDeltaAbsTransit{(workI % 3) + 1}')]"));
+                delta.RemoveChild(delta.SelectSingleNode($"//th[contains(@id, 'P{i / 3}MaxDeltaRelativeTransit{(workI % 3) + 1}')]"));
             }
         }
     }
