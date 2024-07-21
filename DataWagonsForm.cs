@@ -17,7 +17,8 @@ namespace Automatic_generation_of_balance_verification_protocols
         private DataSet WagonsAndTransinDataSet;
         public DataWagonsForm()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            DoubleBuffered = true;
             WagonsAndTransinDataSet = new DataSet();
             progressBar.Maximum = 1;
             progressBar.Value = 0;
@@ -28,6 +29,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         public DataWagonsForm(DataSet table)
         {
             InitializeComponent();
+            DoubleBuffered = true;
             if (WagonsAndTransinDataSet != null)
             {
                 WagonsAndTransinDataSet.Tables.Clear();
@@ -286,7 +288,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                     CreateTable(i);
                 }
             }
-            else
+            else if (numericUpDownTransit.Value < WagonsAndTransinDataSet.Tables.Count)
             {
                 int count = WagonsAndTransinDataSet.Tables.Count;
                 for (int i = count; i > numericUpDownTransit.Value; i--)
@@ -405,6 +407,17 @@ namespace Automatic_generation_of_balance_verification_protocols
             }
             return true;
         }
+        public bool checkSet()
+        {
+            foreach (DataTable db in WagonsAndTransinDataSet.Tables) 
+            {
+                if (!checkTableValue(db))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         private void tableWagonsAndTransit_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -438,6 +451,16 @@ namespace Automatic_generation_of_balance_verification_protocols
                     }
                 }
             }
+        }
+
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            Invalidate();
+        }
+
+        private void menuStripTransitButton_ItemAdded(object sender, ToolStripItemEventArgs e)
+        {
+            
         }
     }
 }

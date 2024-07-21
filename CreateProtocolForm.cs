@@ -98,8 +98,10 @@ namespace Automatic_generation_of_balance_verification_protocols
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataWagonsForm dataWagonsForm = new DataWagonsForm();
+            DataSet dataSet = new DataSet();
             if (wagonsAndTransit != null && wagonsAndTransit.Tables.Count > 0)
             {
+                dataSet = wagonsAndTransit.Copy();
                 dataWagonsForm = new DataWagonsForm(wagonsAndTransit);
             }
             this.Hide();
@@ -126,6 +128,13 @@ namespace Automatic_generation_of_balance_verification_protocols
                         infoAbout.Add($"{textBoxCountWagonsTranslit.Name}", textBoxCountWagonsTranslit.Text);
                     }
                     textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
+                }
+                else if (dataWagonsForm.DialogResult == DialogResult.Cancel)
+                {
+                    if (!dataWagonsForm.checkSet())
+                    {
+                        wagonsAndTransit = dataSet.Copy();
+                    }
                 }
                 checkProgressBar();
                 this.Show();

@@ -37,10 +37,12 @@
             this.numericUpDownWagons = new System.Windows.Forms.NumericUpDown();
             this.labelWagons = new System.Windows.Forms.Label();
             this.menuStripTransitButton = new System.Windows.Forms.MenuStrip();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.tableWagonsAndTransit)).BeginInit();
             this.panelData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWagons)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableWagonsAndTransit
@@ -53,7 +55,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 376);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 400);
             this.tableWagonsAndTransit.TabIndex = 1;
             this.tableWagonsAndTransit.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableWagonsAndTransit_CellEndEdit);
             // 
@@ -160,32 +162,43 @@
             // 
             // menuStripTransitButton
             // 
-            this.menuStripTransitButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 426);
+            this.menuStripTransitButton.Location = new System.Drawing.Point(0, 0);
             this.menuStripTransitButton.Name = "menuStripTransitButton";
-            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 24);
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 28);
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
+            this.menuStripTransitButton.ItemAdded += new System.Windows.Forms.ToolStripItemEventHandler(this.menuStripTransitButton_ItemAdded);
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.menuStripTransitButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 422);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1071, 28);
+            this.panel1.TabIndex = 4;
             // 
             // DataWagonsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1071, 450);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tableWagonsAndTransit);
             this.Controls.Add(this.panelData);
-            this.Controls.Add(this.menuStripTransitButton);
             this.MainMenuStrip = this.menuStripTransitButton;
             this.Name = "DataWagonsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Данные о вагонах и проездах";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.tableWagonsAndTransit)).EndInit();
             this.panelData.ResumeLayout(false);
             this.panelData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWagons)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,5 +214,6 @@
         protected System.Windows.Forms.DataGridView tableWagonsAndTransit;
         private System.Windows.Forms.MenuStrip menuStripTransitButton;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Panel panel1;
     }
 }
