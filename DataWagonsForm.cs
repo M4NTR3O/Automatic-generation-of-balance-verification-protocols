@@ -48,6 +48,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 if (i == 0)
                 {
                     menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                    (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].BackColor = Color.DarkGray;
                     tableWagonsAndTransit.DataSource = db;
                 }
                 for (int j = 0; j < wagonsCount; j++)
@@ -91,21 +92,64 @@ namespace Automatic_generation_of_balance_verification_protocols
             tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
             for (int i = 0; i < WagonsAndTransinDataSet.Tables.Count; i++)
             {
-                menuStripTransitButton.Items.Add($"Проезд №{i + 1}");
-                menuStripTransitButton.Items[i].Click += OnClick_menuStripTransitButtons;
+                if (i % 5 == 0)
+                {
+                    ToolStripDropDownButton btn = new ToolStripDropDownButton($"Проезды №{i + 1}-{i + 5}");
+                    menuStripTransitButton.Items.Add(btn);
+                }
+                (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems.Add($"Проезд №{i + 1}");
+                (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].Click += OnClick_menuStripTransitButtons;
                 if (i == 0 && checkTableValue(WagonsAndTransinDataSet.Tables[i]))
                 {
-                    menuStripTransitButton.Items[i].BackColor = Color.DarkGreen;
+                    (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].BackColor = Color.DarkGreen;
                     progressBar.Value++;
                 }
                 else if (i == 0)
                 {
-                    menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                    (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].BackColor = Color.DarkGray;
                 }
                 else if (checkTableValue(WagonsAndTransinDataSet.Tables[i]))
                 {
-                    menuStripTransitButton.Items[i].BackColor = Color.LightGreen;
+                    (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].BackColor = Color.LightGreen;
                     progressBar.Value++;
+                }
+                if (i % 5 == 0 && i != 0)
+                {
+                    menuStripTransitButton.Items[i / 5 - 1].BackColor = Color.LightGreen;
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if ((menuStripTransitButton.Items[i / 5 - 1] as ToolStripDropDownButton).DropDownItems[j].BackColor == SystemColors.Control)
+                        {
+                            menuStripTransitButton.Items[i / 5 - 1].BackColor = SystemColors.Control;
+                        }
+                        else if ((menuStripTransitButton.Items[i / 5 - 1] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[i / 5 - 1].BackColor == Color.LightGreen))
+                        {
+                            menuStripTransitButton.Items[i / 5 - 1].BackColor = Color.DarkGreen;
+                        }
+                        else if ((menuStripTransitButton.Items[i / 5 - 1] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[i / 5 - 1].BackColor == SystemColors.Control))
+                        {
+                            menuStripTransitButton.Items[i / 5 - 1].BackColor = Color.DarkGray;
+                        }
+                    }
+                }
+            }
+            if (WagonsAndTransinDataSet.Tables.Count % 5 > 0)
+            {
+                menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5].BackColor = Color.LightGreen;
+                for (int j = 0; j < WagonsAndTransinDataSet.Tables.Count % 5; j++)
+                {
+                    if ((menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5] as ToolStripDropDownButton).DropDownItems[j].BackColor == SystemColors.Control)
+                    {
+                        menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5].BackColor = SystemColors.Control;
+                    }
+                    else if ((menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5].BackColor == Color.LightGreen))
+                    {
+                        menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5].BackColor = Color.DarkGreen;
+                    }
+                    else if ((menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5].BackColor == SystemColors.Control))
+                    {
+                        menuStripTransitButton.Items[(WagonsAndTransinDataSet.Tables.Count - 1) / 5].BackColor = Color.DarkGray;
+                    }
                 }
             }
             CheckProgressBar();
@@ -113,47 +157,105 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void OnClick_menuStripTransitButtons(object sender, EventArgs e)
         {
+            for (int j = 0; j < tableWagonsAndTransit.Rows.Count; j++)
+            {
+                for (int k = 0; k < WagonsAndTransinDataSet.Tables.Count; k++)
+                {
+                    WagonsAndTransinDataSet.Tables[k].Rows[j].SetField(0, tableWagonsAndTransit.Rows[j].Cells[0].Value);
+                    WagonsAndTransinDataSet.Tables[k].Rows[j].SetField(1, tableWagonsAndTransit.Rows[j].Cells[1].Value);
+                }
+            }
             for (int i = 0; i < menuStripTransitButton.Items.Count; i++)
             {
-                for (int j = 0; j < tableWagonsAndTransit.Rows.Count; j++)
+                if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Contains(sender as ToolStripItem))
                 {
-                    WagonsAndTransinDataSet.Tables[i].Rows[j].SetField(0, tableWagonsAndTransit.Rows[j].Cells[0].Value);
-                    WagonsAndTransinDataSet.Tables[i].Rows[j].SetField(1,tableWagonsAndTransit.Rows[j].Cells[1].Value);
-                }
-                if (menuStripTransitButton.Items[i] == (sender as ToolStripItem))
-                {
-                    if (checkTableValue(WagonsAndTransinDataSet.Tables[i]))
+                    for (int j = 0; j < (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count; j++)
                     {
-                        menuStripTransitButton.Items[i].BackColor = Color.DarkGreen;
+                        if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j] == (sender as ToolStripItem))
+                        {
+                            if (checkTableValue(WagonsAndTransinDataSet.Tables[i * 5 + j]))
+                            {
+                                //menuStripTransitButton.Items[i].BackColor = Color.DarkGreen;
+                                (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = Color.DarkGreen;
+                            }
+                            else
+                            {
+                                //menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                                (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = Color.DarkGray;
+                            }
+                            tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[i * 5 + j];
+                            tableWagonsAndTransit.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+                            tableWagonsAndTransit.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+                            tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+                        }
+                        else if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen || (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGray)
+                        {
+                            if (checkTableValue(WagonsAndTransinDataSet.Tables[i * 5 + j]))
+                            {
+                                if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGray)
+                                {
+                                    progressBar.Value++;
+                                    CheckProgressBar();
+                                }
+                                (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = Color.LightGreen;
+                            }
+                            else
+                            {
+                                if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen)
+                                {
+                                    progressBar.Value--;
+                                    CheckProgressBar();
+                                }
+                                (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = SystemColors.Control;
+                            }
+                        }
                     }
-                    else
+                    ToolStripItem[] items = new ToolStripItem[(menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count];
+                    ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems).CopyTo(items, 0);
+                    if (items.Any(s => s.BackColor == SystemColors.Control || s.BackColor == Color.DarkGray))
                     {
                         menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
                     }
-                    tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[i];
-                    tableWagonsAndTransit.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
-                    tableWagonsAndTransit.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
-                    tableWagonsAndTransit.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
-                }
-                else if (menuStripTransitButton.Items[i].BackColor == Color.DarkGreen || menuStripTransitButton.Items[i].BackColor == Color.DarkGray)
-                {
-                    if (checkTableValue(WagonsAndTransinDataSet.Tables[i]))
+                    else
                     {
-                        if (menuStripTransitButton.Items[i].BackColor == Color.DarkGray)
+                        menuStripTransitButton.Items[i].BackColor = Color.DarkGreen;
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count; j++)
+                    {
+                        if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen || (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGray)
                         {
-                            progressBar.Value++;
-                            CheckProgressBar();
+                            if (checkTableValue(WagonsAndTransinDataSet.Tables[i * 5 + j]))
+                            {
+                                if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGray)
+                                {
+                                    progressBar.Value++;
+                                    CheckProgressBar();
+                                }
+                                (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = Color.LightGreen;
+                            }
+                            else
+                            {
+                                if ((menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen)
+                                {
+                                    progressBar.Value--;
+                                    CheckProgressBar();
+                                }
+                                (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = SystemColors.Control;
+                            }
                         }
-                        menuStripTransitButton.Items[i].BackColor = Color.LightGreen;
+                    }
+                    ToolStripItem[] items = new ToolStripItem[(menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count];
+                    (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.CopyTo(items, 0);
+                    if (items.Any(s => s.BackColor == SystemColors.Control))
+                    {
+                        menuStripTransitButton.Items[i].BackColor = SystemColors.Control;
                     }
                     else
                     {
-                        if (menuStripTransitButton.Items[i].BackColor == Color.DarkGreen)
-                        {
-                            progressBar.Value--;
-                            CheckProgressBar();
-                        }
-                        menuStripTransitButton.Items[i].BackColor = SystemColors.Control;
+                        menuStripTransitButton.Items[i].BackColor = Color.LightGreen;
                     }
                 }
             }
@@ -179,8 +281,13 @@ namespace Automatic_generation_of_balance_verification_protocols
             db.Columns.Add($"Проезд №{i + 1}");
             db.Columns[1].DataType = typeof(int);
             db.Columns[2].DataType = typeof(int);
-            menuStripTransitButton.Items.Add($"Проезд №{i + 1}");
-            menuStripTransitButton.Items[i].Click += OnClick_menuStripTransitButtons;
+            if (i % 5 == 0)
+            {
+                ToolStripDropDownButton btn = new ToolStripDropDownButton($"Проезды №{i + 1}-{i + 5}");
+                menuStripTransitButton.Items.Add(btn);
+            }
+            (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems.Add($"Проезд №{i + 1}");
+            (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].Click += OnClick_menuStripTransitButtons;
             db.Columns.Add("Погрешность абсолютная");
             db.Columns.Add("Погрешность относительная");
             db.Columns[3].DataType = typeof(int);
@@ -252,15 +359,30 @@ namespace Automatic_generation_of_balance_verification_protocols
                 }
                 progressBar.Value = 0;
                 CheckProgressBar();
-                foreach (ToolStripItem item in menuStripTransitButton.Items)
+                foreach (ToolStripDropDownButton item in menuStripTransitButton.Items)
                 {
                     if (item.BackColor == Color.DarkGreen || item.BackColor == Color.DarkGray)
                     {
                         item.BackColor = Color.DarkGray;
+                        foreach (ToolStripItem stripItem in item.DropDownItems)
+                        {
+                            if (stripItem.BackColor == Color.DarkGreen || stripItem.BackColor == Color.DarkGray)
+                            {
+                                stripItem.BackColor = Color.DarkGray;
+                            }
+                            else
+                            {
+                                stripItem.BackColor = SystemColors.Control;
+                            }
+                        }
                     }
                     else
                     {
                         item.BackColor = SystemColors.Control;
+                        foreach (ToolStripItem stripItem in item.DropDownItems)
+                        {
+                             stripItem.BackColor = SystemColors.Control;
+                        }
                     }
                 }
             }
@@ -287,6 +409,15 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     CreateTable(i);
                 }
+                for (int i = 0; i < count / 5; i++)
+                {
+                    ToolStripItem[] toolStripItems = new ToolStripItem[(menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count];
+                    (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.CopyTo(toolStripItems, 0);
+                    if (toolStripItems.Any(s => s.BackColor == Color.DarkGray || s.BackColor == Color.DarkGreen))
+                    {
+                        menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                    }
+                }
             }
             else if (numericUpDownTransit.Value < WagonsAndTransinDataSet.Tables.Count)
             {
@@ -297,8 +428,37 @@ namespace Automatic_generation_of_balance_verification_protocols
                     {
                         progressBar.Value -= 1;
                     }
+                    if (WagonsAndTransinDataSet.Tables[i - 1] == tableWagonsAndTransit.DataSource)
+                    {
+                        tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[i - 2];
+                        if ((menuStripTransitButton.Items[(i - 2) / 5] as ToolStripDropDownButton).DropDownItems[(i - 2) % 5].BackColor == Color.LightGreen)
+                        {
+                            (menuStripTransitButton.Items[(i - 2) / 5] as ToolStripDropDownButton).DropDownItems[(i - 2) % 5].BackColor = Color.DarkGreen;
+                        }
+                        else
+                        {
+                            (menuStripTransitButton.Items[(i - 2) / 5] as ToolStripDropDownButton).DropDownItems[(i - 2) % 5].BackColor = Color.DarkGray;
+                        }
+                        ToolStripItem[] toolStripItems = new ToolStripItem[(menuStripTransitButton.Items[(i - 2) / 5] as ToolStripDropDownButton).DropDownItems.Count];
+                        (menuStripTransitButton.Items[(i - 2) / 5] as ToolStripDropDownButton).DropDownItems.CopyTo(toolStripItems, 0);
+                        if (toolStripItems.All(s => s.BackColor == Color.LightGreen || s.BackColor == Color.DarkGreen))
+                        {
+                            menuStripTransitButton.Items[(i - 2) / 5].BackColor = Color.DarkGreen;
+                        }
+                        else
+                        {
+                            menuStripTransitButton.Items[(i - 2) / 5].BackColor = Color.DarkGray;
+                        }
+                    }
                     WagonsAndTransinDataSet.Tables.Remove($"{i}");
-                    menuStripTransitButton.Items.Remove(menuStripTransitButton.Items[i - 1]);
+                    if (i % 5 - 1 == 0)
+                    {
+                        menuStripTransitButton.Items.Remove(menuStripTransitButton.Items[i / 5]);
+                    }
+                    else
+                    {
+                        (menuStripTransitButton.Items[(i - 1) / 5] as ToolStripDropDownButton).DropDownItems.RemoveAt((i - 1) % 5);
+                    }
                 }
             }
             progressBar.Maximum = (int)numericUpDownTransit.Value;
@@ -426,28 +586,50 @@ namespace Automatic_generation_of_balance_verification_protocols
                 calculationTable();
                 if (checkTableValue(tableWagonsAndTransit.DataSource as DataTable))
                 {
-                    foreach(ToolStripItem item in menuStripTransitButton.Items)
+                    foreach(ToolStripDropDownButton item in menuStripTransitButton.Items)
                     {
                         if (item.BackColor == Color.DarkGray)
                         {
-                            item.BackColor = Color.DarkGreen;
-                            progressBar.Value++;
-                            CheckProgressBar();
-                            break;
+                            foreach (ToolStripItem stripitem in item.DropDownItems)
+                            {
+                                if (stripitem.BackColor == Color.DarkGray)
+                                {
+                                    stripitem.BackColor = Color.DarkGreen;
+                                    progressBar.Value++;
+                                    CheckProgressBar();
+                                    break;
+                                }
+                            }
+                            ToolStripItem[] toolStrips = new ToolStripItem[item.DropDownItems.Count];
+                            item.DropDownItems.CopyTo(toolStrips, 0);
+                            if(toolStrips.Any(s => s.BackColor == SystemColors.Control)){
+                                item.BackColor = Color.DarkGray;
+                            }
+                            else
+                            {
+                                item.BackColor = Color.DarkGreen;
+                            }
                         }
                     }
                 }
             }
             else
             {
-                foreach (ToolStripItem item in menuStripTransitButton.Items)
+                foreach (ToolStripDropDownButton item in menuStripTransitButton.Items)
                 {
-                    if (item.BackColor == Color.DarkGreen)
+                    if (item.BackColor == Color.DarkGreen || item.BackColor == Color.DarkGray)
                     {
-                        item.BackColor = Color.DarkGray;
-                        progressBar.Value--;
-                        CheckProgressBar();
-                        break;
+                        foreach (ToolStripItem stripitem in item.DropDownItems)
+                        {
+                            if (stripitem.BackColor == Color.DarkGreen)
+                            {
+                                item.BackColor = Color.DarkGray;
+                                stripitem.BackColor = Color.DarkGray;
+                                progressBar.Value--;
+                                CheckProgressBar();
+                                break;
+                            }
+                        }
                     }
                 }
             }

@@ -55,7 +55,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 400);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 674);
             this.tableWagonsAndTransit.TabIndex = 1;
             this.tableWagonsAndTransit.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableWagonsAndTransit_CellEndEdit);
             // 
@@ -165,7 +165,7 @@
             this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripTransitButton.Location = new System.Drawing.Point(0, 0);
             this.menuStripTransitButton.Name = "menuStripTransitButton";
-            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 28);
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 24);
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
             this.menuStripTransitButton.ItemAdded += new System.Windows.Forms.ToolStripItemEventHandler(this.menuStripTransitButton_ItemAdded);
@@ -175,16 +175,16 @@
             this.panel1.AutoSize = true;
             this.panel1.Controls.Add(this.menuStripTransitButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 422);
+            this.panel1.Location = new System.Drawing.Point(0, 700);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1071, 28);
+            this.panel1.Size = new System.Drawing.Size(1071, 24);
             this.panel1.TabIndex = 4;
             // 
             // DataWagonsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 450);
+            this.ClientSize = new System.Drawing.Size(1071, 724);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tableWagonsAndTransit);
             this.Controls.Add(this.panelData);
@@ -192,6 +192,7 @@
             this.Name = "DataWagonsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Данные о вагонах и проездах";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.tableWagonsAndTransit)).EndInit();
             this.panelData.ResumeLayout(false);
             this.panelData.PerformLayout();
