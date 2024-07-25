@@ -29,7 +29,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private Dictionary<string, double> maxDeltaWagonsAndTransit = new Dictionary<string, double>();
         private Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
         private Dictionary<string, string> importantPerson = new Dictionary<string, string>();
-        private Dictionary<string, string> infoAbout = new Dictionary<string, string>();
+        private Dictionary<string, string> infoAbout = new Dictionary<string, string>() { { "textBoxOwnerSI", "" } };
 
         public CreateProtocolForm()
         {
@@ -42,6 +42,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         public CreateProtocolForm(string filename)
         {
             InitializeComponent();
+            toolStripProgressBar.Value = 0;
             XDocument xDoc = XDocument.Load(filename);
             dateTime = Convert.ToDateTime(xDoc.Root.Element("Date").Attribute("Date").Value);
             resultWagonsAndTransit.Clear();
@@ -57,20 +58,33 @@ namespace Automatic_generation_of_balance_verification_protocols
             {
                 parametrsMetrology.Add(el.Name.LocalName, Convert.ToInt32(el.Value));
             }
+            bool flag = true;
             foreach (XElement el in xDoc.Root.Element("importantPerson").Elements())
             {
                 importantPerson.Add(el.Name.LocalName, el.Value);
+                if (el.Value != "" && flag)
+                {
+                    flag = false;
+                    toolStripProgressBar.Value = 5;
+                }
             }
             foreach (XElement el in xDoc.Root.Element("infoAbout").Elements())
             {
-                infoAbout.Add(el.Name.LocalName, el.Value);
+                if (el.Name.LocalName == "textBoxOwnerSI")
+                {
+                    infoAbout["textBoxOwnerSI"] = el.Value;
+                }
+                else
+                {
+                    infoAbout.Add(el.Name.LocalName, el.Value);
+                }
             }
             XDocument tempDoc = new XDocument();
             tempDoc.Add(xDoc.Root.Element("NewDataSet"));
             tempDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             File.Delete($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
-            toolStripProgressBar.Value = 95;
+            toolStripProgressBar.Value += 80;
             FillForm();
             checkProgressBar();
         }
@@ -212,6 +226,10 @@ namespace Automatic_generation_of_balance_verification_protocols
                 toolStripProgressBar.Value += 10;
                 infoAbout.Add($"{(sender as TextBox).Name}", (sender as TextBox).Text);
             }
+            else
+            {
+                infoAbout[(sender as TextBox).Name] = (sender as TextBox).Text;
+            }
             checkProgressBar();
         }
 
@@ -228,7 +246,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             else
             {
                 toolStripProgressBar.ForeColor = Color.Green;
-                if (toolStripProgressBar.Value >= 95)
+                if (toolStripProgressBar.Value >= 85)
                 {
                     toolStripButtonPreview.Enabled = true;
                 }
@@ -808,6 +826,12 @@ namespace Automatic_generation_of_balance_verification_protocols
                 delta.RemoveChild(delta.SelectSingleNode($"//th[contains(@id, 'P{i / 3}MaxDeltaAbsTransit{(workI % 3) + 1}')]"));
                 delta.RemoveChild(delta.SelectSingleNode($"//th[contains(@id, 'P{i / 3}MaxDeltaRelativeTransit{(workI % 3) + 1}')]"));
             }
+        }
+
+        private void textBoxOwnerSI_Leave(object sender, EventArgs e)
+        {
+            infoAbout[(sender as TextBox).Name] = (sender as TextBox).Text;
+            checkProgressBar();
         }
     }
 }

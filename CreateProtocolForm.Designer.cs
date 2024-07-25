@@ -71,7 +71,7 @@
             this.AddingToolStripMenuItem});
             this.menuStripRequired.Location = new System.Drawing.Point(0, 0);
             this.menuStripRequired.Name = "menuStripRequired";
-            this.menuStripRequired.Size = new System.Drawing.Size(1009, 30);
+            this.menuStripRequired.Size = new System.Drawing.Size(1009, 28);
             this.menuStripRequired.TabIndex = 0;
             this.menuStripRequired.Text = "menuStrip";
             // 
@@ -133,6 +133,7 @@
             // 
             // toolStripProgressBar
             // 
+            this.toolStripProgressBar.Maximum = 90;
             this.toolStripProgressBar.Name = "toolStripProgressBar";
             this.toolStripProgressBar.Size = new System.Drawing.Size(100, 28);
             // 
@@ -262,7 +263,7 @@
             this.textBoxOwnerSI.Name = "textBoxOwnerSI";
             this.textBoxOwnerSI.Size = new System.Drawing.Size(614, 63);
             this.textBoxOwnerSI.TabIndex = 14;
-            this.textBoxOwnerSI.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxOwnerSI.Leave += new System.EventHandler(this.textBoxOwnerSI_Leave);
             // 
             // textBoxWeightWagons
             // 
