@@ -29,16 +29,12 @@
         private void InitializeComponent()
         {
             this.labelMax = new System.Windows.Forms.Label();
-            this.labelMaxn = new System.Windows.Forms.Label();
             this.labelMin = new System.Windows.Forms.Label();
-            this.labelMinn = new System.Windows.Forms.Label();
             this.labelDe = new System.Windows.Forms.Label();
             this.textBoxMax = new System.Windows.Forms.TextBox();
-            this.textBoxMaxn = new System.Windows.Forms.TextBox();
             this.textBoxMin = new System.Windows.Forms.TextBox();
-            this.textBoxMinn = new System.Windows.Forms.TextBox();
-            this.textBoxDe = new System.Windows.Forms.TextBox();
             this.buttonSaveData = new System.Windows.Forms.Button();
+            this.comboBoxDe = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // labelMax
@@ -50,37 +46,19 @@
             this.labelMax.TabIndex = 0;
             this.labelMax.Text = "Max, т =";
             // 
-            // labelMaxn
-            // 
-            this.labelMaxn.AutoSize = true;
-            this.labelMaxn.Location = new System.Drawing.Point(261, 101);
-            this.labelMaxn.Name = "labelMaxn";
-            this.labelMaxn.Size = new System.Drawing.Size(62, 16);
-            this.labelMaxn.TabIndex = 1;
-            this.labelMaxn.Text = "Max,n т =";
-            // 
             // labelMin
             // 
             this.labelMin.AutoSize = true;
-            this.labelMin.Location = new System.Drawing.Point(272, 144);
+            this.labelMin.Location = new System.Drawing.Point(268, 106);
             this.labelMin.Name = "labelMin";
             this.labelMin.Size = new System.Drawing.Size(51, 16);
             this.labelMin.TabIndex = 2;
             this.labelMin.Text = "Min, т =";
             // 
-            // labelMinn
-            // 
-            this.labelMinn.AutoSize = true;
-            this.labelMinn.Location = new System.Drawing.Point(264, 192);
-            this.labelMinn.Name = "labelMinn";
-            this.labelMinn.Size = new System.Drawing.Size(58, 16);
-            this.labelMinn.TabIndex = 3;
-            this.labelMinn.Text = "Min,n т =";
-            // 
             // labelDe
             // 
             this.labelDe.AutoSize = true;
-            this.labelDe.Location = new System.Drawing.Point(280, 241);
+            this.labelDe.Location = new System.Drawing.Point(280, 156);
             this.labelDe.Name = "labelDe";
             this.labelDe.Size = new System.Drawing.Size(39, 16);
             this.labelDe.TabIndex = 4;
@@ -93,33 +71,12 @@
             this.textBoxMax.Size = new System.Drawing.Size(177, 22);
             this.textBoxMax.TabIndex = 5;
             // 
-            // textBoxMaxn
-            // 
-            this.textBoxMaxn.Location = new System.Drawing.Point(329, 98);
-            this.textBoxMaxn.Name = "textBoxMaxn";
-            this.textBoxMaxn.Size = new System.Drawing.Size(177, 22);
-            this.textBoxMaxn.TabIndex = 6;
-            // 
             // textBoxMin
             // 
-            this.textBoxMin.Location = new System.Drawing.Point(329, 141);
+            this.textBoxMin.Location = new System.Drawing.Point(329, 106);
             this.textBoxMin.Name = "textBoxMin";
             this.textBoxMin.Size = new System.Drawing.Size(177, 22);
             this.textBoxMin.TabIndex = 7;
-            // 
-            // textBoxMinn
-            // 
-            this.textBoxMinn.Location = new System.Drawing.Point(329, 189);
-            this.textBoxMinn.Name = "textBoxMinn";
-            this.textBoxMinn.Size = new System.Drawing.Size(177, 22);
-            this.textBoxMinn.TabIndex = 8;
-            // 
-            // textBoxDe
-            // 
-            this.textBoxDe.Location = new System.Drawing.Point(329, 238);
-            this.textBoxDe.Name = "textBoxDe";
-            this.textBoxDe.Size = new System.Drawing.Size(177, 22);
-            this.textBoxDe.TabIndex = 9;
             // 
             // buttonSaveData
             // 
@@ -133,21 +90,31 @@
             this.buttonSaveData.UseVisualStyleBackColor = false;
             this.buttonSaveData.Click += new System.EventHandler(this.buttonSaveData_Click);
             // 
+            // comboBoxDe
+            // 
+            this.comboBoxDe.FormattingEnabled = true;
+            this.comboBoxDe.Items.AddRange(new object[] {
+            "20",
+            "50",
+            "100",
+            "200",
+            "500"});
+            this.comboBoxDe.Location = new System.Drawing.Point(329, 153);
+            this.comboBoxDe.Name = "comboBoxDe";
+            this.comboBoxDe.Size = new System.Drawing.Size(177, 24);
+            this.comboBoxDe.TabIndex = 11;
+            // 
             // MetrologyParametrsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.comboBoxDe);
             this.Controls.Add(this.buttonSaveData);
-            this.Controls.Add(this.textBoxDe);
-            this.Controls.Add(this.textBoxMinn);
             this.Controls.Add(this.textBoxMin);
-            this.Controls.Add(this.textBoxMaxn);
             this.Controls.Add(this.textBoxMax);
             this.Controls.Add(this.labelDe);
-            this.Controls.Add(this.labelMinn);
             this.Controls.Add(this.labelMin);
-            this.Controls.Add(this.labelMaxn);
             this.Controls.Add(this.labelMax);
             this.Name = "MetrologyParametrsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -159,15 +126,11 @@
 
         #endregion
         private System.Windows.Forms.TextBox textBoxMax;
-        private System.Windows.Forms.TextBox textBoxMaxn;
         private System.Windows.Forms.TextBox textBoxMin;
-        private System.Windows.Forms.TextBox textBoxMinn;
-        private System.Windows.Forms.TextBox textBoxDe;
         private System.Windows.Forms.Button buttonSaveData;
         internal System.Windows.Forms.Label labelMax;
-        internal System.Windows.Forms.Label labelMaxn;
         internal System.Windows.Forms.Label labelMin;
-        internal System.Windows.Forms.Label labelMinn;
         internal System.Windows.Forms.Label labelDe;
+        private System.Windows.Forms.ComboBox comboBoxDe;
     }
 }

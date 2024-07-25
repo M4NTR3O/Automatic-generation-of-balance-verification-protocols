@@ -22,10 +22,8 @@ namespace Automatic_generation_of_balance_verification_protocols
         {
             InitializeComponent();
             textBoxMax.Text = parametrs[labelMax.Name].ToString();
-            textBoxMaxn.Text = parametrs[labelMaxn.Name].ToString();
             textBoxMin.Text = parametrs[labelMin.Name].ToString();
-            textBoxMinn.Text = parametrs[labelMinn.Name].ToString();
-            textBoxDe.Text = parametrs[labelDe.Name].ToString();
+            comboBoxDe.Text = parametrs[labelDe.Name].ToString();
         }
 
         private void buttonSaveData_Click(object sender, EventArgs e)
@@ -33,10 +31,8 @@ namespace Automatic_generation_of_balance_verification_protocols
             try
             {
                 dictionary.Add(labelMax.Name, Convert.ToInt32(textBoxMax.Text));
-                dictionary.Add(labelMaxn.Name, Convert.ToInt32(textBoxMaxn.Text));
                 dictionary.Add(labelMin.Name, Convert.ToInt32(textBoxMin.Text));
-                dictionary.Add(labelMinn.Name, Convert.ToInt32(textBoxMinn.Text));
-                dictionary.Add(labelDe.Name, Convert.ToInt32(textBoxDe.Text));
+                dictionary.Add(labelDe.Name, Convert.ToInt32(comboBoxDe.Text));
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex) 

@@ -110,7 +110,7 @@
             this.Controls.Add(this.labelRepresentativeOfTensib);
             this.Controls.Add(this.labelStateTrustee);
             this.Name = "AddingForm";
-            this.Text = "Приложения";
+            this.Text = "Комиссия";
             this.ResumeLayout(false);
             this.PerformLayout();
 
