@@ -38,7 +38,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.labelNameProtocol = new System.Windows.Forms.Label();
-            this.textBoxNameProtocol = new System.Windows.Forms.TextBox();
             this.labelTypeMeasuringTool = new System.Windows.Forms.Label();
             this.textBoxTypeMeasuringTool = new System.Windows.Forms.TextBox();
             this.labelClassAccuracy = new System.Windows.Forms.Label();
@@ -58,6 +57,12 @@
             this.label = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelKg = new System.Windows.Forms.Label();
+            this.textBoxModification = new System.Windows.Forms.TextBox();
+            this.labelModification = new System.Windows.Forms.Label();
+            this.textBoxPlantNumber = new System.Windows.Forms.TextBox();
+            this.labelPlantNumber = new System.Windows.Forms.Label();
+            this.textBoxRegistrationNumber = new System.Windows.Forms.TextBox();
+            this.labelRegistrationNumber = new System.Windows.Forms.Label();
             this.menuStripRequired.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +84,7 @@
             // 
             this.DataWagonToolStripMenuItem.BackColor = System.Drawing.Color.Coral;
             this.DataWagonToolStripMenuItem.Name = "DataWagonToolStripMenuItem";
-            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.DataWagonToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
             this.DataWagonToolStripMenuItem.Text = "Данные о вагонах и проездах";
             this.DataWagonToolStripMenuItem.Click += new System.EventHandler(this.DataWagonToolStripMenuItem_Click);
             // 
@@ -87,7 +92,7 @@
             // 
             this.MetrologyToolStripMenuItem.BackColor = System.Drawing.Color.Coral;
             this.MetrologyToolStripMenuItem.Name = "MetrologyToolStripMenuItem";
-            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 26);
+            this.MetrologyToolStripMenuItem.Size = new System.Drawing.Size(304, 24);
             this.MetrologyToolStripMenuItem.Text = "Основные метрологические параметры";
             this.MetrologyToolStripMenuItem.Click += new System.EventHandler(this.MetrologyToolStripMenuItem_Click);
             // 
@@ -95,7 +100,7 @@
             // 
             this.AddingToolStripMenuItem.BackColor = System.Drawing.Color.NavajoWhite;
             this.AddingToolStripMenuItem.Name = "AddingToolStripMenuItem";
-            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(92, 26);
+            this.AddingToolStripMenuItem.Size = new System.Drawing.Size(92, 24);
             this.AddingToolStripMenuItem.Text = "Комиссия";
             this.AddingToolStripMenuItem.Click += new System.EventHandler(this.AddingToolStripMenuItem_Click);
             // 
@@ -133,7 +138,7 @@
             // 
             // toolStripProgressBar
             // 
-            this.toolStripProgressBar.Maximum = 90;
+            this.toolStripProgressBar.Maximum = 110;
             this.toolStripProgressBar.Name = "toolStripProgressBar";
             this.toolStripProgressBar.Size = new System.Drawing.Size(100, 28);
             // 
@@ -141,39 +146,29 @@
             // 
             this.labelNameProtocol.AutoSize = true;
             this.labelNameProtocol.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelNameProtocol.Location = new System.Drawing.Point(155, 53);
+            this.labelNameProtocol.Location = new System.Drawing.Point(339, 30);
             this.labelNameProtocol.Name = "labelNameProtocol";
-            this.labelNameProtocol.Size = new System.Drawing.Size(181, 20);
+            this.labelNameProtocol.Size = new System.Drawing.Size(356, 20);
             this.labelNameProtocol.TabIndex = 2;
-            this.labelNameProtocol.Text = "Протокол поверки";
-            // 
-            // textBoxNameProtocol
-            // 
-            this.textBoxNameProtocol.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxNameProtocol.Location = new System.Drawing.Point(383, 50);
-            this.textBoxNameProtocol.Multiline = true;
-            this.textBoxNameProtocol.Name = "textBoxNameProtocol";
-            this.textBoxNameProtocol.Size = new System.Drawing.Size(614, 77);
-            this.textBoxNameProtocol.TabIndex = 3;
-            this.textBoxNameProtocol.Leave += new System.EventHandler(this.textBox_Leave);
+            this.labelNameProtocol.Text = "Протокол поверки весов в движении";
             // 
             // labelTypeMeasuringTool
             // 
             this.labelTypeMeasuringTool.AutoSize = true;
             this.labelTypeMeasuringTool.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTypeMeasuringTool.Location = new System.Drawing.Point(12, 144);
+            this.labelTypeMeasuringTool.Location = new System.Drawing.Point(55, 64);
             this.labelTypeMeasuringTool.Name = "labelTypeMeasuringTool";
-            this.labelTypeMeasuringTool.Size = new System.Drawing.Size(324, 16);
+            this.labelTypeMeasuringTool.Size = new System.Drawing.Size(281, 16);
             this.labelTypeMeasuringTool.TabIndex = 4;
-            this.labelTypeMeasuringTool.Text = "Наименование и тип средства измерений:";
+            this.labelTypeMeasuringTool.Text = "Наименование средства измерений:";
             // 
             // textBoxTypeMeasuringTool
             // 
             this.textBoxTypeMeasuringTool.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxTypeMeasuringTool.Location = new System.Drawing.Point(383, 144);
+            this.textBoxTypeMeasuringTool.Location = new System.Drawing.Point(383, 64);
             this.textBoxTypeMeasuringTool.Multiline = true;
             this.textBoxTypeMeasuringTool.Name = "textBoxTypeMeasuringTool";
-            this.textBoxTypeMeasuringTool.Size = new System.Drawing.Size(614, 67);
+            this.textBoxTypeMeasuringTool.Size = new System.Drawing.Size(614, 48);
             this.textBoxTypeMeasuringTool.TabIndex = 5;
             this.textBoxTypeMeasuringTool.Leave += new System.EventHandler(this.textBox_Leave);
             // 
@@ -344,11 +339,77 @@
             this.labelKg.TabIndex = 22;
             this.labelKg.Text = "килограмм.";
             // 
+            // textBoxModification
+            // 
+            this.textBoxModification.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxModification.Location = new System.Drawing.Point(383, 118);
+            this.textBoxModification.Multiline = true;
+            this.textBoxModification.Name = "textBoxModification";
+            this.textBoxModification.Size = new System.Drawing.Size(614, 24);
+            this.textBoxModification.TabIndex = 24;
+            this.textBoxModification.Leave += new System.EventHandler(this.textBox_Leave);
+            // 
+            // labelModification
+            // 
+            this.labelModification.AutoSize = true;
+            this.labelModification.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelModification.Location = new System.Drawing.Point(222, 121);
+            this.labelModification.Name = "labelModification";
+            this.labelModification.Size = new System.Drawing.Size(114, 16);
+            this.labelModification.TabIndex = 23;
+            this.labelModification.Text = "Модификация:";
+            // 
+            // textBoxPlantNumber
+            // 
+            this.textBoxPlantNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxPlantNumber.Location = new System.Drawing.Point(383, 148);
+            this.textBoxPlantNumber.Multiline = true;
+            this.textBoxPlantNumber.Name = "textBoxPlantNumber";
+            this.textBoxPlantNumber.Size = new System.Drawing.Size(614, 24);
+            this.textBoxPlantNumber.TabIndex = 26;
+            this.textBoxPlantNumber.Leave += new System.EventHandler(this.textBox_Leave);
+            // 
+            // labelPlantNumber
+            // 
+            this.labelPlantNumber.AutoSize = true;
+            this.labelPlantNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelPlantNumber.Location = new System.Drawing.Point(195, 151);
+            this.labelPlantNumber.Name = "labelPlantNumber";
+            this.labelPlantNumber.Size = new System.Drawing.Size(141, 16);
+            this.labelPlantNumber.TabIndex = 25;
+            this.labelPlantNumber.Text = "Заводской номер:";
+            // 
+            // textBoxRegistrationNumber
+            // 
+            this.textBoxRegistrationNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxRegistrationNumber.Location = new System.Drawing.Point(383, 178);
+            this.textBoxRegistrationNumber.Multiline = true;
+            this.textBoxRegistrationNumber.Name = "textBoxRegistrationNumber";
+            this.textBoxRegistrationNumber.Size = new System.Drawing.Size(614, 24);
+            this.textBoxRegistrationNumber.TabIndex = 28;
+            this.textBoxRegistrationNumber.Leave += new System.EventHandler(this.textBox_Leave);
+            // 
+            // labelRegistrationNumber
+            // 
+            this.labelRegistrationNumber.AutoSize = true;
+            this.labelRegistrationNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelRegistrationNumber.Location = new System.Drawing.Point(142, 181);
+            this.labelRegistrationNumber.Name = "labelRegistrationNumber";
+            this.labelRegistrationNumber.Size = new System.Drawing.Size(194, 16);
+            this.labelRegistrationNumber.TabIndex = 27;
+            this.labelRegistrationNumber.Text = "Регистрационный номер:";
+            // 
             // CreateProtocolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1009, 564);
+            this.Controls.Add(this.textBoxRegistrationNumber);
+            this.Controls.Add(this.labelRegistrationNumber);
+            this.Controls.Add(this.textBoxPlantNumber);
+            this.Controls.Add(this.labelPlantNumber);
+            this.Controls.Add(this.textBoxModification);
+            this.Controls.Add(this.labelModification);
             this.Controls.Add(this.labelKg);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label);
@@ -368,7 +429,6 @@
             this.Controls.Add(this.labelClassAccuracy);
             this.Controls.Add(this.textBoxTypeMeasuringTool);
             this.Controls.Add(this.labelTypeMeasuringTool);
-            this.Controls.Add(this.textBoxNameProtocol);
             this.Controls.Add(this.labelNameProtocol);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStripRequired);
@@ -396,7 +456,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
         private System.Windows.Forms.Label labelNameProtocol;
-        private System.Windows.Forms.TextBox textBoxNameProtocol;
         private System.Windows.Forms.Label labelTypeMeasuringTool;
         private System.Windows.Forms.TextBox textBoxTypeMeasuringTool;
         private System.Windows.Forms.Label labelClassAccuracy;
@@ -416,5 +475,11 @@
         private System.Windows.Forms.Label label;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelKg;
+        private System.Windows.Forms.TextBox textBoxModification;
+        private System.Windows.Forms.Label labelModification;
+        private System.Windows.Forms.TextBox textBoxPlantNumber;
+        private System.Windows.Forms.Label labelPlantNumber;
+        private System.Windows.Forms.TextBox textBoxRegistrationNumber;
+        private System.Windows.Forms.Label labelRegistrationNumber;
     }
 }

@@ -58,11 +58,11 @@
             // labelDe
             // 
             this.labelDe.AutoSize = true;
-            this.labelDe.Location = new System.Drawing.Point(280, 156);
+            this.labelDe.Location = new System.Drawing.Point(277, 156);
             this.labelDe.Name = "labelDe";
-            this.labelDe.Size = new System.Drawing.Size(39, 16);
+            this.labelDe.Size = new System.Drawing.Size(42, 16);
             this.labelDe.TabIndex = 4;
-            this.labelDe.Text = "D=e=";
+            this.labelDe.Text = "D=e =";
             // 
             // textBoxMax
             // 

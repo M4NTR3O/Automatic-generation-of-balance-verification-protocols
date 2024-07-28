@@ -58,15 +58,9 @@ namespace Automatic_generation_of_balance_verification_protocols
             {
                 parametrsMetrology.Add(el.Name.LocalName, Convert.ToInt32(el.Value));
             }
-            bool flag = true;
             foreach (XElement el in xDoc.Root.Element("importantPerson").Elements())
             {
                 importantPerson.Add(el.Name.LocalName, el.Value);
-                if (el.Value != "" && flag)
-                {
-                    flag = false;
-                    toolStripProgressBar.Value = 5;
-                }
             }
             foreach (XElement el in xDoc.Root.Element("infoAbout").Elements())
             {
@@ -84,7 +78,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             tempDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             File.Delete($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
-            toolStripProgressBar.Value += 80;
+            toolStripProgressBar.Value += 105;
             FillForm();
             checkProgressBar();
         }
@@ -98,8 +92,10 @@ namespace Automatic_generation_of_balance_verification_protocols
                 toolStripProgressBar.Value += 5;
                 AddingToolStripMenuItem.BackColor = Color.Green;
             }
-            textBoxNameProtocol.Text = infoAbout[textBoxNameProtocol.Name];
             textBoxTypeMeasuringTool.Text = infoAbout[textBoxTypeMeasuringTool.Name];
+            textBoxModification.Text = infoAbout[textBoxModification.Name];
+            textBoxPlantNumber.Text = infoAbout[textBoxPlantNumber.Name];
+            textBoxRegistrationNumber.Text = infoAbout[textBoxRegistrationNumber.Name];
             textBoxWagonGOST.Text = infoAbout[textBoxWagonGOST.Name];
             textBoxStructureGOST.Text = infoAbout[textBoxStructureGOST.Name];
             textBoxVerificationTools.Text = infoAbout[textBoxVerificationTools.Name];
@@ -246,7 +242,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             else
             {
                 toolStripProgressBar.ForeColor = Color.Green;
-                if (toolStripProgressBar.Value >= 85)
+                if (toolStripProgressBar.Value >= 105)
                 {
                     toolStripButtonPreview.Enabled = true;
                 }
@@ -300,7 +296,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private void dataToHTML()
         {
             string documentPath;
-            if (wagonsAndTransit.Tables[0].Rows.Count < 9)
+            if (wagonsAndTransit.Tables[0].Rows.Count < 8)
             {
                 documentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pattern\\Pattern.html");
             }
@@ -311,12 +307,15 @@ namespace Automatic_generation_of_balance_verification_protocols
             // Создать экземпляр HTML-документа
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.Load(documentPath);
-            //Название протокола поверки
-            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'nameProtocol')]").InnerHtml = labelNameProtocol.Text + " " + textBoxNameProtocol.Text;
+            
             //Дата протокола поверки
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'date')]").InnerHtml = printShortTime(dateTime);
             //Наименование и тип средств измерений
-            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'typeMeasuringTool')]").InnerHtml = "<strong>" + labelTypeMeasuringTool.Text + "</strong> " + textBoxTypeMeasuringTool.Text;
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'nameWeight')]").InnerHtml = textBoxTypeMeasuringTool.Text;
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'Modification')]").InnerHtml = textBoxModification.Text;
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'PlantNumber')]").InnerHtml = textBoxPlantNumber.Text;
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'RegistrationNumber')]").InnerHtml = textBoxRegistrationNumber.Text;
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'typeMeasuringTool')]").InnerHtml = "<strong>" + labelTypeMeasuringTool.Text + "</strong> " + textBoxTypeMeasuringTool.Text + " " + textBoxModification.Text + ",зав.№" + textBoxPlantNumber.Text + ". Регистрационный номер свидетельства об утверждении типа средства измерений " + textBoxRegistrationNumber.Text;
             //Метрологические параметры
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = "<strong>" + MetrologyToolStripMenuItem.Text +":</strong> ";
             foreach (var item in parametrsMetrology)
@@ -325,6 +324,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 
                 htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml += metrology.Controls.Find(item.Key, true)[0].Text + " " + item.Value + ", ";
             }
+            htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml.Remove(htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml.Length - 2);
             //Класс вагона
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classWagon')]").InnerHtml = infoAbout[textBoxWagonGOST.Name];
             //Класс состава
@@ -341,7 +341,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'representativeOfTensib')]").InnerHtml = (importantPerson["labelRepresentativeOfTensib"].Length > 0 ? importantPerson["labelRepresentativeOfTensib"] : "____________________") + @" \_____________\";
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'customerRepresentative')]").InnerHtml = (importantPerson["labelCustomerRepresentative"].Length > 0 ? importantPerson["labelCustomerRepresentative"] : "____________________") + @" \_____________\";
             //Заполнение таблиц
-            if (wagonsAndTransit.Tables[0].Rows.Count < 9)
+            if (wagonsAndTransit.Tables[0].Rows.Count < 8)
             {
                 if (wagonsAndTransit.Tables.Count > 6)
                 {
@@ -495,7 +495,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 this.Show();
                 MessageBox.Show("Файл успешно конвертирован в PDF", "Сохранение файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
-                ShellUtils.OpenUrl($@"./Протоколы/Протокол_{printFullTime(dateTime)}.pdf");
+                ShellUtils.OpenUrl(Path.GetFullPath($@"./Протоколы/Протокол_{printFullTime(dateTime)}.pdf"));
             }
             else
             {

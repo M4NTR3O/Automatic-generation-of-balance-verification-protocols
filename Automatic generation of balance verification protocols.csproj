@@ -179,8 +179,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Westwind.Utilities, Version=4.0.20.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Westwind.Utilities.4.0.20\lib\net462\Westwind.Utilities.dll</HintPath>
+    <Reference Include="Westwind.Utilities, Version=5.0.7.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Westwind.Utilities.5.0.7.4\lib\net462\Westwind.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Westwind.WebView.HtmlToPdf, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Westwind.WebView.HtmlToPdf.0.7.0\lib\net472\Westwind.WebView.HtmlToPdf.dll</HintPath>
