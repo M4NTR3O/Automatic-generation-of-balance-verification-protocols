@@ -409,13 +409,28 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     CreateTable(i);
                 }
-                for (int i = 0; i < count / 5; i++)
+                for (int i = 0; i < numericUpDownTransit.Value / 5; i++)
                 {
                     ToolStripItem[] toolStripItems = new ToolStripItem[(menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count];
                     (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.CopyTo(toolStripItems, 0);
-                    if (toolStripItems.Any(s => s.BackColor == Color.DarkGray || s.BackColor == Color.DarkGreen))
+                    if (toolStripItems.Any(s => s.BackColor == Color.DarkGray))
                     {
                         menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                    }
+                    else if (toolStripItems.All(s => s.BackColor == Color.DarkGreen || s.BackColor == Color.LightGreen))
+                    {
+                        menuStripTransitButton.Items[i].BackColor = Color.DarkGreen;
+                    }
+                    else if (toolStripItems.Any(s => s.BackColor == SystemColors.Control))
+                    {
+                        if (toolStripItems.Any(s => s.BackColor == Color.DarkGreen || s.BackColor == Color.DarkGray))
+                        {
+                            menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                        }
+                        else
+                        {
+                            menuStripTransitButton.Items[i].BackColor = SystemColors.Control;
+                        }
                     }
                 }
             }
@@ -458,6 +473,34 @@ namespace Automatic_generation_of_balance_verification_protocols
                     else
                     {
                         (menuStripTransitButton.Items[(i - 1) / 5] as ToolStripDropDownButton).DropDownItems.RemoveAt((i - 1) % 5);
+                    }
+                }
+                for (int i = 0; i < numericUpDownTransit.Value / 5; i++)
+                {
+                    ToolStripItem[] toolStripItems = new ToolStripItem[(menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.Count];
+                    (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems.CopyTo(toolStripItems, 0);
+                    if (toolStripItems.Any(s => s.BackColor == Color.DarkGray))
+                    {
+                        menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                    }
+                    else if (toolStripItems.All(s => s.BackColor == Color.LightGreen))
+                    {
+                        menuStripTransitButton.Items[i].BackColor = Color.LightGreen;
+                    }
+                    else if (toolStripItems.All(s => s.BackColor == Color.DarkGreen || s.BackColor == Color.LightGreen))
+                    {
+                        menuStripTransitButton.Items[i].BackColor = Color.DarkGreen;
+                    }
+                    else if (toolStripItems.Any(s => s.BackColor == SystemColors.Control))
+                    {
+                        if (toolStripItems.Any(s => s.BackColor == Color.DarkGreen || s.BackColor == Color.DarkGray))
+                        {
+                            menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
+                        }
+                        else
+                        {
+                            menuStripTransitButton.Items[i].BackColor = SystemColors.Control;
+                        }
                     }
                 }
             }

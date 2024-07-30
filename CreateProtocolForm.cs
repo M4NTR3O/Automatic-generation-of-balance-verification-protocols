@@ -78,7 +78,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             tempDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             File.Delete($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
-            toolStripProgressBar.Value += 105;
+            toolStripProgressBar.Value += 115;
             FillForm();
             checkProgressBar();
         }
@@ -103,6 +103,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             textBoxCountWagonsTranslit.Text = infoAbout[textBoxCountWagonsTranslit.Name];
             textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
             textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
+            comboBoxDirection.Text = infoAbout[comboBoxDirection.Name];
         }
 
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -222,9 +223,28 @@ namespace Automatic_generation_of_balance_verification_protocols
                 toolStripProgressBar.Value += 10;
                 infoAbout.Add($"{(sender as TextBox).Name}", (sender as TextBox).Text);
             }
-            else
+            else if ((sender as TextBox).Text.Length > 0)
             {
                 infoAbout[(sender as TextBox).Name] = (sender as TextBox).Text;
+            }
+            checkProgressBar();
+        }
+
+        private void comboBox_Leave(object sender, EventArgs e)
+        {
+            if ((sender as ComboBox).Text == "" && infoAbout.Keys.Contains($"{(sender as ComboBox).Name}"))
+            {
+                toolStripProgressBar.Value -= 10;
+                infoAbout.Remove($"{(sender as ComboBox).Name}");
+            }
+            else if ((sender as ComboBox).Text.Length > 0 && !infoAbout.Keys.Contains($"{(sender as ComboBox).Name}"))
+            {
+                toolStripProgressBar.Value += 10;
+                infoAbout.Add($"{(sender as ComboBox).Name}", (sender as ComboBox).Text);
+            }
+            else if ((sender as ComboBox).Text.Length > 0)
+            {
+                infoAbout[(sender as ComboBox).Name] = (sender as ComboBox).Text;
             }
             checkProgressBar();
         }
@@ -242,7 +262,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             else
             {
                 toolStripProgressBar.ForeColor = Color.Green;
-                if (toolStripProgressBar.Value >= 105)
+                if (toolStripProgressBar.Value >= 115)
                 {
                     toolStripButtonPreview.Enabled = true;
                 }
@@ -316,6 +336,8 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'PlantNumber')]").InnerHtml = textBoxPlantNumber.Text;
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'RegistrationNumber')]").InnerHtml = textBoxRegistrationNumber.Text;
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'typeMeasuringTool')]").InnerHtml = "<strong>" + labelTypeMeasuringTool.Text + "</strong> " + textBoxTypeMeasuringTool.Text + " " + textBoxModification.Text + ",зав.№" + textBoxPlantNumber.Text + ". Регистрационный номер свидетельства об утверждении типа средства измерений " + textBoxRegistrationNumber.Text;
+            //Направление движения
+            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'Direction')]").InnerHtml = comboBoxDirection.Text;
             //Метрологические параметры
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = "<strong>" + MetrologyToolStripMenuItem.Text +":</strong> ";
             foreach (var item in parametrsMetrology)
