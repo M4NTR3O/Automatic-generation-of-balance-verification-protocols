@@ -15,6 +15,7 @@ namespace Automatic_generation_of_balance_verification_protocols
     public partial class DataWagonsForm : Form
     {
         private DataSet WagonsAndTransinDataSet;
+        private Dictionary<string, Dictionary<string, DateTime>> directionAndTime = new Dictionary<string, Dictionary<string, DateTime>> { };
         public DataWagonsForm()
         {
             InitializeComponent(); 
@@ -23,10 +24,13 @@ namespace Automatic_generation_of_balance_verification_protocols
             progressBar.Maximum = 1;
             progressBar.Value = 0;
             CreateDGV();
-            
+            DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+            directionAndTime.Add("i0", new Dictionary<string, DateTime>() { { "слева направо", time } });
+            dateTimePickerTimeTransit.Value = time;
+            comboBoxDirection.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        public DataWagonsForm(DataSet table)
+        public DataWagonsForm(DataSet table, Dictionary<string, Dictionary<string, DateTime>> dictionary)
         {
             InitializeComponent();
             DoubleBuffered = true;
@@ -35,7 +39,11 @@ namespace Automatic_generation_of_balance_verification_protocols
                 WagonsAndTransinDataSet.Tables.Clear();
             }
             WagonsAndTransinDataSet = table;
+            directionAndTime = dictionary;
             UpdateDGV();
+            dateTimePickerTimeTransit.Value = directionAndTime["i0"].ElementAt(0).Value;
+            comboBoxDirection.Text = directionAndTime["i0"].ElementAt(0).Key;
+            comboBoxDirection.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void CreateDGV()
@@ -183,6 +191,10 @@ namespace Automatic_generation_of_balance_verification_protocols
                                 //menuStripTransitButton.Items[i].BackColor = Color.DarkGray;
                                 (menuStripTransitButton.Items[i] as ToolStripDropDownButton).DropDownItems[j].BackColor = Color.DarkGray;
                             }
+                            labelNumberTransit.Text = $"Проезд №{i * 5 + j + 1}";
+                            DateTime inter = directionAndTime[$"i{i * 5 + j}"].ElementAt(0).Value;
+                            comboBoxDirection.Text = directionAndTime[$"i{i * 5 + j}"].ElementAt(0).Key;
+                            dateTimePickerTimeTransit.Value = inter;
                             tableWagonsAndTransit.DataSource = WagonsAndTransinDataSet.Tables[i * 5 + j];
                             tableWagonsAndTransit.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
                             tableWagonsAndTransit.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -408,6 +420,8 @@ namespace Automatic_generation_of_balance_verification_protocols
                 for (int i = count; i < numericUpDownTransit.Value; i++)
                 {
                     CreateTable(i);
+                    DateTime time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                    directionAndTime.Add($"i{i}", new Dictionary<string, DateTime>() { { "слева направо", time } });
                 }
                 for (int i = 0; i < numericUpDownTransit.Value / 5; i++)
                 {
@@ -430,6 +444,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                         else
                         {
                             menuStripTransitButton.Items[i].BackColor = SystemColors.Control;
+                      
                         }
                     }
                 }
@@ -466,6 +481,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                         }
                     }
                     WagonsAndTransinDataSet.Tables.Remove($"{i}");
+                    directionAndTime.Remove($"i{i}");
                     if (i % 5 - 1 == 0)
                     {
                         menuStripTransitButton.Items.Remove(menuStripTransitButton.Items[i / 5]);
@@ -516,6 +532,10 @@ namespace Automatic_generation_of_balance_verification_protocols
         public DataSet callData()
         {
             return WagonsAndTransinDataSet;
+        }
+        public Dictionary<string, Dictionary<string, DateTime>> getDirectionAndTime()
+        {
+            return directionAndTime;
         }
 
         public (Dictionary<string, double>, Dictionary<string, double>) calculateResult()
@@ -686,6 +706,27 @@ namespace Automatic_generation_of_balance_verification_protocols
         private void menuStripTransitButton_ItemAdded(object sender, ToolStripItemEventArgs e)
         {
             
+        }
+
+        private void dateTimePickerTimeTransit_ValueChanged(object sender, EventArgs e)
+        {
+            int number = Convert.ToInt32(labelNumberTransit.Text.Split('№')[1]) - 1;
+            if (directionAndTime[$"i{number}"].ContainsKey(comboBoxDirection.Text))
+            {
+                directionAndTime[$"i{number}"][comboBoxDirection.Text] = dateTimePickerTimeTransit.Value;
+            }
+            else
+            {
+                directionAndTime[$"i{number}"].Remove(directionAndTime[$"i{number}"].ElementAt(0).Key);
+                directionAndTime[$"i{number}"].Add(comboBoxDirection.Text, dateTimePickerTimeTransit.Value);
+            }
+        }
+
+        private void comboBoxDirection_TextChanged(object sender, EventArgs e)
+        {
+            int number = Convert.ToInt32(labelNumberTransit.Text.Split('№')[1]) - 1;
+            directionAndTime[$"i{number}"].Remove(directionAndTime[$"i{number}"].ElementAt(0).Key);
+            directionAndTime[$"i{number}"].Add(comboBoxDirection.Text, dateTimePickerTimeTransit.Value);
         }
     }
 }

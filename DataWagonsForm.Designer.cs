@@ -38,11 +38,18 @@
             this.labelWagons = new System.Windows.Forms.Label();
             this.menuStripTransitButton = new System.Windows.Forms.MenuStrip();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.labelTimeTransit = new System.Windows.Forms.Label();
+            this.dateTimePickerTimeTransit = new System.Windows.Forms.DateTimePicker();
+            this.comboBoxDirection = new System.Windows.Forms.ComboBox();
+            this.labelDirection = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.labelNumberTransit = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.tableWagonsAndTransit)).BeginInit();
             this.panelData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTransit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWagons)).BeginInit();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableWagonsAndTransit
@@ -55,7 +62,7 @@
             this.tableWagonsAndTransit.Name = "tableWagonsAndTransit";
             this.tableWagonsAndTransit.RowHeadersWidth = 51;
             this.tableWagonsAndTransit.RowTemplate.Height = 24;
-            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1071, 674);
+            this.tableWagonsAndTransit.Size = new System.Drawing.Size(1164, 668);
             this.tableWagonsAndTransit.TabIndex = 1;
             this.tableWagonsAndTransit.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableWagonsAndTransit_CellEndEdit);
             // 
@@ -70,13 +77,13 @@
             this.panelData.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelData.Location = new System.Drawing.Point(0, 0);
             this.panelData.Name = "panelData";
-            this.panelData.Size = new System.Drawing.Size(1071, 50);
+            this.panelData.Size = new System.Drawing.Size(1164, 50);
             this.panelData.TabIndex = 0;
             // 
             // progressBar
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(773, 15);
+            this.progressBar.Location = new System.Drawing.Point(866, 15);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(100, 23);
             this.progressBar.TabIndex = 3;
@@ -87,7 +94,7 @@
             this.buttonSaveData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.buttonSaveData.Enabled = false;
-            this.buttonSaveData.Location = new System.Drawing.Point(879, 12);
+            this.buttonSaveData.Location = new System.Drawing.Point(972, 12);
             this.buttonSaveData.Name = "buttonSaveData";
             this.buttonSaveData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.buttonSaveData.Size = new System.Drawing.Size(180, 30);
@@ -165,7 +172,7 @@
             this.menuStripTransitButton.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripTransitButton.Location = new System.Drawing.Point(0, 0);
             this.menuStripTransitButton.Name = "menuStripTransitButton";
-            this.menuStripTransitButton.Size = new System.Drawing.Size(1071, 24);
+            this.menuStripTransitButton.Size = new System.Drawing.Size(1164, 24);
             this.menuStripTransitButton.TabIndex = 2;
             this.menuStripTransitButton.Text = "menuStrip1";
             this.menuStripTransitButton.ItemAdded += new System.Windows.Forms.ToolStripItemEventHandler(this.menuStripTransitButton_ItemAdded);
@@ -175,18 +182,91 @@
             this.panel1.AutoSize = true;
             this.panel1.Controls.Add(this.menuStripTransitButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 694);
+            this.panel1.Location = new System.Drawing.Point(0, 753);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1071, 30);
+            this.panel1.Size = new System.Drawing.Size(1164, 24);
             this.panel1.TabIndex = 4;
+            // 
+            // labelTimeTransit
+            // 
+            this.labelTimeTransit.AutoSize = true;
+            this.labelTimeTransit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelTimeTransit.Location = new System.Drawing.Point(257, 10);
+            this.labelTimeTransit.Name = "labelTimeTransit";
+            this.labelTimeTransit.Size = new System.Drawing.Size(124, 16);
+            this.labelTimeTransit.TabIndex = 38;
+            this.labelTimeTransit.Text = "Время проезда:";
+            // 
+            // dateTimePickerTimeTransit
+            // 
+            this.dateTimePickerTimeTransit.CustomFormat = "HH:mm";
+            this.dateTimePickerTimeTransit.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerTimeTransit.Location = new System.Drawing.Point(387, 7);
+            this.dateTimePickerTimeTransit.Name = "dateTimePickerTimeTransit";
+            this.dateTimePickerTimeTransit.ShowUpDown = true;
+            this.dateTimePickerTimeTransit.Size = new System.Drawing.Size(95, 22);
+            this.dateTimePickerTimeTransit.TabIndex = 37;
+            this.dateTimePickerTimeTransit.ValueChanged += new System.EventHandler(this.dateTimePickerTimeTransit_ValueChanged);
+            // 
+            // comboBoxDirection
+            // 
+            this.comboBoxDirection.AutoCompleteCustomSource.AddRange(new string[] {
+            "слева направо",
+            "справа налево"});
+            this.comboBoxDirection.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxDirection.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.comboBoxDirection.Items.AddRange(new object[] {
+            "слева направо",
+            "справа налево"});
+            this.comboBoxDirection.Location = new System.Drawing.Point(691, 7);
+            this.comboBoxDirection.Name = "comboBoxDirection";
+            this.comboBoxDirection.Size = new System.Drawing.Size(137, 24);
+            this.comboBoxDirection.Sorted = true;
+            this.comboBoxDirection.TabIndex = 35;
+            this.comboBoxDirection.Text = "слева направо";
+            this.comboBoxDirection.SelectedIndexChanged += new System.EventHandler(this.comboBoxDirection_TextChanged);
+            // 
+            // labelDirection
+            // 
+            this.labelDirection.AutoSize = true;
+            this.labelDirection.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelDirection.Location = new System.Drawing.Point(497, 10);
+            this.labelDirection.Name = "labelDirection";
+            this.labelDirection.Size = new System.Drawing.Size(188, 16);
+            this.labelDirection.TabIndex = 36;
+            this.labelDirection.Text = "Направление движения:";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.labelNumberTransit);
+            this.panel2.Controls.Add(this.labelTimeTransit);
+            this.panel2.Controls.Add(this.dateTimePickerTimeTransit);
+            this.panel2.Controls.Add(this.labelDirection);
+            this.panel2.Controls.Add(this.comboBoxDirection);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 718);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1164, 35);
+            this.panel2.TabIndex = 39;
+            // 
+            // labelNumberTransit
+            // 
+            this.labelNumberTransit.AutoSize = true;
+            this.labelNumberTransit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelNumberTransit.Location = new System.Drawing.Point(12, 10);
+            this.labelNumberTransit.Name = "labelNumberTransit";
+            this.labelNumberTransit.Size = new System.Drawing.Size(90, 16);
+            this.labelNumberTransit.TabIndex = 39;
+            this.labelNumberTransit.Text = "Проезд №1";
             // 
             // DataWagonsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 724);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(1164, 777);
             this.Controls.Add(this.tableWagonsAndTransit);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelData);
             this.MainMenuStrip = this.menuStripTransitButton;
             this.Name = "DataWagonsForm";
@@ -200,6 +280,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWagons)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,5 +298,11 @@
         private System.Windows.Forms.MenuStrip menuStripTransitButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelTimeTransit;
+        private System.Windows.Forms.DateTimePicker dateTimePickerTimeTransit;
+        private System.Windows.Forms.ComboBox comboBoxDirection;
+        private System.Windows.Forms.Label labelDirection;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label labelNumberTransit;
     }
 }

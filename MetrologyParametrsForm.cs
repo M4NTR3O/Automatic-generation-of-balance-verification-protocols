@@ -16,6 +16,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         public MetrologyParametrsForm()
         {
             InitializeComponent();
+            comboBoxDe.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         public MetrologyParametrsForm(Dictionary<string, int> parametrs)

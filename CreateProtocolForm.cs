@@ -30,6 +30,7 @@ namespace Automatic_generation_of_balance_verification_protocols
         private Dictionary<string, int> parametrsMetrology = new Dictionary<string, int>();
         private Dictionary<string, string> importantPerson = new Dictionary<string, string>();
         private Dictionary<string, string> infoAbout = new Dictionary<string, string>() { { "textBoxOwnerSI", "" } };
+        private Dictionary<string, Dictionary<string, DateTime>> directionAndTime = new Dictionary<string, Dictionary<string, DateTime>>();
 
         public CreateProtocolForm()
         {
@@ -37,6 +38,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             importantPerson.Add("labelStateTrustee", "");
             importantPerson.Add("labelRepresentativeOfTensib", "");
             importantPerson.Add("labelCustomerRepresentative", "");
+            dateTimePickerDateProtocol.Value = DateTime.Now;
         }
 
         public CreateProtocolForm(string filename)
@@ -45,6 +47,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             toolStripProgressBar.Value = 0;
             XDocument xDoc = XDocument.Load(filename);
             dateTime = Convert.ToDateTime(xDoc.Root.Element("Date").Attribute("Date").Value);
+            dateTimePickerDateProtocol.Value = dateTime;
             resultWagonsAndTransit.Clear();
             foreach(XElement el in xDoc.Root.Element("resultWagonsAndTransit").Elements())
             {
@@ -62,6 +65,13 @@ namespace Automatic_generation_of_balance_verification_protocols
             {
                 importantPerson.Add(el.Name.LocalName, el.Value);
             }
+            foreach (XElement el in xDoc.Root.Element("directionAndTime").Elements())
+            {
+                foreach(XElement el2 in el.Elements())
+                {
+                    directionAndTime.Add(el.Name.LocalName, new Dictionary<string, DateTime> { { el2.Name.LocalName.Replace('-',' '), Convert.ToDateTime(el2.Value) } });
+                }
+            }
             foreach (XElement el in xDoc.Root.Element("infoAbout").Elements())
             {
                 if (el.Name.LocalName == "textBoxOwnerSI")
@@ -78,13 +88,15 @@ namespace Automatic_generation_of_balance_verification_protocols
             tempDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             wagonsAndTransit.ReadXml($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
             File.Delete($"Протоколы/Протокол_{printFullTime(dateTime)}-temp.xml");
-            toolStripProgressBar.Value += 115;
+            toolStripProgressBar.Value += 105;
             FillForm();
             checkProgressBar();
         }
 
         private void FillForm()
         {
+            dateTimePickerDateProtocol.Value = dateTime;
+            dateTime = dateTimePickerDateProtocol.Value;
             DataWagonToolStripMenuItem.BackColor = Color.Green;
             MetrologyToolStripMenuItem.BackColor = Color.Green;
             if (importantPerson.Values.All(s => s.Length > 0))
@@ -103,7 +115,6 @@ namespace Automatic_generation_of_balance_verification_protocols
             textBoxCountWagonsTranslit.Text = infoAbout[textBoxCountWagonsTranslit.Name];
             textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
             textBoxWeightWagons.Text = resultWagonsAndTransit["i0"].ToString();
-            comboBoxDirection.Text = infoAbout[comboBoxDirection.Name];
         }
 
         private void DataWagonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -113,7 +124,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             if (wagonsAndTransit != null && wagonsAndTransit.Tables.Count > 0)
             {
                 dataSet = wagonsAndTransit.Copy();
-                dataWagonsForm = new DataWagonsForm(wagonsAndTransit);
+                dataWagonsForm = new DataWagonsForm(wagonsAndTransit, directionAndTime);
             }
             this.Hide();
             dataWagonsForm.ShowDialog();
@@ -127,6 +138,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                     }
                     DataWagonToolStripMenuItem.BackColor = Color.Green;
                     wagonsAndTransit = dataWagonsForm.callData();
+                    directionAndTime = dataWagonsForm.getDirectionAndTime();
                     (resultWagonsAndTransit, maxDeltaWagonsAndTransit) = dataWagonsForm.calculateResult();
                     textBoxCountWagons.Text = wagonsAndTransit.Tables[0].Rows.Count.ToString();
                     textBoxCountWagonsTranslit.Text = numbers2Translit[Convert.ToInt32(textBoxCountWagons.Text)];
@@ -262,7 +274,7 @@ namespace Automatic_generation_of_balance_verification_protocols
             else
             {
                 toolStripProgressBar.ForeColor = Color.Green;
-                if (toolStripProgressBar.Value >= 115)
+                if (toolStripProgressBar.Value >= 105)
                 {
                     toolStripButtonPreview.Enabled = true;
                 }
@@ -282,6 +294,11 @@ namespace Automatic_generation_of_balance_verification_protocols
         string printShortTime(DateTime dateTime)
         {
             string result = $"{dateTime.ToString("d")}";
+            return result;
+        }
+        string printTime(DateTime dateTime)
+        {
+            string result = $"{dateTime.ToString("HH:mm")}";
             return result;
         }
 
@@ -336,8 +353,6 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'PlantNumber')]").InnerHtml = textBoxPlantNumber.Text;
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'RegistrationNumber')]").InnerHtml = textBoxRegistrationNumber.Text;
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'typeMeasuringTool')]").InnerHtml = "<strong>" + labelTypeMeasuringTool.Text + "</strong> " + textBoxTypeMeasuringTool.Text + " " + textBoxModification.Text + ",зав.№" + textBoxPlantNumber.Text + ". Регистрационный номер свидетельства об утверждении типа средства измерений " + textBoxRegistrationNumber.Text;
-            //Направление движения
-            htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'Direction')]").InnerHtml = comboBoxDirection.Text;
             //Метрологические параметры
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'metrologyParametrs')]").InnerHtml = "<strong>" + MetrologyToolStripMenuItem.Text +":</strong> ";
             foreach (var item in parametrsMetrology)
@@ -353,8 +368,6 @@ namespace Automatic_generation_of_balance_verification_protocols
             htmlDoc.DocumentNode.SelectSingleNode("//strong[contains(@id, 'classСomposition')]").InnerHtml = infoAbout[textBoxStructureGOST.Name];
             //Средства поверки
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]").InnerHtml = $"<strong>{labelVerificationTools.Text}</strong> {textBoxVerificationTools.Text}. {labelCountWagons.Text} <strong>{wagonsAndTransit.Tables[0].Rows.Count}</strong> ({infoAbout[textBoxCountWagonsTranslit.Name]}) {labelWeightSummary.Text} <strong>{resultWagonsAndTransit["i0"]}</strong> {labelKg.Text}";
-
-            var pop = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'verificationTool')]");
 
             //Наименование собственника
             htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@id, 'ownerSi')]").InnerHtml = $"<strong>{labelOwnerSi.Text}</strong> {textBoxOwnerSI.Text}";
@@ -465,6 +478,7 @@ namespace Automatic_generation_of_balance_verification_protocols
 
         private void toolStripButtonPreview_Click(object sender, EventArgs e)
         {
+            dateTime = dateTimePickerDateProtocol.Value;
             dataToHTML();
             HTML2PDF();
             if (dateTime.Year == 0001)
@@ -506,12 +520,18 @@ namespace Automatic_generation_of_balance_verification_protocols
                 XElement xinfoAbout = new XElement("infoAbout",
                     from keyValue in infoAbout
                     select new XElement(keyValue.Key, keyValue.Value));
+                XElement xDirectionTime = new XElement("directionAndTime",
+                    from keyValue in directionAndTime
+                    select new XElement(keyValue.Key, 
+                    from keyValue2 in keyValue.Value
+                    select new XElement(keyValue2.Key.ToString().Replace(' ', '-'), keyValue2.Value)));
                 container.Add(xDate);
                 container.Add(xresultWagonsAndTransit);
                 container.Add(xmaxDeltaWagonsAndTransit);
                 container.Add(xparametrsMetrology);
                 container.Add(ximportantPerson);
                 container.Add(xinfoAbout);
+                container.Add(xDirectionTime);
                 xDoc.Add(container);
                 xDoc.Save($"Протоколы/Протокол_{printFullTime(dateTime)}.xml");
                 this.Show();
@@ -586,7 +606,8 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     RenameId(table, i, htmlDoc);
                 }
-                table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 6}T{workI / 3 + 1}transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}";
+                string direction = directionAndTime[$"i{i}"].ElementAt(0).Key == "слева направо"?"-->":"<--";
+                table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 6}T{workI / 3 + 1}transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1} {direction} {printTime(directionAndTime[$"i{i}"].ElementAt(0).Value)}";
 
                 for (int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
                 {
@@ -769,7 +790,8 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     RenameIdMore8Wagon(table, i, htmlDoc);
                 }
-                table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 3}T1transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}";
+                string direction = directionAndTime[$"i{i}"].ElementAt(0).Key == "слева направо" ? "-->" : "<--";
+                table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 3}T1transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}  {direction} {printTime(directionAndTime[$"i{i}"].ElementAt(0).Value)}";
 
                 for (int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
                 {
