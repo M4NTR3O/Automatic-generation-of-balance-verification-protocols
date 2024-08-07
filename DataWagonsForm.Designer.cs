@@ -65,6 +65,7 @@
             this.tableWagonsAndTransit.Size = new System.Drawing.Size(1164, 668);
             this.tableWagonsAndTransit.TabIndex = 1;
             this.tableWagonsAndTransit.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableWagonsAndTransit_CellEndEdit);
+            this.tableWagonsAndTransit.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.tableWagonsAndTransit_DataError);
             // 
             // panelData
             // 

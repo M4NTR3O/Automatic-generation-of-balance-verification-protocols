@@ -121,22 +121,22 @@ namespace Automatic_generation_of_balance_verification_protocols
                     (menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[i % 5].BackColor = Color.LightGreen;
                     progressBar.Value++;
                 }
-                if (i % 5 == 0 && i != 0)
+                if ((i + 1) % 5 == 0 && i != 0)
                 {
-                    menuStripTransitButton.Items[i / 5 - 1].BackColor = Color.LightGreen;
+                    menuStripTransitButton.Items[i / 5].BackColor = Color.LightGreen;
                     for (int j = 0; j < 5; j++)
                     {
-                        if ((menuStripTransitButton.Items[i / 5 - 1] as ToolStripDropDownButton).DropDownItems[j].BackColor == SystemColors.Control)
+                        if ((menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[j].BackColor == SystemColors.Control)
                         {
-                            menuStripTransitButton.Items[i / 5 - 1].BackColor = SystemColors.Control;
+                            menuStripTransitButton.Items[i / 5].BackColor = SystemColors.Control;
                         }
-                        else if ((menuStripTransitButton.Items[i / 5 - 1] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[i / 5 - 1].BackColor == Color.LightGreen))
+                        else if ((menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[i / 5].BackColor == Color.LightGreen))
                         {
-                            menuStripTransitButton.Items[i / 5 - 1].BackColor = Color.DarkGreen;
+                            menuStripTransitButton.Items[i / 5].BackColor = Color.DarkGreen;
                         }
-                        else if ((menuStripTransitButton.Items[i / 5 - 1] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[i / 5 - 1].BackColor == SystemColors.Control))
+                        else if ((menuStripTransitButton.Items[i / 5] as ToolStripDropDownButton).DropDownItems[j].BackColor == Color.DarkGreen && (menuStripTransitButton.Items[i / 5].BackColor == SystemColors.Control))
                         {
-                            menuStripTransitButton.Items[i / 5 - 1].BackColor = Color.DarkGray;
+                            menuStripTransitButton.Items[i / 5].BackColor = Color.DarkGray;
                         }
                     }
                 }
@@ -291,8 +291,9 @@ namespace Automatic_generation_of_balance_verification_protocols
             db.Columns.Add("№ вагона");
             db.Columns.Add("Вес в статике");
             db.Columns.Add($"Проезд №{i + 1}");
-            db.Columns[1].DataType = typeof(int);
-            db.Columns[2].DataType = typeof(int);
+            db.Columns[0].DataType = typeof(uint);
+            db.Columns[1].DataType = typeof(uint);
+            db.Columns[2].DataType = typeof(uint);
             if (i % 5 == 0)
             {
                 ToolStripDropDownButton btn = new ToolStripDropDownButton($"Проезды №{i + 1}-{i + 5}");
@@ -481,7 +482,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                         }
                     }
                     WagonsAndTransinDataSet.Tables.Remove($"{i}");
-                    directionAndTime.Remove($"i{i}");
+                    directionAndTime.Remove($"i{i - 1}");
                     if (i % 5 - 1 == 0)
                     {
                         menuStripTransitButton.Items.Remove(menuStripTransitButton.Items[i / 5]);
@@ -727,6 +728,12 @@ namespace Automatic_generation_of_balance_verification_protocols
             int number = Convert.ToInt32(labelNumberTransit.Text.Split('№')[1]) - 1;
             directionAndTime[$"i{number}"].Remove(directionAndTime[$"i{number}"].ElementAt(0).Key);
             directionAndTime[$"i{number}"].Add(comboBoxDirection.Text, dateTimePickerTimeTransit.Value);
+        }
+
+        private void tableWagonsAndTransit_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            tableWagonsAndTransit.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = 0;
+            MessageBox.Show("Введено не положительное число", "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

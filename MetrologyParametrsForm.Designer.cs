@@ -102,7 +102,7 @@
             this.comboBoxDe.Location = new System.Drawing.Point(329, 153);
             this.comboBoxDe.Name = "comboBoxDe";
             this.comboBoxDe.Size = new System.Drawing.Size(177, 24);
-            this.comboBoxDe.TabIndex = 11;
+            this.comboBoxDe.TabIndex = 8;
             // 
             // MetrologyParametrsForm
             // 

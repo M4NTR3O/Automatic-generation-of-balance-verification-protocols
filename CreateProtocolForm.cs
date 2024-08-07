@@ -606,7 +606,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     RenameId(table, i, htmlDoc);
                 }
-                string direction = directionAndTime[$"i{i}"].ElementAt(0).Key == "слева направо"?"-->":"<--";
+                string direction = directionAndTime[$"i{i}"].ElementAt(0).Key == "слева направо"? "→" : "←";
                 table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 6}T{workI / 3 + 1}transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1} {direction} {printTime(directionAndTime[$"i{i}"].ElementAt(0).Value)}";
 
                 for (int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)
@@ -790,7 +790,7 @@ namespace Automatic_generation_of_balance_verification_protocols
                 {
                     RenameIdMore8Wagon(table, i, htmlDoc);
                 }
-                string direction = directionAndTime[$"i{i}"].ElementAt(0).Key == "слева направо" ? "-->" : "<--";
+                string direction = directionAndTime[$"i{i}"].ElementAt(0).Key == "слева направо" ? "→" : "←";
                 table.SelectSingleNode($"//thead/th[contains(@id, 'P{i / 3}T1transit{(workI % 3) + 1}')]").InnerHtml = $"Проезд №{i + 1}  {direction} {printTime(directionAndTime[$"i{i}"].ElementAt(0).Value)}";
 
                 for (int j = 0; j < wagonsAndTransit.Tables[0].Rows.Count; j++)

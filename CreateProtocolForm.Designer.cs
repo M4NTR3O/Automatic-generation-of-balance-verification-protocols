@@ -201,7 +201,7 @@
             this.textBoxWagonGOST.Location = new System.Drawing.Point(445, 297);
             this.textBoxWagonGOST.Name = "textBoxWagonGOST";
             this.textBoxWagonGOST.Size = new System.Drawing.Size(40, 22);
-            this.textBoxWagonGOST.TabIndex = 8;
+            this.textBoxWagonGOST.TabIndex = 9;
             this.textBoxWagonGOST.TextChanged += new System.EventHandler(this.textBox_Leave);
             // 
             // textBoxStructureGOST
@@ -210,7 +210,7 @@
             this.textBoxStructureGOST.Location = new System.Drawing.Point(558, 297);
             this.textBoxStructureGOST.Name = "textBoxStructureGOST";
             this.textBoxStructureGOST.Size = new System.Drawing.Size(40, 22);
-            this.textBoxStructureGOST.TabIndex = 9;
+            this.textBoxStructureGOST.TabIndex = 10;
             this.textBoxStructureGOST.TextChanged += new System.EventHandler(this.textBox_Leave);
             // 
             // labelWagon
@@ -311,6 +311,7 @@
             this.textBoxCountWagonsTranslit.ReadOnly = true;
             this.textBoxCountWagonsTranslit.Size = new System.Drawing.Size(151, 22);
             this.textBoxCountWagonsTranslit.TabIndex = 13;
+            this.textBoxCountWagonsTranslit.TabStop = false;
             // 
             // label
             // 
@@ -349,7 +350,7 @@
             this.textBoxModification.Multiline = true;
             this.textBoxModification.Name = "textBoxModification";
             this.textBoxModification.Size = new System.Drawing.Size(614, 24);
-            this.textBoxModification.TabIndex = 24;
+            this.textBoxModification.TabIndex = 6;
             this.textBoxModification.TextChanged += new System.EventHandler(this.textBox_Leave);
             // 
             // labelModification
@@ -369,7 +370,7 @@
             this.textBoxPlantNumber.Multiline = true;
             this.textBoxPlantNumber.Name = "textBoxPlantNumber";
             this.textBoxPlantNumber.Size = new System.Drawing.Size(614, 24);
-            this.textBoxPlantNumber.TabIndex = 26;
+            this.textBoxPlantNumber.TabIndex = 7;
             this.textBoxPlantNumber.TextChanged += new System.EventHandler(this.textBox_Leave);
             // 
             // labelPlantNumber
@@ -389,7 +390,7 @@
             this.textBoxRegistrationNumber.Multiline = true;
             this.textBoxRegistrationNumber.Name = "textBoxRegistrationNumber";
             this.textBoxRegistrationNumber.Size = new System.Drawing.Size(614, 24);
-            this.textBoxRegistrationNumber.TabIndex = 28;
+            this.textBoxRegistrationNumber.TabIndex = 8;
             this.textBoxRegistrationNumber.TextChanged += new System.EventHandler(this.textBox_Leave);
             // 
             // labelRegistrationNumber
@@ -417,7 +418,7 @@
             this.dateTimePickerDateProtocol.Location = new System.Drawing.Point(383, 72);
             this.dateTimePickerDateProtocol.Name = "dateTimePickerDateProtocol";
             this.dateTimePickerDateProtocol.Size = new System.Drawing.Size(147, 22);
-            this.dateTimePickerDateProtocol.TabIndex = 31;
+            this.dateTimePickerDateProtocol.TabIndex = 1;
             // 
             // labelDate
             // 
